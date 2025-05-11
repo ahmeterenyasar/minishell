@@ -1,14 +1,18 @@
-
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -Iinclude
 SRCS = main.c \
 		src/parser/parser.c \
+		src/parser/lexer.c
 
 OBJS = $(SRCS:.c=.o)
-LIBFT = libft/libft.a
+LIBFT_DIR = libft
+LIBFT = $(LIBFT_DIR)/libft.a
 
-all: $(NAME)
+all: $(LIBFT) $(NAME)
+
+$(LIBFT):
+	@$(MAKE) -C $(LIBFT_DIR)
 
 $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(CFLAGS) -o $@ $^
@@ -19,10 +23,12 @@ $(NAME): $(OBJS) $(LIBFT)
 
 clean:
 	@rm -f $(OBJS)
+	@$(MAKE) -C $(LIBFT_DIR) clean
 	@echo "Object files cleaned."
 
 fclean:
 	@rm -f $(OBJS) $(NAME)
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@echo "All files cleaned."
 
 re: fclean all
