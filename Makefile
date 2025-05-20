@@ -3,7 +3,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -Iinclude
 SRCS = main.c \
 		src/parser/parser.c \
-		src/parser/lexer.c
+		src/parser/tokenizer.c \
+		src/parser/string_utils.c \
 
 OBJS = $(SRCS:.c=.o)
 LIBFT_DIR = libft
