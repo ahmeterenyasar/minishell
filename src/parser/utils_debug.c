@@ -43,7 +43,7 @@ void	print_command_args(char **args)
 	i = 0;
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		printf("\"%s\"", args[i]);
 		i++;
 	}
 	printf("\n");
