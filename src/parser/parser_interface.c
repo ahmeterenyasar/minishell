@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_command	*parse_input(const char *line, char **envp)
+t_command	*parse_input(const char *line, t_shell_data *shell)
 {
 	t_token		*tokens;
 	t_command	*cmd;
@@ -15,7 +15,7 @@ t_command	*parse_input(const char *line, char **envp)
 		free_tokens(tokens);
 		return (NULL);
 	}
-	expand_tokens(tokens, envp);
+	expand_tokens(tokens, shell);
 	cmd = parse_tokens(tokens);
 	free_tokens(tokens);
 	return (cmd);

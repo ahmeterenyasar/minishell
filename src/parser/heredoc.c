@@ -1,8 +1,6 @@
 #include "minishell.h"
 
-/*
-HEREDOC ve REDIRECTIONLAR CALISMIYOR EXECUTOR LAZIM
-*/
+// CURRENTLY NOT WORKING PROPERLY
 
 static char	*int_to_str(int n)
 {
@@ -72,9 +70,6 @@ static char	*generate_heredoc_filename(void)
 	return (temp);
 }
 
-/**
- * Setup temporary file for heredoc content
- */
 static int	setup_heredoc_file(char **filename)
 {
 	int	fd;
@@ -96,9 +91,6 @@ static int	setup_heredoc_file(char **filename)
 	return (-1);
 }
 
-/**
- * Handle signal interruption in heredoc
- */
 static int	handle_heredoc_interrupt(char *line, int original_stdin)
 {
 	if (line)
@@ -113,11 +105,8 @@ static int	handle_heredoc_interrupt(char *line, int original_stdin)
 	return (0);
 }
 
-/**
- * Process a single line in heredoc input
- */
 static int	process_heredoc_line(char *line, const char *delimiter, int fd,
-		char **envp, int expand)
+		t_shell_data *shell, int expand)
 {
 	char	*expanded_line;
 
@@ -128,7 +117,7 @@ static int	process_heredoc_line(char *line, const char *delimiter, int fd,
 	}
 	if (expand)
 	{
-		expanded_line = expand_env_vars(line, envp);
+		expanded_line = expand_env_vars(line, shell);
 		free(line);
 		line = expanded_line;
 	}
@@ -138,9 +127,6 @@ static int	process_heredoc_line(char *line, const char *delimiter, int fd,
 	return (0);
 }
 
-/**
- * Setup for heredoc reading
- */
 static int	setup_heredoc_reading(int *original_stdin)
 {
 	*original_stdin = dup(STDIN_FILENO);
@@ -151,11 +137,8 @@ static int	setup_heredoc_reading(int *original_stdin)
 	return (0);
 }
 
-/**
- * Read lines until delimiter, handling interruption with Ctrl+C
- */
 static int	read_heredoc_content(int fd, const char *delimiter, int expand,
-		char **envp)
+		t_shell_data *shell)
 {
 	char	*line;
 	int		original_stdin;
@@ -173,7 +156,7 @@ static int	read_heredoc_content(int fd, const char *delimiter, int expand,
 				return (1);
 			break ;
 		}
-		delimiter_found = process_heredoc_line(line, delimiter, fd, envp,
+		delimiter_found = process_heredoc_line(line, delimiter, fd, shell,
 				expand);
 	}
 	setup_signals(INTERACTIVE_MODE);
@@ -181,9 +164,6 @@ static int	read_heredoc_content(int fd, const char *delimiter, int expand,
 	return (0);
 }
 
-/**
- * Clean up after heredoc failure
- */
 static int	cleanup_heredoc_failure(char *filename)
 {
 	unlink(filename);
@@ -191,11 +171,7 @@ static int	cleanup_heredoc_failure(char *filename)
 	return (1);
 }
 
-/**
- * Process a heredoc redirection
- * Returns 0 on success, 1 on failure
- */
-int	process_heredoc(t_redirect *redirect, char **envp)
+int	process_heredoc(t_redirect *redirect, t_shell_data *shell)
 {
 	int		fd;
 	char	*filename;
@@ -207,7 +183,7 @@ int	process_heredoc(t_redirect *redirect, char **envp)
 	if (fd == -1)
 		return (1);
 	result = read_heredoc_content(fd, redirect->file, redirect->expand_heredoc,
-			envp);
+			shell);
 	close(fd);
 	if (result)
 		return (cleanup_heredoc_failure(filename));
@@ -216,10 +192,7 @@ int	process_heredoc(t_redirect *redirect, char **envp)
 	return (0);
 }
 
-/**
- * Process heredocs for a single command
- */
-static int	process_cmd_heredocs(t_command *cmd, char **envp)
+static int	process_cmd_heredocs(t_command *cmd, t_shell_data *shell)
 {
 	t_redirect	*curr_redir;
 
@@ -228,7 +201,7 @@ static int	process_cmd_heredocs(t_command *cmd, char **envp)
 	{
 		if (curr_redir->type == TOKEN_HEREDOC)
 		{
-			if (process_heredoc(curr_redir, envp))
+			if (process_heredoc(curr_redir, shell))
 				return (1);
 		}
 		curr_redir = curr_redir->next;
@@ -236,18 +209,14 @@ static int	process_cmd_heredocs(t_command *cmd, char **envp)
 	return (0);
 }
 
-/**
- * Process all heredocs in the command structure
- * Returns 0 on success, 1 if any heredoc processing failed
- */
-int	process_all_heredocs(t_command *cmd, char **envp)
+int	process_all_heredocs(t_command *cmd, t_shell_data *shell)
 {
 	t_command	*curr_cmd;
 
 	curr_cmd = cmd;
 	while (curr_cmd)
 	{
-		if (process_cmd_heredocs(curr_cmd, envp))
+		if (process_cmd_heredocs(curr_cmd, shell))
 			return (1);
 		curr_cmd = curr_cmd->next;
 	}

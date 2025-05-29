@@ -1,40 +1,34 @@
 #include "minishell.h"
 
-//aakyuz tavsiyesi ile yapıldı.
-//exit statusları linked list ile tutuyoruz. son eklenen exit statusu alıyoruz.
-
-t_exit_status	*g_exit_list = NULL;
-
-void	add_exit_status(int status)
+t_shell_data	*init_shell_data(char **envp)
 {
-	t_exit_status	*new_status;
+	t_shell_data	*shell;
 
-	new_status = malloc(sizeof(t_exit_status));
-	if (!new_status)
+	shell = malloc(sizeof(t_shell_data));
+	if (!shell)
+		return (NULL);
+	shell->last_exit_status = 0;
+	shell->envp = envp;
+	return (shell);
+}
+
+void	set_exit_status(t_shell_data *shell, int status)
+{
+	if (!shell)
 		return ;
-	new_status->status = status;
-	new_status->next = g_exit_list;
-	g_exit_list = new_status;
+	shell->last_exit_status = status;
 }
 
-int	get_last_exit_status(void)
+int	get_exit_status(t_shell_data *shell)
 {
-	if (!g_exit_list)
+	if (!shell)
 		return (0);
-	return (g_exit_list->status);
+	return (shell->last_exit_status);
 }
 
-void	free_exit_list(void)
+void	free_shell_data(t_shell_data *shell)
 {
-	t_exit_status *current;
-	t_exit_status *next;
-
-	current = g_exit_list;
-	while (current)
-	{
-		next = current->next;
-		free(current);
-		current = next;
-	}
-	g_exit_list = NULL;
+	if (!shell)
+		return ;
+	free(shell);
 }

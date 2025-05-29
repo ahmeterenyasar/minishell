@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-char	*get_exit_status(void)
+char	*get_exit_status_str(t_shell_data *shell)
 {
 	char	buffer[16];
 	int		status;
 
-	status = get_last_exit_status();
+	status = get_exit_status(shell);
 	snprintf(buffer, sizeof(buffer), "%d", status);
 	return (strdup(buffer));
 }
@@ -18,18 +18,20 @@ char	*get_shell_pid(void)
 	return (strdup(buffer));
 }
 
-char	*get_env_value(const char *name, char **envp)
+char	*get_env_value(const char *name, t_shell_data *shell)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
+	char	**envp;
 
-	if (!name || !envp)
+	if (!name || !shell || !shell->envp)
 		return (NULL);
 	if (strcmp(name, "?") == 0)
-		return (get_exit_status());
+		return (get_exit_status_str(shell));
 	if (strcmp(name, "$") == 0)
 		return (get_shell_pid());
 	len = strlen(name);
+	envp = shell->envp;
 	i = 0;
 	while (envp[i])
 	{
@@ -61,7 +63,7 @@ static int	extract_env_name(const char *str, int i, char *name, int max_len)
 	return (i);
 }
 
-char	*expand_env_vars(const char *str, char **envp)
+char	*expand_env_vars(const char *str, t_shell_data *shell)
 {
 	char	*result;
 	int		i;
@@ -79,12 +81,12 @@ char	*expand_env_vars(const char *str, char **envp)
 	j = 0;
 	while (str[i] && j < 4095)
 	{
-		if (str[i] == '$' && str[i + 1] && (isalnum(str[i + 1]) || str[i
-				+ 1] == '_' || str[i + 1] == '?' || str[i + 1] == '$'))
+		if (str[i] == '$' && str[i + 1] && (isalnum(str[i + 1]) 
+			|| str[i + 1] == '_' || str[i + 1] == '?' || str[i + 1] == '$'))
 		{
 			i++;
 			i = extract_env_name(str, i, var_name, sizeof(var_name));
-			value = get_env_value(var_name, envp);
+			value = get_env_value(var_name, shell);
 			if (value)
 			{
 				k = 0;
@@ -102,7 +104,7 @@ char	*expand_env_vars(const char *str, char **envp)
 	return (result);
 }
 
-void	expand_tokens(t_token *tokens, char **envp)
+void	expand_tokens(t_token *tokens, t_shell_data *shell)
 {
 	t_token *current;
 	char *expanded;
@@ -112,7 +114,7 @@ void	expand_tokens(t_token *tokens, char **envp)
 	{
 		if (current->type == TOKEN_WORD && current->expandable)
 		{
-			expanded = expand_env_vars(current->value, envp);
+			expanded = expand_env_vars(current->value, shell);
 			if (expanded)
 			{
 				free(current->value);

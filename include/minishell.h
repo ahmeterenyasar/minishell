@@ -62,24 +62,24 @@ typedef struct s_command
 	struct s_command		*next;
 }							t_command;
 
-/* Exit status tracking */
-typedef struct s_exit_status
+/* Shell data structure to hold exit status and other shell state */
+typedef struct s_shell_data
 {
-	int						status;
-	struct s_exit_status	*next;
-}							t_exit_status;
+	int						last_exit_status;
+	char					**envp;
+}							t_shell_data;
 
-/* Global variable for signal handling */
+/* Global variable for signal handling - ONLY allowed global */
 extern sig_atomic_t			g_signal;
-extern t_exit_status		*g_exit_list;
 
 /* Signal handling functions */
 void						setup_signals(int context);
 
-/* Exit status management */
-void						add_exit_status(int status);
-int							get_last_exit_status(void);
-void						free_exit_list(void);
+/* Shell data management - replaces exit status list */
+t_shell_data				*init_shell_data(char **envp);
+void						set_exit_status(t_shell_data *shell, int status);
+int							get_exit_status(t_shell_data *shell);
+void						free_shell_data(t_shell_data *shell);
 
 /* Tokenizer functions */
 t_token						*tokenize(const char *input);
@@ -107,13 +107,13 @@ void						free_tokens(t_token *tokens);
 /* Syntax checker */
 int							check_syntax(t_token *tokens);
 
-/* Environment variable functions */
-char						*expand_env_vars(const char *str, char **envp);
-char						*get_env_value(const char *name, char **envp);
-void						expand_tokens(t_token *tokens, char **envp);
-char						*get_exit_status(void);
+/* Environment variable functions - now takes shell_data */
+char						*expand_env_vars(const char *str, t_shell_data *shell);
+char						*get_env_value(const char *name, t_shell_data *shell);
+void						expand_tokens(t_token *tokens, t_shell_data *shell);
+char						*get_exit_status_str(t_shell_data *shell);
 
-/* Parser functions */
+/* Parser functions - now takes shell_data */
 t_command					*parse_tokens(t_token *tokens);
 t_redirect					*parse_redirection(t_token **token_ptr);
 int							count_args(t_token *tokens);
@@ -121,8 +121,12 @@ t_command					*parse_command(t_token **token_ptr);
 void						free_redirect(t_redirect *redirect);
 void						free_command(t_command *cmd);
 
-/* Integrated interface */
-t_command					*parse_input(const char *line, char **envp);
+/* Integrated interface - now takes shell_data */
+t_command					*parse_input(const char *line, t_shell_data *shell);
+
+/* Heredoc functions - now takes shell_data */
+int							process_heredoc(t_redirect *redirect, t_shell_data *shell);
+int							process_all_heredocs(t_command *cmd, t_shell_data *shell);
 
 /* Debug/utility functions */
 void						print_tokens(t_token *tokens);

@@ -4,14 +4,18 @@ sig_atomic_t	g_signal = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
-	char *input;
-	t_command *cmd;
-	t_token *tokens;
+	char			*input;
+	t_command		*cmd;
+	t_token			*tokens;
+	t_shell_data	*shell;
 
 	(void)argc;
 	(void)argv;
 
-	// signal handler for interactive mode
+	shell = init_shell_data(envp);
+	if (!shell)
+		return (1);
+
 	setup_signals(INTERACTIVE_MODE);
 
 	while (1)
@@ -34,11 +38,11 @@ int	main(int argc, char **argv, char **envp)
 			print_tokens(tokens);
 			free_tokens(tokens);
 		}
-		cmd = parse_input(input, envp);
+		cmd = parse_input(input, shell);
 		if (cmd)
 		{
 			setup_signals(EXECUTING_MODE);
-			// execute_command(cmd);
+			// execute_command(cmd, shell); // Pass shell to executor
 			print_command(cmd);
 			setup_signals(INTERACTIVE_MODE);
 			free_command(cmd);
@@ -47,9 +51,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 
 	rl_clear_history();
+	free_shell_data(shell);
 	return (0);
 }
-
-/*
-snprintf ve printf dikkat et düzenlenecek.
-*/
