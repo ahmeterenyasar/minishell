@@ -143,4 +143,8 @@ int							create_quoted_token(char quote_char,
 
 int							is_all_whitespace(const char *str);
 
+/*Helper functions to helper functions :)*/
+void						print_error(const char *msg);
+char						*int_to_string(int n);
+
 #endif

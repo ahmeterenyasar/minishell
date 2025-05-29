@@ -17,7 +17,7 @@ SRCS = main.c \
         src/parser/signals.c \
         src/parser/white_space.c \
         src/parser/exit_status.c \
-        src/executor/executor.c \
+        src/parser/printf_utils.c \
 		
 OBJS = $(SRCS:.c=.o)
 LIBFT_DIR = libft

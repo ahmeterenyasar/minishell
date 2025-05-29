@@ -1,35 +1,6 @@
 #include "minishell.h"
 
-// CURRENTLY NOT WORKING PROPERLY
-
-static char	*int_to_str(int n)
-{
-	char	*str;
-	int		len;
-	int		temp;
-	int		i;
-
-	temp = n;
-	len = (n == 0) ? 1 : 0;
-	while (temp > 0)
-	{
-		temp /= 10;
-		len++;
-	}
-	str = malloc(len + 1);
-	if (!str)
-		return (NULL);
-	str[len] = '\0';
-	i = len - 1;
-	if (n == 0)
-		str[0] = '0';
-	while (n > 0)
-	{
-		str[i--] = (n % 10) + '0';
-		n /= 10;
-	}
-	return (str);
-}
+/* CURRENTLY NOT WORKING PROPERLY */
 
 static char	*generate_heredoc_filename(void)
 {
@@ -41,10 +12,10 @@ static char	*generate_heredoc_filename(void)
 	int			pid;
 
 	pid = getpid();
-	pid_str = int_to_str(pid);
+	pid_str = int_to_string(pid);
 	if (!pid_str)
 		return (NULL);
-	counter_str = int_to_str(counter++);
+	counter_str = int_to_string(counter++);
 	if (!counter_str)
 	{
 		free(pid_str);

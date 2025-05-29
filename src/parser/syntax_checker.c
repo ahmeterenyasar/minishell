@@ -18,7 +18,7 @@ static int	check_start_syntax(t_token *tokens)
 		return (SUCCESS);
 	if (tokens->type == TOKEN_PIPE)
 	{
-		fprintf(stderr, "syntax error near unexpected token `|'\n");
+		print_error("syntax error near unexpected token `|'\n");
 		return (SYNTAX_ERROR);
 	}
 	return (SUCCESS);
@@ -41,24 +41,18 @@ static int	check_redirection_syntax(t_token *tokens)
 				if (current->next && is_redirection(current->next->type))
 				{
 					if (current->next->type == TOKEN_PIPE)
-						fprintf(stderr,
-							"syntax error near unexpected token `|'\n");
+						print_error("syntax error near unexpected token `|'\n");
 					else if (current->next->type == TOKEN_REDIR_IN)
-						fprintf(stderr,
-							"syntax error near unexpected token `<'\n");
+						print_error("syntax error near unexpected token `<'\n");
 					else if (current->next->type == TOKEN_REDIR_OUT)
-						fprintf(stderr,
-							"syntax error near unexpected token `>'\n");
+						print_error("syntax error near unexpected token `>'\n");
 					else if (current->next->type == TOKEN_APPEND)
-						fprintf(stderr,
-							"syntax error near unexpected token `>>'\n");
+						print_error("syntax error near unexpected token `>>'\n");
 					else if (current->next->type == TOKEN_HEREDOC)
-						fprintf(stderr,
-							"syntax error near unexpected token `<<'\n");
+						print_error("syntax error near unexpected token `<<'\n");
 				}
 				else
-					fprintf(stderr,
-						"syntax error near unexpected token `newline'\n");
+					print_error("syntax error near unexpected token `newline'\n");
 				return (SYNTAX_ERROR);
 			}
 		}
@@ -94,7 +88,7 @@ static int	check_pipe_syntax(t_token *tokens)
 			next = skip_empty_tokens(current->next);
 			if (!next || next->type == TOKEN_PIPE)
 			{
-				fprintf(stderr, "syntax error near unexpected token `|'\n");
+				print_error("syntax error near unexpected token `|'\n");
 				return (SYNTAX_ERROR);
 			}
 		}
@@ -116,8 +110,9 @@ static int	check_consecutive_redirections(t_token *tokens)
 		if (is_redirection(current->type)
 			&& is_redirection(current->next->type))
 		{
-			fprintf(stderr, "syntax error near unexpected token `%s'\n",
-				current->next->value);
+			print_error("syntax error near unexpected token `");
+			print_error(current->next->value);
+			print_error("'\n");
 			return (SYNTAX_ERROR);
 		}
 		current = current->next;

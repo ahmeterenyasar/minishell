@@ -2,20 +2,15 @@
 
 char	*get_exit_status_str(t_shell_data *shell)
 {
-	char	buffer[16];
 	int		status;
 
 	status = get_exit_status(shell);
-	snprintf(buffer, sizeof(buffer), "%d", status);
-	return (strdup(buffer));
+	return (int_to_string(status));
 }
 
 char	*get_shell_pid(void)
 {
-	char	buffer[16];
-
-	snprintf(buffer, sizeof(buffer), "%d", getpid());
-	return (strdup(buffer));
+	return (int_to_string(getpid()));
 }
 
 char	*get_env_value(const char *name, t_shell_data *shell)
@@ -47,14 +42,14 @@ static int	extract_env_name(const char *str, int i, char *name, int max_len)
 	int	j;
 
 	j = 0;
-	// Handle special variables
+	/* Handle special variables */
 	if (str[i] == '?' || str[i] == '$')
 	{
 		name[j++] = str[i++];
 		name[j] = '\0';
 		return (i);
 	}
-	// Handle regular variable names (alphanumeric + underscore)
+	/* Handle regular variable names (alphanumeric + underscore) */
 	while (str[i] && (isalnum(str[i]) || str[i] == '_') && j < max_len - 1)
 	{
 		name[j++] = str[i++];
