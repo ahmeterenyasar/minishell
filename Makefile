@@ -53,7 +53,7 @@ fclean:
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@echo "All files cleaned."
 
-re: fclean all
+re: fclean all clean
 	@echo "Recompiled successfully!"
 
 .PHONY: all clean fclean re
