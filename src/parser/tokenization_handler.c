@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+
+// FIXME unused attribute.
 int	handle_pipe(const char *input __attribute__((unused)), int i,
 		t_token **head)
 {

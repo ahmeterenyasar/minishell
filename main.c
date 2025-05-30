@@ -6,9 +6,8 @@ int	main(int argc, char **argv, char **envp)
 {
 	char			*input;
 	t_command		*cmd;
-	t_token			*tokens;
 	t_shell_data	*shell;
-
+	int last_exit_status;
 	(void)argc;
 	(void)argv;
 
@@ -28,29 +27,44 @@ int	main(int argc, char **argv, char **envp)
 			printf("exit\n");
 			break ;
 		}
-		if (*input)
-			add_history(input);
 
-		// print tokens
-		tokens = tokenize(input);
-		if (tokens)
+		if (!*input)
 		{
-			print_tokens(tokens);
-			free_tokens(tokens);
+			free(input);
+			continue;
 		}
-		cmd = parse_input(input, shell);
-		if (cmd)
-		{
-			setup_signals(EXECUTING_MODE);
-			// execute_command(cmd, shell); // Pass shell to executor
-			print_command(cmd);
-			setup_signals(INTERACTIVE_MODE);
-			free_command(cmd);
-		}
+
+		add_history(input);
+
+		char **lines = split_commands_by_newlines(input);
 		free(input);
+		if (!lines)
+			continue;
+
+		int i = 0;
+		while (lines[i])
+		{
+			if (*lines[i])
+			{
+				cmd = parse_input(lines[i], shell);
+				if (cmd)
+				{
+					setup_signals(EXECUTING_MODE);
+					execute_command(cmd, shell);
+					setup_signals(INTERACTIVE_MODE);
+					free_command(cmd);
+				}
+				else if (g_signal == SIGINT)
+					set_exit_status(shell, 130);
+			}
+			i++;
+		}
+		free_str_array(lines);
 	}
 
+	clear_history();
 	rl_clear_history();
+	last_exit_status = get_exit_status(shell);
 	free_shell_data(shell);
-	return (0);
+	return (last_exit_status);
 }

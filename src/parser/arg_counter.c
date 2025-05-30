@@ -6,8 +6,17 @@ int	is_valid_word_token(t_token *current)
 		return (0);
 	if (!current->value)
 		return (0);
-	if (!*current->value)
-		return (0);
+	
+	// For empty strings, we need to check if they were originally quoted
+	// Since we don't have a specific flag for this, we'll treat all empty 
+	// TOKEN_WORD tokens as valid (they can only come from quotes)
+	if (!*current->value)  // Empty string
+	{
+		// Empty TOKEN_WORD tokens should be valid (they come from quotes like "" or '')
+		return (1);
+	}
+	
+	// Skip tokens that are only whitespace (but not empty)
 	if (is_all_whitespace(current->value))
 		return (0);
 	return (1);

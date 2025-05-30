@@ -1,17 +1,11 @@
 #include "minishell.h"
 
-/**
- * Check if token is a redirection
- */
 int	is_redirection(t_token_type type)
 {
 	return (type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT
 		|| type == TOKEN_APPEND || type == TOKEN_HEREDOC);
 }
 
-/**
- * Check if syntax is valid at the start of input
- */
 int	check_start_syntax(t_token *tokens)
 {
 	if (!tokens)
@@ -24,9 +18,6 @@ int	check_start_syntax(t_token *tokens)
 	return (SUCCESS);
 }
 
-/**
- * Check if redirection has a valid file name
- */
 int	check_redirection_syntax(t_token *tokens)
 {
 	t_token	*current;
@@ -61,9 +52,6 @@ int	check_redirection_syntax(t_token *tokens)
 	return (SUCCESS);
 }
 
-/**
- * Skip empty or whitespace-only tokens
- */
 t_token	*skip_empty_tokens(t_token *token)
 {
 	while (token && token->type == TOKEN_WORD && token->value
@@ -72,9 +60,6 @@ t_token	*skip_empty_tokens(t_token *token)
 	return (token);
 }
 
-/**
- * Check for misplaced pipes
- */
 int	check_pipe_syntax(t_token *tokens)
 {
 	t_token	*current;

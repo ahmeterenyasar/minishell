@@ -20,7 +20,7 @@ char	*get_env_value(const char *name, t_shell_data *shell)
     char	**envp;
 
     if (!name || !shell || !shell->envp)
-        return (NULL);
+        return (ft_strdup(""));  // Return empty string, not NULL
     if (strcmp(name, "?") == 0)
         return (get_exit_status_str(shell));
     if (strcmp(name, "$") == 0)
@@ -34,7 +34,8 @@ char	*get_env_value(const char *name, t_shell_data *shell)
             return (strdup(envp[i] + len + 1));
         i++;
     }
-    return (strdup(""));
+    // Variable not found - return empty string (bash behavior)
+    return (ft_strdup(""));
 }
 
 int	extract_env_name(const char *str, int i, char *name, int max_len)
@@ -48,7 +49,7 @@ int	extract_env_name(const char *str, int i, char *name, int max_len)
         name[j] = '\0';
         return (i);
     }
-    while (str[i] && (isalnum(str[i]) || str[i] == '_') && j < max_len - 1)
+    while (str[i] && (ft_isalnum(str[i]) || str[i] == '_') && j < max_len - 1)
     {
         name[j++] = str[i++];
     }

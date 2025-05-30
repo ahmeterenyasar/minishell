@@ -16,21 +16,21 @@ const char	*get_token_type_name(t_token_type type)
 /**
  * Print the list of tokens for debugging
  */
-void	print_tokens(t_token *tokens)
-{
-	t_token	*current;
+// void	print_tokens(t_token *tokens)
+// {
+// 	t_token	*current;
 
-	printf("Tokens:\n");
-	current = tokens;
-	while (current)
-	{
-		printf("  Type: %-10s Value: '%s' Expandable: %d\n",
-			get_token_type_name(current->type), current->value,
-			current->expandable);
-		current = current->next;
-	}
-	printf("\n");
-}
+// 	printf("Tokens:\n");
+// 	current = tokens;
+// 	while (current)
+// 	{
+// 		printf("  Type: %-10s Value: '%s' Expandable: %d\n",
+// 			get_token_type_name(current->type), current->value,
+// 			current->expandable);
+// 		current = current->next;
+// 	}
+// 	printf("\n");
+// }
 
 /**
  * Print command arguments
