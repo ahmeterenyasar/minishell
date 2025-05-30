@@ -50,7 +50,7 @@ void	add_redirection(t_command *cmd, t_redirect *redir)
 	}
 }
 
-int	is_redirection(t_token *token)
+int	redir_is_redirection(t_token *token)
 {
 	return (token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT
 		|| token->type == TOKEN_APPEND || token->type == TOKEN_HEREDOC);

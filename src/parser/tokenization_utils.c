@@ -1,130 +1,87 @@
 #include "minishell.h"
 
-/**
- * Extracts a word token length considering special chars
- */
-int	extract_word_len(const char *input, int i)
+t_token	*create_token(t_token_type type, char *value, int expandable)
 {
-	int	len;
+	t_token	*token;
 
-	len = 0;
-	while (input[i + len] && !is_token_delimiter(input[i + len])
-		&& !is_quote_char(input[i + len]))
+	token = malloc(sizeof(t_token));
+	if (!token)
 	{
-		if (input[i + len] == '\\' && input[i + len + 1])
-			len += 2;
-		else
-			len++;
+		if (value)
+			free(value);
+		return (NULL);
 	}
-	return (len);
+	token->type = type;
+	token->value = value;
+	token->expandable = expandable;
+	token->next = NULL;
+	return (token);
 }
 
-/**
- * Copies characters from input to word, handling escape sequences
- */
-static void	copy_word_chars(const char *input, int i, char *word, int len)
+void	add_token(t_token **head, t_token *new_token)
 {
-	int		j;
-	int		k;
+	t_token	*current;
 
-	j = i;
-	k = 0;
-	while (j < i + len)
+	if (!*head)
 	{
-		if (input[j] == '\\' && j + 1 < i + len)
-			word[k++] = input[++j];
-		else
-			word[k++] = input[j];
-		j++;
+		*head = new_token;
+		return;
 	}
-	word[k] = '\0';
+	current = *head;
+	while (current->next)
+		current = current->next;
+	current->next = new_token;
 }
 
-/**
- * Creates and adds a word token with proper escaping
- */
-int	add_word_token(const char *input, int i, t_token **head)
+char	*handle_newlines(const char *input)
 {
+	char	*result;
 	int		len;
-	char	*word;
-	t_token	*new_token;
+	int		i;
+	int		j;
 
-	len = extract_word_len(input, i);
-	word = malloc(len + 1);
-	if (!word)
-		return (i + len);
-	copy_word_chars(input, i, word, len);
-	new_token = create_token(TOKEN_WORD, word, 1);
-	if (new_token)
-		add_token(head, new_token);
-	else
-		free(word);
-	return (i + len);
-}
-
-/**
- * Find closing quote character, handling escaped quotes
- * Returns -1 if the closing quote is not found
- */
-int	find_closing_quote(const char *input, int i, char quote_char)
-{
-	i++;
+	if (!input)
+		return (NULL);
+	len = ft_strlen(input);
+	result = malloc(len + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	j = 0;
 	while (input[i])
 	{
-		if (quote_char == '"' && input[i] == '\\' && input[i + 1] == '"')
+		if (input[i] == '\\' && input[i + 1] == 'n')
 		{
+			result[j++] = '\n';
 			i += 2;
-			continue ;
 		}
-		if (input[i] == quote_char)
-			return (i);
-		i++;
+		else
+			result[j++] = input[i++];
 	}
-	return (-1);
+	result[j] = '\0';
+	return (result);
 }
 
-/**
- * Copies quoted text, handling escape sequences
- */
-void	copy_quoted_text(const char *input, int start, int end,
-		char *quoted_text, char quote_char)
+int	process_token(const char *input, int i, t_token **head)
 {
-	int		j;
-	int		k;
+	int	result;
 
-	j = start;
-	k = 0;
-	while (j < end)
+	if (input[i] == '\'' || input[i] == '"')
 	{
-		if (quote_char == '"' && input[j] == '\\' && j + 1 < end)
+		result = handle_quotes(input, i, head);
+		if (result == -1)
 		{
-			if (input[j + 1] == '"' || input[j + 1] == '\\' || input[j
-				+ 1] == '$')
-			{
-				j++;
-				quoted_text[k++] = input[j++];
-				continue ;
-			}
+			free_tokens(*head);
+			return (-1);
 		}
-		quoted_text[k++] = input[j++];
+		return (result);
 	}
-	quoted_text[k] = '\0';
-}
-
-/**
- * Creates a token from quoted text
- */
-int	create_quoted_token(char quote_char, char *quoted_text,
-		t_token **head, int end)
-{
-	t_token	*new_token;
-	int		expandable;
-
-	expandable = (quote_char == '"') ? 1 : 0;
-	new_token = create_token(TOKEN_WORD, quoted_text, expandable);
-	if (new_token)
-		add_token(head, new_token);
+	else if (input[i] == '|')
+		return (handle_pipe(input, i, head));
+	else if (input[i] == '<')
+		return (handle_redir_in(input, i, head));
+	else if (input[i] == '>')
+		return (handle_redir_out(input, i, head));
 	else
-		free(quoted_text);
-	return (end + 1);
+		return (add_word_token(input, i, head));
 }

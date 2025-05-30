@@ -3,7 +3,7 @@
 /**
  * Check if token is a redirection
  */
-static int	is_redirection(t_token_type type)
+int	is_redirection(t_token_type type)
 {
 	return (type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT
 		|| type == TOKEN_APPEND || type == TOKEN_HEREDOC);
@@ -12,7 +12,7 @@ static int	is_redirection(t_token_type type)
 /**
  * Check if syntax is valid at the start of input
  */
-static int	check_start_syntax(t_token *tokens)
+int	check_start_syntax(t_token *tokens)
 {
 	if (!tokens)
 		return (SUCCESS);
@@ -27,7 +27,7 @@ static int	check_start_syntax(t_token *tokens)
 /**
  * Check if redirection has a valid file name
  */
-static int	check_redirection_syntax(t_token *tokens)
+int	check_redirection_syntax(t_token *tokens)
 {
 	t_token	*current;
 
@@ -64,7 +64,7 @@ static int	check_redirection_syntax(t_token *tokens)
 /**
  * Skip empty or whitespace-only tokens
  */
-static t_token	*skip_empty_tokens(t_token *token)
+t_token	*skip_empty_tokens(t_token *token)
 {
 	while (token && token->type == TOKEN_WORD && token->value
 		&& is_all_whitespace(token->value))
@@ -75,7 +75,7 @@ static t_token	*skip_empty_tokens(t_token *token)
 /**
  * Check for misplaced pipes
  */
-static int	check_pipe_syntax(t_token *tokens)
+int	check_pipe_syntax(t_token *tokens)
 {
 	t_token	*current;
 	t_token	*next;

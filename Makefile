@@ -2,7 +2,6 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -Iinclude
 SRCS = main.c \
-        src/parser/parser.c \
         src/parser/string_utils.c \
         src/parser/parser_interface.c \
         src/parser/syntax_checker.c \
@@ -12,13 +11,22 @@ SRCS = main.c \
         src/parser/tokenizer.c \
         src/parser/tokenization_utils.c \
         src/parser/tokenization_handler.c \
+        src/parser/token_quote_utils.c \
+        src/parser/token_word_utils.c \
         src/parser/expansions.c \
+        src/parser/expansion_of_tokens.c \
         src/parser/heredoc.c \
         src/parser/signals.c \
         src/parser/white_space.c \
         src/parser/exit_status.c \
         src/parser/printf_utils.c \
-		
+        src/parser/arg_counter.c \
+        src/parser/arg_filler.c \
+        src/parser/command_parser.c \
+        src/parser/redirection_parser.c \
+        src/parser/redirection_utils.c \
+        # src/parser/parser.c \
+
 OBJS = $(SRCS:.c=.o)
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a

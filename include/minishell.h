@@ -83,8 +83,6 @@ void						free_shell_data(t_shell_data *shell);
 
 /* Tokenizer functions */
 t_token						*tokenize(const char *input);
-t_token						*create_token(t_token_type type, char *value,
-								int expandable);
 void						add_token(t_token **head, t_token *new_token);
 int							handle_pipe(const char *input __attribute__((unused)),
 								int i, t_token **head);
@@ -104,8 +102,54 @@ int							handle_quotes(const char *input, int i,
 								t_token **head);
 void						free_tokens(t_token *tokens);
 
+/* Tokenizer functions */
+t_token						*tokenize(const char *input);
+
+/* Token utility functions (from token_utils.c) */
+t_token						*create_token(t_token_type type, char *value,
+								int expandable);
+void						add_token(t_token **head, t_token *new_token);
+char						*handle_newlines(const char *input);
+int process_token(const char *input, int i, t_token **head);
+
+
+/* Token handler functions (from token_handlers.c) */
+int							handle_pipe(const char *input __attribute__((unused)),
+								int i, t_token **head);
+int							handle_redir_in(const char *input, int i,
+								t_token **head);
+int							handle_redir_out(const char *input, int i,
+								t_token **head);
+int							handle_quotes(const char *input, int i,
+								t_token **head);
+
+/* Word token utility functions (from word_token_utils.c) */
+int							extract_word_len(const char *input, int i);
+void						copy_word_chars(const char *input, int i, char *word, int len);
+int							add_word_token(const char *input, int i,
+								t_token **head);
+int							find_closing_quote(const char *input, int i,
+								char quote_char);
+
+/* Quote token utility functions (from quote_token_utils.c) */
+void						copy_quoted_text(const char *input, int start,
+								int end, char *quoted_text, char quote_char);
+int							should_escape_char(char c);
+int							create_quoted_token(char quote_char,
+								char *quoted_text, t_token **head, int end);
+
+/* Token validation functions */
+int							is_token_delimiter(char c);
+int							is_operator_char(char c);
+int							is_quote_char(char c);
+void						free_tokens(t_token *tokens);
+
 /* Syntax checker */
 int							check_syntax(t_token *tokens);
+
+/* Expansion functions */
+int	extract_env_name(const char *str, int i, char *name, int max_len);
+void	copy_env_value(char *result, int *j, char *value);
 
 /* Environment variable functions - now takes shell_data */
 char						*expand_env_vars(const char *str, t_shell_data *shell);
@@ -120,6 +164,7 @@ int							count_args(t_token *tokens);
 t_command					*parse_command(t_token **token_ptr);
 void						free_redirect(t_redirect *redirect);
 void						free_command(t_command *cmd);
+t_token *process_parser_token(t_token *token, t_command *cmd, int *arg_index); // parser için
 
 /* Integrated interface - now takes shell_data */
 t_command					*parse_input(const char *line, t_shell_data *shell);
@@ -142,6 +187,16 @@ int							create_quoted_token(char quote_char,
 								char *quoted_text, t_token **head, int end);
 
 int							is_all_whitespace(const char *str);
+
+/*Parses divided into utils*/
+int	redir_is_redirection(t_token *token);
+t_token	*handle_redirection_arg(t_token *token, t_command *cmd);
+char	**allocate_args(int count);
+void	fill_args(t_command *cmd, t_token **tokens, int arg_count);
+int	is_valid_redir_token(t_token *token);
+void	add_redirection(t_command *cmd, t_redirect *redir);
+int	set_redirection_file(t_redirect *redir, t_token *token);
+t_redirect	*create_redirection(t_token *token);
 
 /*Helper functions to helper functions :)*/
 void						print_error(const char *msg);

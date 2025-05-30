@@ -1,74 +1,62 @@
 #include "minishell.h"
 
-/**
- * Handles pipe token
- */
 int	handle_pipe(const char *input __attribute__((unused)), int i,
 		t_token **head)
 {
 	t_token	*new_token;
 
-	new_token = create_token(TOKEN_PIPE, strdup("|"), 0);
+	new_token = create_token(TOKEN_PIPE, ft_strdup("|"), 0);
 	if (new_token)
 		add_token(head, new_token);
 	return (i + 1);
 }
 
-/**
- * Handles input redirection
- */
 int	handle_redir_in(const char *input, int i, t_token **head)
 {
 	t_token	*new_token;
 
 	if (input[i + 1] == '<')
 	{
-		new_token = create_token(TOKEN_HEREDOC, strdup("<<"), 0);
+		new_token = create_token(TOKEN_HEREDOC, ft_strdup("<<"), 0);
 		if (new_token)
 			add_token(head, new_token);
 		return (i + 2);
 	}
 	else
 	{
-		new_token = create_token(TOKEN_REDIR_IN, strdup("<"), 0);
+		new_token = create_token(TOKEN_REDIR_IN, ft_strdup("<"), 0);
 		if (new_token)
 			add_token(head, new_token);
 		return (i + 1);
 	}
 }
 
-/**
- * Handles output redirection
- */
 int	handle_redir_out(const char *input, int i, t_token **head)
 {
 	t_token	*new_token;
 
 	if (input[i + 1] == '>')
 	{
-		new_token = create_token(TOKEN_APPEND, strdup(">>"), 0);
+		new_token = create_token(TOKEN_APPEND, ft_strdup(">>"), 0);
 		if (new_token)
 			add_token(head, new_token);
 		return (i + 2);
 	}
 	else
 	{
-		new_token = create_token(TOKEN_REDIR_OUT, strdup(">"), 0);
+		new_token = create_token(TOKEN_REDIR_OUT, ft_strdup(">"), 0);
 		if (new_token)
 			add_token(head, new_token);
 		return (i + 1);
 	}
 }
 
-/**
- * Handle quoted text with better escape sequence handling
- */
 int	handle_quotes(const char *input, int i, t_token **head)
 {
-	char quote_char;
-	int start;
-	int end;
-	char *quoted_text;
+	char	quote_char;
+	int		start;
+	int		end;
+	char	*quoted_text;
 
 	quote_char = input[i++];
 	start = i;
