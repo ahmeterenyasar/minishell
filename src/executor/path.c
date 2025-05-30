@@ -44,7 +44,7 @@ char	*find_command_path(char *cmd, char **envp)
 				// Check if file exists AND is executable
 				if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
 				{
-					free_string_array(paths);
+					free_str_array(paths);
 					return (full_path);
 				}
 				free(full_path);
@@ -53,11 +53,11 @@ char	*find_command_path(char *cmd, char **envp)
 		i++;
 	}
 	
-	free_string_array(paths);
+	free_str_array(paths);
 	return (NULL);
 }
 
-void	free_string_array(char **arr)
+void	free_str_array(char **arr)
 {
 	int	i;
 

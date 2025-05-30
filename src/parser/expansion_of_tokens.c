@@ -4,8 +4,12 @@ void	copy_env_value(char *result, int *j, char *value)
 {
     int	k;
 
-    if (!value)
-        return;  // Safe guard - don't copy anything if value is NULL
+    if (!value || !*value)  // Check for NULL or empty string
+    {
+        if (value)
+            free(value);
+        return;  // Don't copy anything for empty/NULL values
+    }
     k = 0;
     while (value[k] && *j < 4095)
     {
@@ -23,21 +27,24 @@ static char	*expand_env_vars_in_redirects(const char *str, t_shell_data *shell)
     char	*value;
 
     if (!str)
-        return (ft_strdup(""));  // Return empty string instead of NULL
+        return (ft_strdup(""));
     result = malloc(4096);
     if (!result)
-        return (ft_strdup(""));  // Fallback to empty string
+        return (ft_strdup(""));
     i = 0;
     j = 0;
     while (str[i] && j < 4095)
     {
-        if (str[i] == '$' && str[i + 1] && (isalnum(str[i + 1]) 
+        if (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1]) 
             || str[i + 1] == '_' || str[i + 1] == '?' || str[i + 1] == '$'))
         {
             i++;
             i = extract_env_name(str, i, var_name, sizeof(var_name));
             value = get_env_value(var_name, shell);
-            copy_env_value(result, &j, value);
+            if (value && *value)  // Only copy if value exists and is not empty
+                copy_env_value(result, &j, value);
+            else if (value)
+                free(value);  // Free empty value
         }
         else
             result[j++] = str[i++];
@@ -55,21 +62,24 @@ char	*expand_env_vars(const char *str, t_shell_data *shell)
     char	*value;
 
     if (!str)
-        return (ft_strdup(""));  // Return empty string instead of NULL
+        return (ft_strdup(""));
     result = malloc(4096);
     if (!result)
-        return (ft_strdup(""));  // Fallback to empty string
+        return (ft_strdup(""));
     i = 0;
     j = 0;
     while (str[i] && j < 4095)
     {
-        if (str[i] == '$' && str[i + 1] && (isalnum(str[i + 1]) 
+        if (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1]) 
             || str[i + 1] == '_' || str[i + 1] == '?' || str[i + 1] == '$'))
         {
             i++;
             i = extract_env_name(str, i, var_name, sizeof(var_name));
             value = get_env_value(var_name, shell);
-            copy_env_value(result, &j, value);
+            if (value && *value)  // Only copy if value exists and is not empty
+                copy_env_value(result, &j, value);
+            else if (value)
+                free(value);  // Free empty value
         }
         else
             result[j++] = str[i++];

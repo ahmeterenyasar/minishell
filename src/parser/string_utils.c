@@ -5,6 +5,32 @@
  */
 
 
+// Add these to your libft or create them in builtin_export_utils.c
+char	*ft_strcpy(char *dest, const char *src)
+{
+    int i = 0;
+    while (src[i])
+    {
+        dest[i] = src[i];
+        i++;
+    }
+    dest[i] = '\0';
+    return (dest);
+}
+
+char	*ft_strcat(char *dest, const char *src)
+{
+    int dest_len = ft_strlen(dest);
+    int i = 0;
+    while (src[i])
+    {
+        dest[dest_len + i] = src[i];
+        i++;
+    }
+    dest[dest_len + i] = '\0';
+    return (dest);
+}
+
 char	*ft_strdup(const char *s)
 {
 	char	*new;

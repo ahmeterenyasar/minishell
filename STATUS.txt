@@ -1,0 +1,9 @@
+ALERT:
+redirections ve heredoc
+
+SEEMS SOLVED, ADVANCED TESTS REQUIRED:
+errors in unset, export etc. builtins
+
+DONE:
+non existing env variable leads error
+duplicate functions exist

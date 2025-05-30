@@ -39,7 +39,10 @@ SRCS = main.c \
         src/executor/executor.c \
         src/executor/path.c \
         src/executor/pipe_lines.c \
+        src/executor/pipe_line_utils.c \
+        src/executor/pipe_line_execution.c \
         src/executor/redirection_handling.c \
+        src/executor/redirection_handling_utils.c \
         src/executor/heredoc_parser.c \
         src/executor/heredoc_executor.c \
         src/executor/heredoc_executor_helpers.c \

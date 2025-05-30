@@ -31,11 +31,11 @@ char	*get_env_value(const char *name, t_shell_data *shell)
     while (envp[i])
     {
         if (strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
-            return (strdup(envp[i] + len + 1));
+            return (ft_strdup(envp[i] + len + 1));  // Use ft_strdup instead of strdup
         i++;
     }
     // Variable not found - return empty string (bash behavior)
-    return (ft_strdup(""));
+    return (ft_strdup(""));  // Use ft_strdup instead of strdup
 }
 
 int	extract_env_name(const char *str, int i, char *name, int max_len)

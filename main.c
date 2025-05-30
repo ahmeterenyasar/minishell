@@ -62,9 +62,9 @@ int	main(int argc, char **argv, char **envp)
 		free_str_array(lines);
 	}
 
-	clear_history();
-	rl_clear_history();
-	last_exit_status = get_exit_status(shell);
-	free_shell_data(shell);
-	return (last_exit_status);
+    clear_history();
+    rl_clear_history();
+    last_exit_status = get_exit_status(shell);
+    free_shell_data(shell);  // This will now properly free the heap-allocated envp
+    return (last_exit_status);
 }

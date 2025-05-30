@@ -173,6 +173,8 @@ void						print_tokens(t_token *tokens);
 void						print_command(t_command *cmd);
 
 /* String utility functions - prefer ft_ versions for consistency */
+char	*ft_strcpy(char *dest, const char *src);
+char	*ft_strcat(char *dest, const char *src);
 int							ft_strcmp(const char *s1, const char *s2);
 int							ft_strncmp(const char *s1, const char *s2, size_t n);
 char						*ft_strdup(const char *s);
@@ -235,12 +237,13 @@ char	**copy_envp(char **envp);
 
 /* Path resolution functions */
 char						*find_command_path(char *cmd, char **envp);
-void						free_string_array(char **arr);
 
 /* Redirection handling functions */
 int							setup_input_redirection(t_redirect *redirect);
 int							setup_output_redirection(t_redirect *redirect);
 int							setup_redirections(t_redirect *redirects);
+int							check_file_permissions(const char *filename, int flags);
+void						print_file_error(const char *filename, const char *operation);
 
 /* Process execution functions */
 void						execute_child_process(t_command *cmd, t_shell_data *shell);
