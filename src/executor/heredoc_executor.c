@@ -25,14 +25,11 @@ static int	setup_heredoc_reading(int *original_stdin)
 
 static void	heredoc_signal_handler(int sig)
 {
-	if (sig == SIGINT)
-	{
-		g_signal = SIGINT;
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
+    if (sig == SIGINT)
+    {
+        g_signal = SIGINT;
+        write(STDOUT_FILENO, "\n", 1);
+    }
 }
 
 static int	write_heredoc_line(int fd, char *line, int expand, t_shell_data *shell)
