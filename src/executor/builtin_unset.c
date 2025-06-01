@@ -33,8 +33,7 @@ static int	count_env_vars(char **envp)
 }
 
 /* Remove a variable from the environment array */
-/* FIXME NEEDS UPDATE free_envp causes munmap_chunk():
- invalid pointer IOT instruction core dump*/
+/* FIXED HERE: Double free fix */
 int	remove_env_var(t_shell_data *shell, const char *name)
 {
 	int		index;
@@ -68,15 +67,11 @@ int	remove_env_var(t_shell_data *shell, const char *name)
 			}
 			j++;
 		}
-		else
-		{
-			free(shell->envp[i]); // remove this one
-		}
 		i++;
 	}
 	new_envp[j] = NULL;
 
-	free_envp(shell->envp); // free old full envp
+	free_envp(shell->envp);
 	shell->envp = new_envp;
 
 	return (0);
