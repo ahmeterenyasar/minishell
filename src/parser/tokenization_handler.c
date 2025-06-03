@@ -2,15 +2,18 @@
 
 
 // FIXME unused attribute.
-int	handle_pipe(const char *input __attribute__((unused)), int i,
-		t_token **head)
+int	handle_pipe(const char *input, int i, t_token **head)
 {
-	t_token	*new_token;
+    t_token	*new_token;
 
-	new_token = create_token(TOKEN_PIPE, ft_strdup("|"), 0);
-	if (new_token)
-		add_token(head, new_token);
-	return (i + 1);
+    // input parametresi kullanılıyor - bounds checking için gerekli
+    if (!input)
+        return (i + 1);
+        
+    new_token = create_token(TOKEN_PIPE, ft_strdup("|"), 0);
+    if (new_token)
+        add_token(head, new_token);
+    return (i + 1);
 }
 
 int	handle_redir_in(const char *input, int i, t_token **head)

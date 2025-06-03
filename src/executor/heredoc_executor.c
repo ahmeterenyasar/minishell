@@ -54,48 +54,72 @@ static int	write_heredoc_line(int fd, char *line, int expand, t_shell_data *shel
 }
 
 static int	read_heredoc_content(int fd, const char *delimiter, 
-		int expand, t_shell_data *shell)
+        int expand, t_shell_data *shell)
 {
-	char	*line;
-	char	*clean_delimiter;
-	int		original_stdin;
+    char	*line;
+    char	*clean_delimiter;
+    int		original_stdin;
 
-	if (setup_heredoc_reading(&original_stdin))
-		return (1);
-	clean_delimiter = remove_quotes_from_delimiter((char *)delimiter);
-	if (!clean_delimiter)
-	{
-		dup2(original_stdin, STDIN_FILENO);
-		close(original_stdin);
-		return (1);
-	}
-	signal(SIGINT, heredoc_signal_handler);
-	signal(SIGQUIT, SIG_IGN);
-	while (1)
-	{
-		if (g_signal == SIGINT)
-		{
-			free(clean_delimiter);
-			dup2(original_stdin, STDIN_FILENO);
-			close(original_stdin);
-			setup_signals(INTERACTIVE_MODE);
-			return (1);
-		}
-		line = readline("heredoc> ");
-		if (!line || ft_strcmp(line, clean_delimiter) == 0)
-		{
-			if (line)
-				free(line);
-			break;
-		}
-		write_heredoc_line(fd, line, expand, shell);
-		free(line);
-	}
-	free(clean_delimiter);
-	dup2(original_stdin, STDIN_FILENO);
-	close(original_stdin);
-	setup_signals(INTERACTIVE_MODE);
-	return (0);
+    if (setup_heredoc_reading(&original_stdin))
+        return (1);
+    clean_delimiter = remove_quotes_from_delimiter((char *)delimiter);
+    if (!clean_delimiter)
+    {
+        dup2(original_stdin, STDIN_FILENO);
+        close(original_stdin);
+        return (1);
+    }
+    
+    signal(SIGINT, heredoc_signal_handler);
+    signal(SIGQUIT, SIG_IGN);
+    
+    while (1)
+    {
+        // SIGNAL CHECK EKSİK!
+        if (g_signal == SIGINT)
+        {
+            free(clean_delimiter);
+            dup2(original_stdin, STDIN_FILENO);
+            close(original_stdin);
+            setup_signals(INTERACTIVE_MODE);
+            return (1);
+        }
+        
+        line = readline("heredoc> ");
+        
+        // CRITICAL: NULL check missing!
+        if (!line) // EOF (Ctrl+D)
+        {
+            write(STDERR_FILENO, "\nminishell: warning: heredoc delimited by EOF\n", 45);
+            break;
+        }
+        
+        if (ft_strcmp(line, clean_delimiter) == 0)
+        {
+            free(line);
+            break;
+        }
+        
+        // SIGNAL CHECK AFTER READLINE
+        if (g_signal == SIGINT)
+        {
+            free(line);
+            free(clean_delimiter);
+            dup2(original_stdin, STDIN_FILENO);
+            close(original_stdin);
+            setup_signals(INTERACTIVE_MODE);
+            return (1);
+        }
+        
+        write_heredoc_line(fd, line, expand, shell);
+        free(line);
+    }
+    
+    free(clean_delimiter);
+    dup2(original_stdin, STDIN_FILENO);
+    close(original_stdin);
+    setup_signals(INTERACTIVE_MODE);
+    return (0);
 }
 
 int	process_heredoc(t_redirect *redirect, t_shell_data *shell)

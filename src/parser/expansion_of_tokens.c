@@ -7,15 +7,15 @@ void	copy_env_value(char *result, int *j, char *value)
     if (!value || !*value)  // Check for NULL or empty string
     {
         if (value)
-            free(value);
-        return;  // Don't copy anything for empty/NULL values
+            free(value); // ✅ Free even if empty
+        return;
     }
     k = 0;
     while (value[k] && *j < 4095)
     {
         result[(*j)++] = value[k++];
     }
-    free(value);
+    free(value); // ✅ Always free the value
 }
 
 static char	*expand_env_vars_in_redirects(const char *str, t_shell_data *shell)
@@ -41,10 +41,8 @@ static char	*expand_env_vars_in_redirects(const char *str, t_shell_data *shell)
             i++;
             i = extract_env_name(str, i, var_name, sizeof(var_name));
             value = get_env_value(var_name, shell);
-            if (value && *value)  // Only copy if value exists and is not empty
-                copy_env_value(result, &j, value);
-            else if (value)
-                free(value);  // Free empty value
+            // ✅ copy_env_value now handles freeing
+            copy_env_value(result, &j, value);
         }
         else
             result[j++] = str[i++];
@@ -76,10 +74,8 @@ char	*expand_env_vars(const char *str, t_shell_data *shell)
             i++;
             i = extract_env_name(str, i, var_name, sizeof(var_name));
             value = get_env_value(var_name, shell);
-            if (value && *value)  // Only copy if value exists and is not empty
-                copy_env_value(result, &j, value);
-            else if (value)
-                free(value);  // Free empty value
+            // ✅ copy_env_value now handles freeing
+            copy_env_value(result, &j, value);
         }
         else
             result[j++] = str[i++];
@@ -96,14 +92,12 @@ static void	expand_redirect_files(t_redirect *redirects, t_shell_data *shell)
     current = redirects;
     while (current)
     {
-        // YANLIS GIBI
-        // Heredoc delimiter'ları expand etmiyoruz - sadece diğer redirection'ları
         if (current->file && current->type != TOKEN_HEREDOC)
         {
             expanded = expand_env_vars_in_redirects(current->file, shell);
             if (expanded)
             {
-                free(current->file);
+                free(current->file); // ✅ Free old file name
                 current->file = expanded;
             }
         }
@@ -124,10 +118,8 @@ void	expand_tokens(t_token *tokens, t_shell_data *shell)
             expanded = expand_env_vars(current->value, shell);
             if (expanded)
             {
-                free(current->value);
+                free(current->value); // ✅ Free old value
                 current->value = expanded;
-                // Mark token for potential removal if it became empty
-                // and wasn't originally quoted
             }
         }
         current = current->next;

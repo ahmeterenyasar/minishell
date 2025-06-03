@@ -7,7 +7,7 @@ int	main(int argc, char **argv, char **envp)
 	char			*input;
 	t_command		*cmd;
 	t_shell_data	*shell;
-	int last_exit_status;
+	int				last_exit_status;
 	(void)argc;
 	(void)argv;
 
@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(input);
 
 		char **lines = split_commands_by_newlines(input);
-		free(input);
+		free(input); // ✅ Input freed early
 		if (!lines)
 			continue;
 
@@ -52,19 +52,21 @@ int	main(int argc, char **argv, char **envp)
 					setup_signals(EXECUTING_MODE);
 					execute_command(cmd, shell);
 					setup_signals(INTERACTIVE_MODE);
-					free_command(cmd);
+					free_command(cmd); // ✅ Command freed
+					cmd = NULL; // ✅ Pointer nulled
 				}
 				else if (g_signal == SIGINT)
 					set_exit_status(shell, 130);
 			}
 			i++;
 		}
-		free_str_array(lines);
+		free_str_array(lines); // ✅ Lines freed
+		lines = NULL; // ✅ Pointer nulled
 	}
 
-    clear_history();
-    rl_clear_history();
-    last_exit_status = get_exit_status(shell);
-    free_shell_data(shell);  // This will now properly free the heap-allocated envp
-    return (last_exit_status);
+	clear_history();
+	rl_clear_history();
+	last_exit_status = get_exit_status(shell);
+	free_shell_data(shell);
+	return (last_exit_status);
 }

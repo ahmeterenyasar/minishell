@@ -110,11 +110,6 @@ int	should_use_concatenation(const char *input, int i)
 	return (transitions > 0);
 }
 
-
-
-// Keep your existing process_token function - don't change it!
-// The version you have already handles concatenated words correctly
-
 int	process_token(const char *input, int i, t_token **head)
 {
 	// First check if we need concatenation by looking ahead
