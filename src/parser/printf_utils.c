@@ -17,7 +17,7 @@ char	*int_to_string(int n)
 	if (n < 0)
 	{
 		is_negative = 1;
-		if (n == -2147483648) /* Handle INT_MIN special case */
+		if (n == -2147483648)
 			return (ft_strdup("-2147483648"));
 		n = -n;
 	}

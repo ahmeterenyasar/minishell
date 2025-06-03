@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(input);
 
 		char **lines = split_commands_by_newlines(input);
-		free(input); // ✅ Input freed early
+		free(input);
 		if (!lines)
 			continue;
 
@@ -52,16 +52,16 @@ int	main(int argc, char **argv, char **envp)
 					setup_signals(EXECUTING_MODE);
 					execute_command(cmd, shell);
 					setup_signals(INTERACTIVE_MODE);
-					free_command(cmd); // ✅ Command freed
-					cmd = NULL; // ✅ Pointer nulled
+					free_command(cmd);
+					cmd = NULL;
 				}
 				else if (g_signal == SIGINT)
 					set_exit_status(shell, 130);
 			}
 			i++;
 		}
-		free_str_array(lines); // ✅ Lines freed
-		lines = NULL; // ✅ Pointer nulled
+		free_str_array(lines);
+		lines = NULL;
 	}
 
 	clear_history();

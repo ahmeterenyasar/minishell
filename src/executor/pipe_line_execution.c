@@ -16,7 +16,7 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 	if (!cmd->args || !cmd->args[0])
 		exit(0);
 
-	// NEW: Check for empty command name
+	// Check for empty command name
 	if (cmd->args[0] && *cmd->args[0] == '\0')
 	{
 		write(STDERR_FILENO, "minishell: : command not found\n", 32);

@@ -75,7 +75,6 @@ static int	read_heredoc_content(int fd, const char *delimiter,
     
     while (1)
     {
-        // SIGNAL CHECK EKSİK!
         if (g_signal == SIGINT)
         {
             free(clean_delimiter);
@@ -87,7 +86,6 @@ static int	read_heredoc_content(int fd, const char *delimiter,
         
         line = readline("heredoc> ");
         
-        // CRITICAL: NULL check missing!
         if (!line) // EOF (Ctrl+D)
         {
             write(STDERR_FILENO, "\nminishell: warning: heredoc delimited by EOF\n", 45);
@@ -99,8 +97,6 @@ static int	read_heredoc_content(int fd, const char *delimiter,
             free(line);
             break;
         }
-        
-        // SIGNAL CHECK AFTER READLINE
         if (g_signal == SIGINT)
         {
             free(line);

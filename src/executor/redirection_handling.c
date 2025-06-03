@@ -43,7 +43,6 @@ int setup_input_redirection(t_redirect *redirect)
             return (-1);
         }
         close(fd);
-        // Do NOT unlink here; let the executor or cleanup handle it
     }
     return (0);
 }

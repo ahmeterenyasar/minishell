@@ -57,7 +57,7 @@ char	*find_command_path(char *cmd, char **envp)
         if (temp)
         {
             full_path = ft_strjoin(temp, cmd);
-            free(temp); // ✅ Free temp immediately
+            free(temp);
             temp = NULL;
             
             if (full_path)
@@ -65,17 +65,17 @@ char	*find_command_path(char *cmd, char **envp)
                 // Check if file exists AND is executable
                 if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
                 {
-                    free_str_array(paths); // ✅ Free paths before return
+                    free_str_array(paths);
                     return (full_path);
                 }
-                free(full_path); // ✅ Free failed path
+                free(full_path);
                 full_path = NULL;
             }
         }
         i++;
     }
     
-    free_str_array(paths); // ✅ Always free paths array
+    free_str_array(paths);
     return (NULL);
 }
 
@@ -89,7 +89,7 @@ void	free_str_array(char **arr)
 	while (arr[i])
 	{
 		free(arr[i]);
-		arr[i] = NULL; // ✅ Null pointer after free
+		arr[i] = NULL;
 		i++;
 	}
 	free(arr);

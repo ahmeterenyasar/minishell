@@ -4,10 +4,10 @@ void	copy_env_value(char *result, int *j, char *value)
 {
     int	k;
 
-    if (!value || !*value)  // Check for NULL or empty string
+    if (!value || !*value)
     {
         if (value)
-            free(value); // ✅ Free even if empty
+            free(value);
         return;
     }
     k = 0;
@@ -15,7 +15,7 @@ void	copy_env_value(char *result, int *j, char *value)
     {
         result[(*j)++] = value[k++];
     }
-    free(value); // ✅ Always free the value
+    free(value);
 }
 
 static char	*expand_env_vars_in_redirects(const char *str, t_shell_data *shell)
@@ -41,7 +41,6 @@ static char	*expand_env_vars_in_redirects(const char *str, t_shell_data *shell)
             i++;
             i = extract_env_name(str, i, var_name, sizeof(var_name));
             value = get_env_value(var_name, shell);
-            // ✅ copy_env_value now handles freeing
             copy_env_value(result, &j, value);
         }
         else
@@ -74,7 +73,6 @@ char	*expand_env_vars(const char *str, t_shell_data *shell)
             i++;
             i = extract_env_name(str, i, var_name, sizeof(var_name));
             value = get_env_value(var_name, shell);
-            // ✅ copy_env_value now handles freeing
             copy_env_value(result, &j, value);
         }
         else
@@ -97,7 +95,7 @@ static void	expand_redirect_files(t_redirect *redirects, t_shell_data *shell)
             expanded = expand_env_vars_in_redirects(current->file, shell);
             if (expanded)
             {
-                free(current->file); // ✅ Free old file name
+                free(current->file);
                 current->file = expanded;
             }
         }
@@ -118,7 +116,7 @@ void	expand_tokens(t_token *tokens, t_shell_data *shell)
             expanded = expand_env_vars(current->value, shell);
             if (expanded)
             {
-                free(current->value); // ✅ Free old value
+                free(current->value);
                 current->value = expanded;
             }
         }

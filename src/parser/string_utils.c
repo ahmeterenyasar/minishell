@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /**
- * Çöplük aamına koyim
+ * Çöplük
  */
 
 

@@ -14,15 +14,14 @@ t_command	*parse_input(const char *line, t_shell_data *shell)
 	
 	if (check_syntax(tokens) != SUCCESS)
 	{
-		free_tokens(tokens); // ✅ Tokens freed on syntax error
+		free_tokens(tokens);
 		set_exit_status(shell, 2);
 		return (NULL);
 	}
 	
 	expand_tokens(tokens, shell);
 	cmd = parse_tokens(tokens);
-	
-	// ✅ CRITICAL: Always free tokens after parsing
+
 	free_tokens(tokens);
 	tokens = NULL;
 	
