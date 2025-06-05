@@ -1,3 +1,8 @@
 ALERT:
-redirections ve heredoc
-"exit" usage has leaks
+divide into norm rules
+GALIBA CTRL+C'DEN SORNA SIKINTI VAR CLEAR FALAN HEMEN ÇALIŞMIYOR
+BIR KERE DAHA YAZMAK ZORUNDA KALIYORUM.
+
+
+heredoc -> ctrl+c (signals)
+bir takım denemeler yapılıyor -> "exit" usage has leaks

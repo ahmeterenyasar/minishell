@@ -8,6 +8,7 @@ int	main(int argc, char **argv, char **envp)
 	t_command		*cmd;
 	t_shell_data	*shell;
 	int				last_exit_status;
+	int				exec_result;
 	(void)argc;
 	(void)argv;
 
@@ -50,8 +51,21 @@ int	main(int argc, char **argv, char **envp)
 				if (cmd)
 				{
 					setup_signals(EXECUTING_MODE);
-					execute_command(cmd, shell);
+					exec_result = execute_command(cmd, shell);
 					setup_signals(INTERACTIVE_MODE);
+					
+					// Check if exit was called (special return code -42)
+					if (exec_result == -42)
+					{
+						free_command(cmd);
+						free_str_array(lines);
+						clear_history();
+						rl_clear_history();
+						last_exit_status = get_exit_status(shell);
+						free_shell_data(shell);
+						exit(last_exit_status);
+					}
+					
 					free_command(cmd);
 					cmd = NULL;
 				}

@@ -85,11 +85,12 @@ int	execute_single_command(t_command *cmd, t_shell_data *shell)
 {
 	pid_t	pid;
 	int		status;
+	int		result;
 
 	if (!cmd->args || !cmd->args[0])
 		return (0);
 
-	// NEW: Check for empty command name (from quoted empty strings)
+	// Check for empty command name (from quoted empty strings)
 	if (cmd->args[0] && *cmd->args[0] == '\0')
 	{
 		write(STDERR_FILENO, "minishell: : command not found\n", 32);
@@ -100,7 +101,11 @@ int	execute_single_command(t_command *cmd, t_shell_data *shell)
 	// Handle builtins with special redirection handling
 	if (is_builtin(cmd->args[0]))
 	{
-		return (handle_builtin_redirections(cmd, shell));
+		result = handle_builtin_redirections(cmd, shell);
+		// Propagate the special exit code (-42) if returned
+		if (result == -42)
+			return (-42);
+		return (result);
 	}
 
 	pid = fork();
@@ -156,5 +161,10 @@ int execute_command(t_command *cmd, t_shell_data *shell)
         return (130);
     }
     result = execute_pipeline(cmd, shell);
+    
+    // Propagate the special exit code (-42) if returned
+    if (result == -42)
+        return (-42);
+        
     return (result);
 }
