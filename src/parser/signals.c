@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <termios.h>
 
 /**
  * Signal handler for SIGINT (Ctrl+C) in interactive mode
@@ -8,6 +9,8 @@ void	handle_sigint_interactive(int signo)
 	(void)signo;
 	g_signal = SIGINT;
 	write(STDOUT_FILENO, "\n", 1);
+    rl_done = 1;
+        tcflush(STDIN_FILENO, TCIFLUSH);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
