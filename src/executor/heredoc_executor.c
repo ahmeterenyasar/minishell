@@ -23,14 +23,6 @@ static int	setup_heredoc_reading(int *original_stdin)
 	return (0);
 }
 
-static void	heredoc_signal_handler(int sig)
-{
-    if (sig == SIGINT)
-    {
-        g_signal = SIGINT;
-        write(STDOUT_FILENO, "\n", 1);
-    }
-}
 
 static int	write_heredoc_line(int fd, char *line, int expand, t_shell_data *shell)
 {
@@ -70,7 +62,6 @@ static int	read_heredoc_content(int fd, const char *delimiter,
         return (1);
     }
     
-    signal(SIGINT, heredoc_signal_handler);
     signal(SIGQUIT, SIG_IGN);
     
     while (1)
@@ -85,9 +76,17 @@ static int	read_heredoc_content(int fd, const char *delimiter,
         }
         
         line = readline("heredoc> ");
-        
-        if (!line) // EOF (Ctrl+D)
+
+        if (!line)
         {
+            if (g_signal == SIGINT)
+            {
+                free(clean_delimiter);
+                dup2(original_stdin, STDIN_FILENO);
+                close(original_stdin);
+                setup_signals(INTERACTIVE_MODE);
+                return (1);
+            }
             write(STDERR_FILENO, "\nminishell: warning: heredoc delimited by EOF\n", 45);
             break;
         }
