@@ -23,7 +23,6 @@ static int	setup_heredoc_reading(int *original_stdin)
 	return (0);
 }
 
-
 static int	write_heredoc_line(int fd, char *line, int expand, t_shell_data *shell)
 {
 	char	*expanded_line;
@@ -45,8 +44,7 @@ static int	write_heredoc_line(int fd, char *line, int expand, t_shell_data *shel
 	return (0);
 }
 
-
-static void	cleanup_heredoc(char *clean_delimiter, int original_stdin)
+static void	cleanup_heredoc_reading(int original_stdin, char *clean_delimiter)
 {
 	if (clean_delimiter)
 		free(clean_delimiter);
@@ -58,56 +56,58 @@ static void	cleanup_heredoc(char *clean_delimiter, int original_stdin)
 static int	read_heredoc_content(int fd, const char *delimiter, 
         int expand, t_shell_data *shell)
 {
-	char	*line;
-	char	*clean_delimiter;
-	int		original_stdin;
-	int		interrupted;
+    char	*line;
+    char	*clean_delimiter;
+    int		original_stdin;
 
-	if (setup_heredoc_reading(&original_stdin))
-		return (1);
-	clean_delimiter = remove_quotes_from_delimiter((char *)delimiter);
-	if (!clean_delimiter)
-	{
-		cleanup_heredoc(NULL, original_stdin);
-		return (1);
-	}
+    if (setup_heredoc_reading(&original_stdin))
+        return (1);
+    clean_delimiter = remove_quotes_from_delimiter((char *)delimiter);
+    if (!clean_delimiter)
+    {
+        cleanup_heredoc_reading(original_stdin, NULL);
+        return (1);
+    }
 
-	interrupted = 0;
-	while (1)
-	{
-		// Check for signal interruption
-		if (g_signal == SIGINT)
-		{
-			interrupted = 1;
-			break;
-		}
+    while (1)
+    {
+        // Check for signal before readline
+        if (g_signal == SIGINT)
+        {
+            cleanup_heredoc_reading(original_stdin, clean_delimiter);
+            return (1);
+        }
 
-		line = readline("heredoc> ");
+        line = readline("heredoc> ");
 
-		// readline returns NULL on EOF or signal interruption
-		if (!line)
-		{
-			if (g_signal == SIGINT)
-				interrupted = 1;
-			else
-				write(STDERR_FILENO, "\nminishell: warning: heredoc delimited by EOF\n", 45);
-			break;
-		}
+        // Check for signal after readline (readline was interrupted)
+        if (g_signal == SIGINT)
+        {
+            if (line)
+                free(line);
+            cleanup_heredoc_reading(original_stdin, clean_delimiter);
+            return (1);
+        }
 
-		// Check if we got the delimiter
-		if (ft_strcmp(line, clean_delimiter) == 0)
-		{
-			free(line);
-			break;
-		}
+        if (!line)
+        {
+            // Handle EOF (Ctrl+D)
+            write(STDERR_FILENO, "\nminishell: warning: heredoc delimited by EOF\n", 45);
+            break;
+        }
 
-		// Write the line to heredoc file
-		write_heredoc_line(fd, line, expand, shell);
-		free(line);
-	}
+        if (ft_strcmp(line, clean_delimiter) == 0)
+        {
+            free(line);
+            break;
+        }
 
-	cleanup_heredoc(clean_delimiter, original_stdin);
-	return (interrupted ? 1 : 0);
+        write_heredoc_line(fd, line, expand, shell);
+        free(line);
+    }
+
+    cleanup_heredoc_reading(original_stdin, clean_delimiter);
+    return (0);
 }
 
 int	process_heredoc(t_redirect *redirect, t_shell_data *shell)

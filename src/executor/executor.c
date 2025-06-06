@@ -149,17 +149,26 @@ int execute_command(t_command *cmd, t_shell_data *shell)
     if (!cmd)
         return (0);
 
+    // Process heredocs first
     if (process_all_heredocs(cmd, shell) != 0)
     {
+        // If heredoc processing failed (including CTRL+C), return immediately
+        if (g_signal == SIGINT)
+        {
+            set_exit_status(shell, 130);
+            return (130);
+        }
         set_exit_status(shell, 1);
         return (1);
     }
 
+    // If CTRL+C was pressed during heredoc processing, don't execute command
     if (g_signal == SIGINT)
     {
         set_exit_status(shell, 130);
         return (130);
     }
+    
     result = execute_pipeline(cmd, shell);
     
     // Propagate the special exit code (-42) if returned

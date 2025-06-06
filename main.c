@@ -9,6 +9,8 @@ int	main(int argc, char **argv, char **envp)
 	t_shell_data	*shell;
 	int				last_exit_status;
 	int				exec_result;
+	char			**lines;
+	int				i;
 	(void)argc;
 	(void)argv;
 
@@ -20,13 +22,21 @@ int	main(int argc, char **argv, char **envp)
 
 	while (1)
 	{
-		g_signal = 0;
+		g_signal = 0;  // Reset signal flag before each prompt
 		input = readline("minishell$ ");
 
-		if (!input) // Ctrl+D (EOF)
+		// Handle Ctrl+D (EOF)
+		if (!input)
 		{
 			printf("exit\n");
 			break ;
+		}
+
+		// Handle Ctrl+C during readline
+		if (g_signal == SIGINT)
+		{
+			free(input);
+			continue;
 		}
 
 		if (!*input)
@@ -37,12 +47,12 @@ int	main(int argc, char **argv, char **envp)
 
 		add_history(input);
 
-		char **lines = split_commands_by_newlines(input);
+		lines = split_commands_by_newlines(input);
 		free(input);
 		if (!lines)
 			continue;
 
-		int i = 0;
+		i = 0;
 		while (lines[i])
 		{
 			if (*lines[i])
@@ -69,15 +79,27 @@ int	main(int argc, char **argv, char **envp)
 					free_command(cmd);
 					cmd = NULL;
 				}
-				else if (g_signal == SIGINT)
-					set_exit_status(shell, 130);
+				else 
+				{
+					// Handle parsing errors (including heredoc interruption)
+					if (g_signal == SIGINT)
+					{
+						set_exit_status(shell, 130);
+						// Make sure we're back in interactive mode
+						setup_signals(INTERACTIVE_MODE);
+					}
+				}
 			}
 			i++;
 		}
 		free_str_array(lines);
 		lines = NULL;
+		
+		// Ensure we're in interactive mode after processing commands
+		setup_signals(INTERACTIVE_MODE);
 	}
 
+	// Cleanup for normal exit (Ctrl+D)
 	clear_history();
 	rl_clear_history();
 	last_exit_status = get_exit_status(shell);
