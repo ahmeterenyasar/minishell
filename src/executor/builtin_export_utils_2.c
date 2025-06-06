@@ -24,8 +24,8 @@ char	**sort_envp_for_export(char **envp)
 		i++;
 	}
 	sorted[count] = NULL;
-	
-	// Simple bubble sort
+
+	// Bubble sort
 	i = 0;
 	while (i < count - 1)
 	{

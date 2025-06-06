@@ -105,7 +105,6 @@ int	execute_export(char **args, t_shell_data *shell)
 		}
 		i++;
 	}
-
 	set_exit_status(shell, ret_status);
 	return (ret_status);
 }

@@ -57,18 +57,14 @@ void	fill_args(t_command *cmd, t_token **tokens, int arg_count)
 	{
 		if (token->type == TOKEN_PIPE)
 			break;
-		
-		// CRITICAL FIX: Always advance token pointer
+
 		token = process_parser_token(token, cmd, &arg_index);
-		
-		// Safety check to prevent infinite loops
+
 		if (!token)
 			break;
-		
-		// Break if we've filled all expected arguments
+
 		if (arg_index >= arg_count)
 		{
-			// Continue processing any remaining redirections
 			while (token && token->type != TOKEN_PIPE)
 			{
 				if (redir_is_redirection(token))
