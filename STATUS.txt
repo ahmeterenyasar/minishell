@@ -1,3 +1,4 @@
 ALERT:
 heredoc -> ctrl+c (signals suan duzeldi ama function not-allowed fix it)
+check: expr $? + $? missing
 divide into norm rules
