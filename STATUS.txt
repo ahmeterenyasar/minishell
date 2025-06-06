@@ -1,7 +1,3 @@
 ALERT:
-divide into norm rules
-GALIBA CTRL+C'DEN SORNA SIKINTI VAR CLEAR FALAN HEMEN ÇALIŞMIYOR
-BIR KERE DAHA YAZMAK ZORUNDA KALIYORUM.
-
-
 heredoc -> ctrl+c (signals suan duzeldi ama function not-allowed fix it)
+divide into norm rules
