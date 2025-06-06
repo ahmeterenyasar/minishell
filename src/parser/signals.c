@@ -10,7 +10,6 @@ void	handle_sigint_interactive(int signo)
 	g_signal = SIGINT;
 	write(STDOUT_FILENO, "\n", 1);
     rl_done = 1;
-    tcflush(STDIN_FILENO, TCIFLUSH);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -38,15 +37,15 @@ void	handle_sigquit_executing(int signo)
 
 /**
  * Signal handler for SIGINT (Ctrl+C) in heredoc mode
+ * FIXED: Added rl_done = 1 to properly handle readline state
  */
 void	handle_sigint_heredoc(int signo)
 {
 	(void)signo;
 	g_signal = SIGINT;
 	write(STDOUT_FILENO, "\n", 1);
-	close(STDIN_FILENO);
-	// Force readline to return NULL by closing stdin temporarily
-	// This will be handled in heredoc processing
+	rl_done = 1;  // This tells readline to return NULL cleanly
+	// Don't close STDIN_FILENO - this was causing the freeze
 }
 
 /**
