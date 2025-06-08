@@ -30,6 +30,7 @@ SRCS = main.c \
         src/executor/builtin_env.c \
         src/executor/builtin_executor.c \
         src/executor/builtin_exit.c \
+        src/executor/builtin_expr.c \
         src/executor/builtin_export.c \
         src/executor/builtin_export_utils.c \
         src/executor/builtin_export_utils_2.c \

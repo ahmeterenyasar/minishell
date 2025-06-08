@@ -16,6 +16,8 @@ int	is_builtin(char *cmd)
 		return (1);
 	if (ft_strcmp(cmd, "env") == 0)
 		return (1);
+	if (ft_strcmp(cmd, "expr") == 0)
+		return (1);
 	if (ft_strcmp(cmd, "exit") == 0)
 		return (1);
 	return (0);
@@ -37,6 +39,8 @@ int	execute_builtin(char **args, t_shell_data *shell)
 		return (execute_unset(args, shell));
 	if (ft_strcmp(args[0], "env") == 0)
 		return (execute_env(args, shell));
+	if (ft_strcmp(args[0], "expr") == 0)
+		return (execute_expr(args, shell));
 	if (ft_strcmp(args[0], "exit") == 0)
 		return (execute_exit(args, shell));
 	return (1);

@@ -12,6 +12,7 @@ int							execute_export(char **args, t_shell_data *shell);
 int							set_env_variable(t_shell_data *shell, const char *name, const char *value);
 int							find_env_var(char **envp, const char *name);
 int							execute_unset(char **args, t_shell_data *shell);
+int							execute_expr(char **args, t_shell_data *shell);
 int							execute_exit(char **args, t_shell_data *shell);
 int							is_builtin(char *cmd);
 int							execute_builtin(char **args, t_shell_data *shell);
