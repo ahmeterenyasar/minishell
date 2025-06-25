@@ -33,14 +33,7 @@ Internally **minishell** keeps to a clear four‑stage processing pipeline, but 
 
 [Chart will be uploaded here]
 
-\---------|-----------|
-\| `echo [-n]` | Print arguments with optional trailing newline suppression |
-\| `cd [dir]` | Change the current working directory |
-\| `pwd` | Print the current working directory |
-\| `export [name[=value] ...]` | Create / update environment variables |
-\| `unset name ...` | Remove variables from the environment |
-\| `env` | Display the environment |
-\| `exit [status]` | Terminate the shell process |
+[Test scenarios will be uploaded here]
 
 ---
 
