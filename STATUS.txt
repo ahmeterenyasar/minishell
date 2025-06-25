@@ -1,8 +1,10 @@
 ALERT:
+- valgrind tests
 - heredoc -> ctrl+c (signals suan duzeldi ama function not-allowed fix it)
 - after ctrl+c in heredoc the extra new line problem.
         -> solve it by deploying another state for the global var whether we are in heredoc or not
-- [FIXED] check: expr $? + $? missing
+- [FIXED] check: expr $? + $? missing, 
+        -> is exit values true?
 - clean debugger functions
 - divide into norm rules
 - single quotes heredoc should not expand
