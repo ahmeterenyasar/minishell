@@ -5,3 +5,4 @@ ALERT:
 - [FIXED] check: expr $? + $? missing
 - clean debugger functions
 - divide into norm rules
+- single quotes heredoc should not expand

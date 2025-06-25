@@ -78,8 +78,12 @@ int process_concatenated_word(const char *input, int i, t_token **head)
     if (part_count == 1 && is_quote_char(input[start_pos]))
     {
         // Create the token with the single part
-        t_token *new_token = create_token(TOKEN_WORD, word_parts[0], 
-                                         (input[start_pos] == '"') ? 1 : 0);
+        int expandable_flag;
+        if (input[start_pos] == '"')
+            expandable_flag = 1;
+        else
+            expandable_flag = 0;
+        t_token *new_token = create_token(TOKEN_WORD, word_parts[0], expandable_flag);
         if (new_token)
             add_token(head, new_token);
         else

@@ -23,7 +23,10 @@ char	*int_to_string(int n)
 	}
 	
 	temp = n;
-	len = (n == 0) ? 1 : 0;
+	if (n == 0)
+		len = 1;
+	else
+		len = 0;
 	while (temp > 0)
 	{
 		temp /= 10;
