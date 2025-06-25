@@ -1,4 +1,7 @@
 ALERT:
-heredoc -> ctrl+c (signals suan duzeldi ama function not-allowed fix it)
-check: expr $? + $? missing
-divide into norm rules
+- heredoc -> ctrl+c (signals suan duzeldi ama function not-allowed fix it)
+- after ctrl+c in heredoc the extra new line problem.
+        -> solve it by deploying another state for the global var whether we are in heredoc or not
+- [FIXED] check: expr $? + $? missing
+- clean debugger functions
+- divide into norm rules
