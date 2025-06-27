@@ -111,8 +111,7 @@ readline.supp     → valgrind suppression file for readline
 🔴 heredoc -> ctrl+c (signals suan duzeldi ama function not-allowed fix it)
 🔴 after ctrl+c in heredoc the extra new line problem.
     -> [slack msg] can be solved by deploying another state for the global var whether we are in heredoc or not
-🟡 $? values must be checked
-🟡 detailed valgrind tests needed
+🟡 detailed valgrind tests needed, there is a still reachable problem with the child process I think.
 🟡 debugger functions needs to be cleaned
 🟡 divide into norm rules
 
@@ -129,6 +128,7 @@ readline.supp     → valgrind suppression file for readline
 ✅ Test 141: ❌ ./test_files
 ✅ Test 142: /test_files
 ✅ single quotes heredoc should not expand
+✅ $? values must be checked
 
 ✅ 
 🟡 
