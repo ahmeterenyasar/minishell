@@ -47,9 +47,20 @@ void	execute_child_process(t_command *cmd, t_shell_data *shell)
 	}
 	if (execve(cmd_path, cmd->args, shell->envp) == -1)
 	{
-		perror("execve");
-		free(cmd_path);
-		exit(1);
+		if (errno == EACCES)
+		{
+			write(STDERR_FILENO, "minishell: ", 11);
+			write(STDERR_FILENO, cmd->args[0], ft_strlen(cmd->args[0]));
+			write(STDERR_FILENO, ": Permission denied\n", 20);
+			free(cmd_path);
+			exit(126);
+		}
+		else
+		{
+			perror("execve");
+			free(cmd_path);
+			exit(127);
+		}
 	}
 }
 

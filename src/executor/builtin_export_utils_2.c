@@ -1,22 +1,20 @@
-#include  "minishell.h"
+#include "minishell.h"
 
 char	**sort_envp_for_export(char **envp)
 {
 	char	**sorted;
 	char	*temp;
 	int		count;
-	int		i, j;
-	
+
+	int i, j;
 	// Count variables
 	count = 0;
 	while (envp[count])
 		count++;
-	
 	// Copy envp
 	sorted = malloc(sizeof(char *) * (count + 1));
 	if (!sorted)
 		return (NULL);
-	
 	i = 0;
 	while (i < count)
 	{
@@ -24,7 +22,6 @@ char	**sort_envp_for_export(char **envp)
 		i++;
 	}
 	sorted[count] = NULL;
-
 	// Bubble sort
 	i = 0;
 	while (i < count - 1)
@@ -42,7 +39,6 @@ char	**sort_envp_for_export(char **envp)
 		}
 		i++;
 	}
-	
 	return (sorted);
 }
 
@@ -58,27 +54,29 @@ void	print_export_vars(char **envp)
 		// Fallback to unsorted if malloc fails
 		sorted = envp;
 	}
-
 	i = 0;
 	while (sorted[i])
 	{
-		printf("declare -x ");
+		write(STDOUT_FILENO, "declare -x ", 11);
 		equals = ft_strchr(sorted[i], '=');
 		if (equals)
 		{
 			// Print name=value format with quotes around value
 			*equals = '\0';
-			printf("%s=\"%s\"\n", sorted[i], equals + 1);
+			write(STDOUT_FILENO, sorted[i], ft_strlen(sorted[i]));
+			write(STDOUT_FILENO, "=\"", 2);
+			write(STDOUT_FILENO, equals + 1, ft_strlen(equals + 1));
+			write(STDOUT_FILENO, "\"\n", 2);
 			*equals = '=';
 		}
 		else
 		{
 			// Just the variable name (exported but no value)
-			printf("%s\n", sorted[i]);
+			write(STDOUT_FILENO, sorted[i], ft_strlen(sorted[i]));
+			write(STDOUT_FILENO, "\n", 1);
 		}
 		i++;
 	}
-
 	if (sorted != envp)
 		free(sorted);
 }

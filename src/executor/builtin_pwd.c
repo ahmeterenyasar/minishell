@@ -87,7 +87,8 @@ int	execute_pwd(t_shell_data *shell)
 		set_exit_status(shell, 1);
 		return (1);
 	}
-	printf("%s\n", cwd);
+	write(STDOUT_FILENO, cwd, ft_strlen(cwd));
+	write(STDOUT_FILENO, "\n", 1);
 	free(cwd);
 	set_exit_status(shell, 0);
 	return (0);

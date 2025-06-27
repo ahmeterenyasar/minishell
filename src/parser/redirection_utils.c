@@ -35,7 +35,7 @@ void	add_redirection(t_command *cmd, t_redirect *redir)
 	if (!cmd->redirects)
 	{
 		cmd->redirects = redir;
-		return;
+		return ;
 	}
 	current = cmd->redirects;
 	while (current->next)
@@ -52,6 +52,7 @@ t_redirect	*create_redirection(t_token *token)
 		return (NULL);
 	redir->type = token->type;
 	redir->expand_heredoc = 1;
+	redir->was_quoted = 0;
 	redir->next = NULL;
 	return (redir);
 }
@@ -65,17 +66,19 @@ int	set_redirection_file(t_redirect *redir, t_token *token)
 	redir->file = ft_strdup(token->value);
 	if (!redir->file)
 		return (0);
+	// Track if the filename was originally quoted
+	redir->was_quoted = token->quoted;
 	if (redir->type == TOKEN_HEREDOC)
 	{
 		// For heredoc expansion rules:
 		// - Single quoted delimiter: NO expansion (expandable = 0, quoted = 1)
-		// - Double quoted delimiter: SHOULD expand (expandable = 1, quoted = 1) 
+		// - Double quoted delimiter: SHOULD expand (expandable = 1, quoted = 1)
 		// - Unquoted delimiter: SHOULD expand (expandable = 1, quoted = 0)
 		// So we only disable expansion for single quotes (not expandable AND quoted)
 		if (token->quoted && !token->expandable)
-			redir->expand_heredoc = 0;  // Single quoted - no expansion
+			redir->expand_heredoc = 0; // Single quoted - no expansion
 		else
-			redir->expand_heredoc = 1;  // Double quoted or unquoted - expansion
+			redir->expand_heredoc = 1; // Double quoted or unquoted - expansion
 	}
 	return (1);
 }

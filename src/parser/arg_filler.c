@@ -6,14 +6,12 @@ int	should_add_word_arg(t_token *token)
 		return (0);
 	if (!token->value)
 		return (0);
-	
-	// For empty strings, treat them as valid arguments
-	// Empty TOKEN_WORD tokens come from quoted empty strings like "" or ''
-	if (!*token->value)  // Empty string
+	// For empty strings, only keep them if they came from quotes
+	if (!*token->value) // Empty string
 	{
-		return (1);  // Keep empty quoted strings as valid arguments
+		// Keep empty strings only if they were originally quoted
+		return (token->quoted);
 	}
-	
 	// Skip tokens that are only whitespace (but not empty)
 	if (is_all_whitespace(token->value))
 		return (0);
@@ -25,7 +23,7 @@ t_token	*process_word_token(t_token *token, t_command *cmd, int *arg_index)
 	if (should_add_word_arg(token))
 	{
 		cmd->args[*arg_index] = ft_strdup(token->value);
-		if (!cmd->args[*arg_index])  // Handle strdup failure
+		if (!cmd->args[*arg_index]) // Handle strdup failure
 		{
 			// Could set an error flag here
 			return (token->next);
@@ -36,7 +34,7 @@ t_token	*process_word_token(t_token *token, t_command *cmd, int *arg_index)
 	return (token->next);
 }
 
-t_token *process_parser_token(t_token *token, t_command *cmd, int *arg_index)
+t_token	*process_parser_token(t_token *token, t_command *cmd, int *arg_index)
 {
 	if (token->type == TOKEN_WORD)
 		return (process_word_token(token, cmd, arg_index));
@@ -56,13 +54,10 @@ void	fill_args(t_command *cmd, t_token **tokens, int arg_count)
 	while (token)
 	{
 		if (token->type == TOKEN_PIPE)
-			break;
-
+			break ;
 		token = process_parser_token(token, cmd, &arg_index);
-
 		if (!token)
-			break;
-
+			break ;
 		if (arg_index >= arg_count)
 		{
 			while (token && token->type != TOKEN_PIPE)
@@ -72,7 +67,7 @@ void	fill_args(t_command *cmd, t_token **tokens, int arg_count)
 				else
 					token = token->next;
 			}
-			break;
+			break ;
 		}
 	}
 	*tokens = token;

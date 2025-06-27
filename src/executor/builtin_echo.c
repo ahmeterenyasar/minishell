@@ -7,7 +7,6 @@ int	is_valid_n_flag(const char *arg)
 
 	if (!arg || arg[0] != '-' || arg[1] != 'n')
 		return (0);
-
 	i = 2;
 	while (arg[i])
 	{
@@ -25,26 +24,22 @@ int	execute_echo(char **args, t_shell_data *shell)
 
 	newline = 1;
 	i = 1;
-
 	// Process all consecutive valid -n flags
 	while (args[i] && is_valid_n_flag(args[i]))
 	{
 		newline = 0;
 		i++;
 	}
-
 	// Print remaining arguments
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		write(STDOUT_FILENO, args[i], ft_strlen(args[i]));
 		if (args[i + 1])
-			printf(" ");
+			write(STDOUT_FILENO, " ", 1);
 		i++;
 	}
-
 	if (newline)
-		printf("\n");
-
+		write(STDOUT_FILENO, "\n", 1);
 	set_exit_status(shell, 0);
 	return (0);
 }

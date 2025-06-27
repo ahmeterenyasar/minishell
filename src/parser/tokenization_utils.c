@@ -14,12 +14,13 @@ t_token	*create_token(t_token_type type, char *value, int expandable)
 	token->type = type;
 	token->value = value;
 	token->expandable = expandable;
-	token->quoted = 0;  // Default to not quoted
+	token->quoted = 0; // Default to not quoted
 	token->next = NULL;
 	return (token);
 }
 
-t_token	*create_quoted_token_with_flag(t_token_type type, char *value, int expandable, int quoted)
+t_token	*create_quoted_token_with_flag(t_token_type type, char *value,
+		int expandable, int quoted)
 {
 	t_token	*token;
 
@@ -45,7 +46,7 @@ void	add_token(t_token **head, t_token *new_token)
 	if (!*head)
 	{
 		*head = new_token;
-		return;
+		return ;
 	}
 	current = *head;
 	while (current->next)
@@ -80,43 +81,43 @@ char	*handle_newlines(const char *input)
 
 int	should_use_concatenation(const char *input, int i)
 {
-	int pos = i;
-	int transitions = 0;
-	int in_quotes = 0;
-	int was_in_quotes = 0;
-	
-	// Scan through the current word to count quote/unquote transitions
-	while (input[pos] && !is_token_delimiter(input[pos]) && !is_operator_char(input[pos]))
+	int		pos;
+	int		quote_segments;
+	int		has_unquoted;
+	int		in_quotes;
+	char	quote_char;
+
+	pos = i;
+	quote_segments = 0;
+	has_unquoted = 0;
+	in_quotes = 0;
+	// Scan through the current word to check for multiple segments
+	while (input[pos] && !is_token_delimiter(input[pos])
+		&& !is_operator_char(input[pos]))
 	{
 		if (is_quote_char(input[pos]))
 		{
 			if (!in_quotes)
 			{
 				// Entering quotes
-				if (pos > i && !was_in_quotes) // There was unquoted text before
-					transitions++;
+				quote_segments++;
 				in_quotes = 1;
-				was_in_quotes = 1;
 				// Find the closing quote
-				char quote_char = input[pos];
+				quote_char = input[pos];
 				pos = find_closing_quote(input, pos, quote_char);
 				if (pos == -1)
 					return (0); // Unclosed quote
-				pos++; // Move past closing quote
+				pos++;          // Move past closing quote
 				in_quotes = 0;
 			}
 		}
 		else
 		{
 			// Unquoted character
-			if (was_in_quotes && !in_quotes)
-			{
-				// Coming out of quotes to unquoted text
-				transitions++;
-			}
+			has_unquoted = 1;
 			// Skip through unquoted text
-			while (input[pos] && !is_token_delimiter(input[pos]) && 
-				   !is_operator_char(input[pos]) && !is_quote_char(input[pos]))
+			while (input[pos] && !is_token_delimiter(input[pos])
+				&& !is_operator_char(input[pos]) && !is_quote_char(input[pos]))
 			{
 				if (input[pos] == '\\' && input[pos + 1])
 					pos += 2;
@@ -125,21 +126,23 @@ int	should_use_concatenation(const char *input, int i)
 			}
 		}
 	}
-	
-	// If we had any transitions, we need concatenation
-	return (transitions > 0);
+	// We need concatenation if:
+	// 1. Multiple quote segments, OR
+	// 2. Mix of quoted and unquoted segments
+	return (quote_segments > 1 || (quote_segments > 0 && has_unquoted));
 }
 
 int	process_token(const char *input, int i, t_token **head)
 {
+	int	result;
+
 	// First check if we need concatenation by looking ahead
 	if (should_use_concatenation(input, i))
 		return (process_concatenated_word(input, i, head));
-	
 	// Otherwise handle single tokens as before
 	if (input[i] == '\'' || input[i] == '"')
 	{
-		int result = handle_quotes(input, i, head);
+		result = handle_quotes(input, i, head);
 		if (result == -1)
 		{
 			free_tokens(*head);

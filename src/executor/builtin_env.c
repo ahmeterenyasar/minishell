@@ -9,7 +9,8 @@ void	print_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		printf("%s\n", envp[i]);
+		write(STDOUT_FILENO, envp[i], ft_strlen(envp[i]));
+		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
 }

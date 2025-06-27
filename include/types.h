@@ -41,6 +41,7 @@ typedef struct s_redirect
 	t_token_type		type;
 	char				*file;
 	int					expand_heredoc;
+	int					was_quoted;
 	struct s_redirect	*next;
 }						t_redirect;
 

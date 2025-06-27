@@ -112,103 +112,16 @@ readline.supp     → valgrind suppression file for readline
 🔴 after ctrl+c in heredoc the extra new line problem.
     -> [slack msg] can be solved by deploying another state for the global var whether we are in heredoc or not
 
-🔴 Test  62: ❌ cat <"./test_files/file name with spaces" 
-mini output = ()
-bash output = (😈 😈 😈 This will break your minishell 😈 😈 😈)
-mini exit code = 1
-bash exit code = 0
-mini error = ( ambiguous redirect)
-bash error = ()
-
-🔴 Test  83: ❌ echo hi >         ./outfiles/outfile01 bye 
-Files ./mini_outfiles/outfile01 and ./bash_outfiles/outfile01 differ
-mini outfiles:
-bash outfiles:
-hi bye
-mini output = (hi bye)
-bash output = ()
-
-🔴 Test  86: ❌ ls >"./outfiles/outfile with spaces" 
-Only in ./bash_outfiles: outfile with spaces
-mini outfiles:
-cat: './mini_outfiles/*': No such file or directory
-bash outfiles:
-bash_outfiles
-bash.supp
-bonus
-bonus_bonus
-builtins
-extras
-local.supp
-loop.out
-manual_tests
-mini_outfiles
-os_specific
-outfiles
-pipes
-README.md
-redirects
-syntax
-tester
-test_files
-wildcards
-mini exit code = 1
-bash exit code = 0
-mini error = ( ambiguous redirect)
-bash error = ()
-
-🔴 Test  87: ❌ ls >"./outfiles/outfile""1""2""3""4""5" 
-Only in ./mini_outfiles: outfile
-Only in ./bash_outfiles: outfile12345
-mini outfiles:
-bash outfiles:
-bash_outfiles
-bash.supp
-bonus
-bonus_bonus
-builtins
-extras
-local.supp
-loop.out
-manual_tests
-mini_outfiles
-os_specific
-outfiles
-pipes
-README.md
-redirects
-syntax
-tester
-test_files
-wildcards
-mini exit code = 2
-bash exit code = 0
-mini error = ( No such file or directory No such file or directory No such file or directory No such file or directory No such file or directory)
-bash error = ()
-
-🔴 Test 133: ❌ $PWD 
-mini exit code = 1
-bash exit code = 126
-mini error = ( Permission denied)
-bash error = ( Is a directory)
-grep: (standard input): binary file matches
-
-🔴 Test 134: ❌ $EMPTY 
-mini exit code = 127
-bash exit code = 0
-grep: (standard input): binary file matches
-
-🔴 Test 135: ❌ $EMPTY echo hi 
-mini output = ()
-bash output = (hi)
-mini exit code = 127
-bash exit code = 0
-
-🔴 Test 136: ❌ ./test_files/invalid_permission 
-mini exit code = 1
-bash exit code = 126
-
-✅  Test 137: ./missing.out
+✅ Test  62: ❌ cat <"./test_files/file name with spaces"
+✅ Test  83: ❌ echo hi >         ./outfiles/outfile01 bye 
+    -> **FIXED**: Replaced printf with write in builtin functions to avoid buffering issues with redirections
+✅ Test  86: ❌ ls >"./outfiles/outfile with spaces"
+✅ Test  87: ❌ ls >"./outfiles/outfile""1""2""3""4""5"
+✅ Test 133: ❌ $PWD
+✅ Test 134: ❌ $EMPTY
+✅ Test 135: ❌ $EMPTY echo hi
+✅ Test 136: ❌ ./test_files/invalid_permission 
+✅ Test 137: ./missing.out
 ✅ Test 141: ❌ ./test_files
 ✅ Test 142: /test_files
 

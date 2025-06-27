@@ -6,16 +6,12 @@ int	is_valid_word_token(t_token *current)
 		return (0);
 	if (!current->value)
 		return (0);
-	
-	// For empty strings, we need to check if they were originally quoted
-	// Since we don't have a specific flag for this, we'll treat all empty 
-	// TOKEN_WORD tokens as valid (they can only come from quotes)
-	if (!*current->value)  // Empty string
+	// For empty strings, only count them if they were originally quoted
+	if (!*current->value) // Empty string
 	{
-		// Empty TOKEN_WORD tokens should be valid (they come from quotes like "" or '')
-		return (1);
+		// Only count empty strings if they were originally quoted
+		return (current->quoted);
 	}
-	
 	// Skip tokens that are only whitespace (but not empty)
 	if (is_all_whitespace(current->value))
 		return (0);
@@ -43,13 +39,13 @@ int	count_args(t_token *tokens)
 	while (current)
 	{
 		if (current->type == TOKEN_PIPE)
-			break;
+			break ;
 		if (is_valid_word_token(current))
 			count++;
 		else if (redir_is_redirection(current))
 		{
 			current = skip_redirection_tokens(current);
-			continue;
+			continue ;
 		}
 		if (current)
 			current = current->next;

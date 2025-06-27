@@ -14,10 +14,8 @@ int	execute_cd(char **args, t_shell_data *shell)
 		set_exit_status(shell, 1);
 		return (1);
 	}
-
 	old_pwd = getcwd(NULL, 0);
 	should_free_path = 0;
-
 	if (!args[1] || ft_strcmp(args[1], "~") == 0)
 	{
 		// Go to home directory
@@ -49,7 +47,8 @@ int	execute_cd(char **args, t_shell_data *shell)
 			set_exit_status(shell, 1);
 			return (1);
 		}
-		printf("%s\n", path); // Print the directory we're going to
+		write(STDOUT_FILENO, path, ft_strlen(path));
+		write(STDOUT_FILENO, "\n", 1); // Print the directory we're going to
 		should_free_path = 1;
 	}
 	else
@@ -57,7 +56,6 @@ int	execute_cd(char **args, t_shell_data *shell)
 		path = args[1];
 		should_free_path = 0; // Don't free args[1], it's not our memory
 	}
-	
 	if (chdir(path) == -1)
 	{
 		write(STDERR_FILENO, "cd: ", 4);
@@ -69,10 +67,8 @@ int	execute_cd(char **args, t_shell_data *shell)
 		set_exit_status(shell, 1);
 		return (1);
 	}
-
 	// Only update PWD/OLDPWD if chdir succeeded
 	update_pwd_vars(shell, old_pwd);
-	
 	if (old_pwd)
 		free(old_pwd);
 	if (should_free_path)

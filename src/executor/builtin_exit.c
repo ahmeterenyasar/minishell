@@ -2,11 +2,11 @@
 
 int	execute_exit(char **args, t_shell_data *shell)
 {
-	int		exit_code;
-	long	temp;
+	int exit_code;
+	long temp;
 
-	printf("exit\n");
-	
+	write(STDOUT_FILENO, "exit\n", 5);
+
 	if (!args[1])
 	{
 		// No arguments - set exit flag and return special code
