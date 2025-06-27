@@ -108,7 +108,6 @@ readline.supp     → valgrind suppression file for readline
 ```
 
 ## Status
-vc heredoc -> ctrl+c
     -> [slack msg] can be solved by deploying another state for the global var whether we are in heredoc or not
 🟡 detailed valgrind tests needed, there is a still reachable problem with the child process I think.
 🟡 debugger functions needs to be cleaned
@@ -129,6 +128,7 @@ vc heredoc -> ctrl+c
 ✅ single quotes heredoc should not expand
 ✅ $? values must be checked
 ✅ after ctrl+c in heredoc the extra new line problem.
+✅ heredoc -> ctrl+c
 
 ✅ 
 🟡 
