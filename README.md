@@ -128,10 +128,11 @@ readline.supp     → valgrind suppression file for readline
 ✅ Test 137: ./missing.out
 ✅ Test 141: ❌ ./test_files
 ✅ Test 142: /test_files
-
-
 ✅ single quotes heredoc should not expand
+
 ✅ 
+🟡 
+🔴 
 
 ---
 
