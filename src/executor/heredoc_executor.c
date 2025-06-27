@@ -23,7 +23,8 @@ static int	setup_heredoc_reading(int *original_stdin)
 	return (0);
 }
 
-static int	write_heredoc_line(int fd, char *line, int expand, t_shell_data *shell)
+static int	write_heredoc_line(int fd, char *line, int expand,
+		t_shell_data *shell)
 {
 	char	*expanded_line;
 
@@ -53,83 +54,76 @@ static void	cleanup_heredoc_reading(int original_stdin, char *clean_delimiter)
 	setup_signals(INTERACTIVE_MODE);
 }
 
-static int	read_heredoc_content(int fd, const char *delimiter, 
-        int expand, t_shell_data *shell)
+static int	read_heredoc_content(int fd, const char *delimiter, int expand,
+		t_shell_data *shell)
 {
-    char	*line;
-    char	*clean_delimiter;
-    int		original_stdin;
+	char	*line;
+	char	*clean_delimiter;
+	int		original_stdin;
 
-    if (setup_heredoc_reading(&original_stdin))
-        return (1);
-    clean_delimiter = remove_quotes_from_delimiter((char *)delimiter);
-    if (!clean_delimiter)
-    {
-        cleanup_heredoc_reading(original_stdin, NULL);
-        return (1);
-    }
-
-    while (1)
-    {
-        // Check for signal before readline
-        if (g_signal == SIGINT)
-        {
-            cleanup_heredoc_reading(original_stdin, clean_delimiter);
-            return (1);
-        }
-
-        line = readline("heredoc> ");
-
-        // Check for signal after readline (readline was interrupted)
-        if (g_signal == SIGINT)
-        {
-            if (line)
-                free(line);
-            cleanup_heredoc_reading(original_stdin, clean_delimiter);
-            return (1);
-        }
-
-        if (!line)
-        {
-            // Handle EOF (Ctrl+D)
-            write(STDERR_FILENO, "\nminishell: warning: heredoc delimited by EOF\n", 45);
-            break;
-        }
-
-        if (ft_strcmp(line, clean_delimiter) == 0)
-        {
-            free(line);
-            break;
-        }
-
-        write_heredoc_line(fd, line, expand, shell);
-        free(line);
-    }
-
-    cleanup_heredoc_reading(original_stdin, clean_delimiter);
-    return (0);
+	if (setup_heredoc_reading(&original_stdin))
+		return (1);
+	clean_delimiter = remove_quotes_from_delimiter((char *)delimiter);
+	if (!clean_delimiter)
+	{
+		cleanup_heredoc_reading(original_stdin, NULL);
+		return (1);
+	}
+	while (1)
+	{
+		// Check for signal before readline
+		if (g_signal == SIGINT)
+		{
+			cleanup_heredoc_reading(original_stdin, clean_delimiter);
+			return (1);
+		}
+		line = readline("heredoc> ");
+		// Check for signal after readline (readline was interrupted)
+		if (g_signal == SIGINT)
+		{
+			if (line)
+				free(line);
+			cleanup_heredoc_reading(original_stdin, clean_delimiter);
+			return (1);
+		}
+		if (!line)
+		{
+			// Handle EOF (Ctrl+D)
+			write(STDERR_FILENO,
+				"\nminishell: warning: heredoc delimited by EOF\n", 45);
+			break ;
+		}
+		if (ft_strcmp(line, clean_delimiter) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write_heredoc_line(fd, line, expand, shell);
+		free(line);
+	}
+	cleanup_heredoc_reading(original_stdin, clean_delimiter);
+	return (0);
 }
 
 int	process_heredoc(t_redirect *redirect, t_shell_data *shell)
 {
-	int		fd;
-	char	*filename;
-	int		result;
-	int		expand;
+	int fd;
+	char *filename;
+	int result;
 
 	if (validate_heredoc_redirect(redirect))
 		return (1);
 	write(2, "minishell: processing heredoc for delimiter: ", 44);
 	write(2, redirect->file, ft_strlen(redirect->file));
 	write(2, "\n", 1);
-	expand = !is_delimiter_quoted(redirect->file);
 	fd = setup_heredoc_file(&filename);
 	if (fd == -1)
 	{
 		write(2, "minishell: failed to setup heredoc file\n", 39);
 		return (1);
 	}
-	result = read_heredoc_content(fd, redirect->file, expand, shell);
+	result = read_heredoc_content(fd, redirect->file, redirect->expand_heredoc,
+			shell);
 	close(fd);
 	if (result)
 	{

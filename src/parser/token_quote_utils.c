@@ -3,8 +3,8 @@
 void	copy_quoted_text(const char *input, int start, int end,
 		char *quoted_text, char quote_char)
 {
-	int		j;
-	int		k;
+	int	j;
+	int	k;
 
 	j = start;
 	k = 0;
@@ -16,7 +16,7 @@ void	copy_quoted_text(const char *input, int start, int end,
 			{
 				j++;
 				quoted_text[k++] = input[j++];
-				continue;
+				continue ;
 			}
 		}
 		quoted_text[k++] = input[j++];
@@ -35,8 +35,8 @@ int	should_escape_char(char c)
 	return (0);
 }
 
-int	create_quoted_token(char quote_char, char *quoted_text,
-		t_token **head, int end)
+int	create_quoted_token(char quote_char, char *quoted_text, t_token **head,
+		int end)
 {
 	t_token	*new_token;
 	int		expandable;
@@ -45,7 +45,8 @@ int	create_quoted_token(char quote_char, char *quoted_text,
 		expandable = 1;
 	else
 		expandable = 0;
-	new_token = create_token(TOKEN_WORD, quoted_text, expandable);
+	new_token = create_quoted_token_with_flag(TOKEN_WORD, quoted_text,
+			expandable, 1);
 	if (new_token)
 		add_token(head, new_token);
 	else

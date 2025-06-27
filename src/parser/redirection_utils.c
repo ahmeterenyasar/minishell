@@ -67,8 +67,15 @@ int	set_redirection_file(t_redirect *redir, t_token *token)
 		return (0);
 	if (redir->type == TOKEN_HEREDOC)
 	{
-		if (!token->expandable)
-			redir->expand_heredoc = 0;
+		// For heredoc expansion rules:
+		// - Single quoted delimiter: NO expansion (expandable = 0, quoted = 1)
+		// - Double quoted delimiter: SHOULD expand (expandable = 1, quoted = 1) 
+		// - Unquoted delimiter: SHOULD expand (expandable = 1, quoted = 0)
+		// So we only disable expansion for single quotes (not expandable AND quoted)
+		if (token->quoted && !token->expandable)
+			redir->expand_heredoc = 0;  // Single quoted - no expansion
+		else
+			redir->expand_heredoc = 1;  // Double quoted or unquoted - expansion
 	}
 	return (1);
 }

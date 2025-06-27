@@ -14,6 +14,26 @@ t_token	*create_token(t_token_type type, char *value, int expandable)
 	token->type = type;
 	token->value = value;
 	token->expandable = expandable;
+	token->quoted = 0;  // Default to not quoted
+	token->next = NULL;
+	return (token);
+}
+
+t_token	*create_quoted_token_with_flag(t_token_type type, char *value, int expandable, int quoted)
+{
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (!token)
+	{
+		if (value)
+			free(value);
+		return (NULL);
+	}
+	token->type = type;
+	token->value = value;
+	token->expandable = expandable;
+	token->quoted = quoted;
 	token->next = NULL;
 	return (token);
 }
