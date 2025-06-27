@@ -11,11 +11,10 @@ int	process_concatenated_word(const char *input, int i, t_token **head)
 	int		content_len;
 	int		word_start;
 	int		word_len;
-		int expandable_flag;
+	int		expandable_flag;
 	t_token	*new_token;
 	int		total_len;
 	char	*concatenated;
-	t_token	*new_token;
 
 	char *word_parts[256]; // Array to hold word parts
 	part_count = 0;
