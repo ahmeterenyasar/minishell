@@ -181,7 +181,7 @@ char	**ft_split(const char *s, char c)
 		res[i] = malloc(len + 1);
 		if (!res[i])
 			return (free_split_result(res, i));
-		strncpy(res[i], s, len);
+		ft_strncpy(res[i], s, len);
 		res[i++][len] = '\0';
 		s += len;
 	}

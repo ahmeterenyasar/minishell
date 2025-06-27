@@ -111,7 +111,7 @@ int	process_concatenated_word(const char *input, int i, t_token **head)
 	concatenated[0] = '\0';
 	for (int j = 0; j < part_count; j++)
 	{
-		strcat(concatenated, word_parts[j]);
+		ft_strcat(concatenated, word_parts[j]);
 		free(word_parts[j]);
 	}
 	// Create the concatenated token

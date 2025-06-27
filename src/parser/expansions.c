@@ -21,16 +21,16 @@ char	*get_env_value(const char *name, t_shell_data *shell)
 
     if (!name || !shell || !shell->envp)
         return (ft_strdup(""));  // Return empty string, not NULL
-    if (strcmp(name, "?") == 0)
+    if (ft_strcmp(name, "?") == 0)
         return (get_exit_status_str(shell));
-    if (strcmp(name, "$") == 0)
+    if (ft_strcmp(name, "$") == 0)
         return (get_shell_pid());
-    len = strlen(name);
+    len = ft_strlen(name);
     envp = shell->envp;
     i = 0;
     while (envp[i])
     {
-        if (strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
+        if (ft_strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
             return (ft_strdup(envp[i] + len + 1));  // Use ft_strdup instead of strdup
         i++;
     }
