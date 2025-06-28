@@ -9,6 +9,7 @@ void						copy_env_value(char *result, int *j, char *value);
 
 /* Environment variable functions */
 char						*expand_env_vars(const char *str, t_shell_data *shell);
+char						*expand_concatenated_vars(const char *str, t_shell_data *shell);
 char						*get_env_value(const char *name, t_shell_data *shell);
 void						expand_tokens(t_token *tokens, t_shell_data *shell);
 char						*get_exit_status_str(t_shell_data *shell);
