@@ -52,6 +52,8 @@ int	main(int argc, char **argv, char **envp)
 		if (!lines)
 			continue;
 
+		shell->current_lines = lines;  /* Store for child process cleanup */
+
 		i = 0;
 		while (lines[i])
 		{
@@ -68,9 +70,11 @@ int	main(int argc, char **argv, char **envp)
 					if (exec_result == -42)
 					{
 						free_command(cmd);
+						shell->current_lines = NULL;  /* Clear before cleanup */
 						free_str_array(lines);
 						clear_history();
 						rl_clear_history();
+						rl_cleanup_after_signal();
 						last_exit_status = get_exit_status(shell);
 						free_shell_data(shell);
 						exit(last_exit_status);
@@ -94,6 +98,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		free_str_array(lines);
 		lines = NULL;
+		shell->current_lines = NULL;  /* Clear the reference */
 		
 		// Ensure we're in interactive mode after processing commands
 		setup_signals(INTERACTIVE_MODE);
@@ -102,6 +107,10 @@ int	main(int argc, char **argv, char **envp)
 	// Cleanup for normal exit (Ctrl+D)
 	clear_history();
 	rl_clear_history();
+	
+	// Force cleanup of readline internal state
+	rl_cleanup_after_signal();
+	
 	last_exit_status = get_exit_status(shell);
 	free_shell_data(shell);
 	return (last_exit_status);

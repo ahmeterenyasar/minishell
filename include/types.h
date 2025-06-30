@@ -58,6 +58,7 @@ typedef struct s_shell_data
 {
 	int					last_exit_status;
 	char				**envp;
+	char				**current_lines;  /* Current command lines being processed */
 }						t_shell_data;
 
 /* Global variable for signal handling - ONLY allowed global */

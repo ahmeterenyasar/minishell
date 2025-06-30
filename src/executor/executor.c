@@ -1,5 +1,33 @@
 #include "minishell.h"
 
+/* Child process cleanup function to prevent memory leaks in valgrind */
+static void	cleanup_child_inherited_memory(t_command *cmd, t_shell_data *shell)
+{
+	/* 
+	 * In child processes, we need to clean up memory inherited from parent
+	 * to avoid "still reachable" reports in valgrind. This function frees
+	 * the command structure and shell data that were allocated during parsing,
+	 * as well as any readline history inherited from the parent.
+	 */
+	
+	/* Clean up readline history inherited from parent */
+	clear_history();
+	rl_clear_history();
+	rl_cleanup_after_signal();
+	
+	/* Clean up current_lines inherited from parent */
+	if (shell && shell->current_lines)
+	{
+		free_str_array(shell->current_lines);
+		shell->current_lines = NULL;
+	}
+	
+	if (cmd)
+		free_command(cmd);
+	if (shell)
+		free_shell_data(shell);
+}
+
 /* Process execution */
 void	execute_child_process(t_command *cmd, t_shell_data *shell)
 {
@@ -8,18 +36,27 @@ void	execute_child_process(t_command *cmd, t_shell_data *shell)
 
 	reset_signals();
 	if (setup_redirections(cmd->redirects) == -1)
+	{
+		cleanup_child_inherited_memory(cmd, shell);
 		exit(1);
+	}
 	if (!cmd->args || !cmd->args[0])
+	{
+		cleanup_child_inherited_memory(cmd, shell);
 		exit(0);
-	// NEW: Check for empty command name
+	}
+	// Check for empty command name
 	if (cmd->args[0] && *cmd->args[0] == '\0')
 	{
 		write(STDERR_FILENO, "minishell: : command not found\n", 32);
+		cleanup_child_inherited_memory(cmd, shell);
 		exit(127);
 	}
 	if (is_builtin(cmd->args[0]))
 	{
-		exit(execute_builtin(cmd->args, shell));
+		int result = execute_builtin(cmd->args, shell);
+		cleanup_child_inherited_memory(cmd, shell);
+		exit(result);
 	}
 	cmd_path = find_command_path(cmd->args[0], shell->envp);
 	if (!cmd_path)
@@ -31,6 +68,7 @@ void	execute_child_process(t_command *cmd, t_shell_data *shell)
 			write(STDERR_FILENO, ": No such file or directory\n", 28);
 		else
 			write(STDERR_FILENO, ": command not found\n", 20);
+		cleanup_child_inherited_memory(cmd, shell);
 		exit(127);
 	}
 	// Check if the path is a directory before calling execve
@@ -42,26 +80,33 @@ void	execute_child_process(t_command *cmd, t_shell_data *shell)
 			write(STDERR_FILENO, cmd->args[0], ft_strlen(cmd->args[0]));
 			write(STDERR_FILENO, ": Is a directory\n", 17);
 			free(cmd_path);
+			cleanup_child_inherited_memory(cmd, shell);
 			exit(126);
 		}
 	}
+	// execve will replace the entire process image if successful
+	// If it fails, we need to clean up cmd_path before exit
 	if (execve(cmd_path, cmd->args, shell->envp) == -1)
 	{
+		// execve failed - clean up and exit
 		if (errno == EACCES)
 		{
 			write(STDERR_FILENO, "minishell: ", 11);
 			write(STDERR_FILENO, cmd->args[0], ft_strlen(cmd->args[0]));
 			write(STDERR_FILENO, ": Permission denied\n", 20);
 			free(cmd_path);
+			cleanup_child_inherited_memory(cmd, shell);
 			exit(126);
 		}
 		else
 		{
 			perror("execve");
 			free(cmd_path);
+			cleanup_child_inherited_memory(cmd, shell);
 			exit(127);
 		}
 	}
+	// This line should never be reached if execve succeeds
 }
 
 static int	handle_builtin_redirections(t_command *cmd, t_shell_data *shell)
