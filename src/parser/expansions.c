@@ -3,9 +3,13 @@
 char	*get_exit_status_str(t_shell_data *shell)
 {
     int		status;
+    char	*result;
 
+    if (!shell)
+        return (ft_strdup("0"));
     status = get_exit_status(shell);
-    return (int_to_string(status));
+    result = int_to_string(status);
+    return (result);
 }
 
 char	*get_shell_pid(void)
@@ -31,11 +35,10 @@ char	*get_env_value(const char *name, t_shell_data *shell)
     while (envp[i])
     {
         if (ft_strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
-            return (ft_strdup(envp[i] + len + 1));  // Use ft_strdup instead of strdup
+            return (ft_strdup(envp[i] + len + 1));
         i++;
     }
-    // Variable not found - return empty string (bash behavior)
-    return (ft_strdup(""));  // Use ft_strdup instead of strdup
+    return (ft_strdup(""));  // Return empty string for undefined variables
 }
 
 int	extract_env_name(const char *str, int i, char *name, int max_len)

@@ -52,7 +52,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!lines)
 			continue;
 
-		shell->current_lines = lines;  /* Store for child process cleanup */
+		set_current_lines(shell, lines);  /* Use helper function for safer management */
 
 		i = 0;
 		while (lines[i])
@@ -70,8 +70,7 @@ int	main(int argc, char **argv, char **envp)
 					if (exec_result == -42)
 					{
 						free_command(cmd);
-						shell->current_lines = NULL;  /* Clear before cleanup */
-						free_str_array(lines);
+						clear_current_lines(shell);  /* Use helper function */
 						clear_history();
 						rl_clear_history();
 						rl_cleanup_after_signal();
@@ -96,9 +95,7 @@ int	main(int argc, char **argv, char **envp)
 			}
 			i++;
 		}
-		free_str_array(lines);
-		lines = NULL;
-		shell->current_lines = NULL;  /* Clear the reference */
+		clear_current_lines(shell);  /* Use helper function to clear lines */
 		
 		// Ensure we're in interactive mode after processing commands
 		setup_signals(INTERACTIVE_MODE);

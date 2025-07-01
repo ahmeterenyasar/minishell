@@ -148,12 +148,20 @@ char	*expand_concatenated_vars(const char *str, t_shell_data *shell)
 
 	if (!str)
 		return (ft_strdup(""));
+	
 	result = malloc(4096);
 	if (!result)
 		return (ft_strdup(""));
 	
 	i = 0;
 	j = 0;
+	
+	// Skip leading whitespace first
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+	{
+		result[j++] = str[i++];
+	}
+	
 	while (str[i] && j < 4095)
 	{
 		if (str[i] == '$' && str[i + 1] && (ft_isalnum(str[i + 1]) 
@@ -169,6 +177,17 @@ char	*expand_concatenated_vars(const char *str, t_shell_data *shell)
 				var_name[0] = str[i];
 				var_name[1] = '\0';
 				i++;
+				
+				// Get the value and expand it
+				value = get_env_value(var_name, shell);
+				if (value && *value)
+				{
+					int k = 0;
+					while (value[k] && j < 4095)
+						result[j++] = value[k++];
+				}
+				if (value)
+					free(value);
 			}
 			else
 			{

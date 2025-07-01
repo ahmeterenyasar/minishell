@@ -12,5 +12,7 @@ t_shell_data				*init_shell_data(char **envp);
 void						set_exit_status(t_shell_data *shell, int status);
 int							get_exit_status(t_shell_data *shell);
 void						free_shell_data(t_shell_data *shell);
+void						set_current_lines(t_shell_data *shell, char **lines);
+void						clear_current_lines(t_shell_data *shell);
 
 #endif

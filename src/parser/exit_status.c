@@ -50,7 +50,8 @@ void	set_exit_status(t_shell_data *shell, int status)
 {
     if (!shell)
         return ;
-    shell->last_exit_status = status;
+    // Ensure status is within valid range (0-255)
+    shell->last_exit_status = status & 0xFF;
 }
 
 int	get_exit_status(t_shell_data *shell)
@@ -60,19 +61,54 @@ int	get_exit_status(t_shell_data *shell)
     return (shell->last_exit_status);
 }
 
-void	free_shell_data(t_shell_data *shell)
+/* Helper function to safely manage current_lines */
+void	set_current_lines(t_shell_data *shell, char **lines)
 {
     if (!shell)
         return ;
     
-    // Free current_lines if set
+    // Free existing lines if any
     if (shell->current_lines)
     {
         free_str_array(shell->current_lines);
         shell->current_lines = NULL;
     }
     
-    // Now we can safely free envp since we created heap copies
-    free_envp(shell->envp);
+    // Set new lines
+    shell->current_lines = lines;
+}
+
+void	clear_current_lines(t_shell_data *shell)
+{
+    if (!shell)
+        return ;
+    
+    if (shell->current_lines)
+    {
+        free_str_array(shell->current_lines);
+        shell->current_lines = NULL;
+    }
+}
+
+void	free_shell_data(t_shell_data *shell)
+{
+    if (!shell)
+        return ;
+    
+    // Free current_lines if set (should only be called from main shell, not child)
+    if (shell->current_lines)
+    {
+        free_str_array(shell->current_lines);
+        shell->current_lines = NULL;
+    }
+    
+    // Free environment variables (heap copies we created)
+    if (shell->envp)
+    {
+        free_envp(shell->envp);
+        shell->envp = NULL;
+    }
+    
+    // Free the shell structure itself
     free(shell);
 }

@@ -25,6 +25,9 @@ int	**create_pipes(int pipe_count)
 	int	**pipes;
 	int	i;
 
+	if (pipe_count <= 0)
+		return (NULL);
+	
 	pipes = malloc(sizeof(int *) * pipe_count);
 	if (!pipes)
 		return (NULL);
@@ -33,9 +36,23 @@ int	**create_pipes(int pipe_count)
 	while (i < pipe_count)
 	{
 		pipes[i] = malloc(sizeof(int) * 2);
-		if (!pipes[i] || pipe(pipes[i]) == -1)
+		if (!pipes[i])
+		{
+			// Clean up previously allocated pipes
+			while (--i >= 0)
+			{
+				close(pipes[i][0]);
+				close(pipes[i][1]);
+				free(pipes[i]);
+			}
+			free(pipes);
+			return (NULL);
+		}
+		if (pipe(pipes[i]) == -1)
 		{
 			perror("pipe");
+			// Clean up current pipe and previously allocated pipes
+			free(pipes[i]);
 			while (--i >= 0)
 			{
 				close(pipes[i][0]);

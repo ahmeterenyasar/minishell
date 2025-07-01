@@ -1,13 +1,14 @@
 #include "minishell.h"
 
 /* Child process cleanup function to prevent memory leaks in valgrind */
-static void	cleanup_child_inherited_memory(t_command *cmd, t_shell_data *shell)
+static void	cleanup_child_inherited_memory(t_shell_data *shell)
 {
 	/* 
 	 * In child processes, we need to clean up memory inherited from parent
-	 * to avoid "still reachable" reports in valgrind. This function frees
-	 * the command structure and shell data that were allocated during parsing,
-	 * as well as any readline history inherited from the parent.
+	 * to avoid "still reachable" reports in valgrind. 
+	 * 
+	 * Since fork() creates a copy-on-write memory space, freeing memory
+	 * in the child doesn't affect the parent's memory.
 	 */
 	
 	/* Clean up readline history inherited from parent */
@@ -15,17 +16,33 @@ static void	cleanup_child_inherited_memory(t_command *cmd, t_shell_data *shell)
 	rl_clear_history();
 	rl_cleanup_after_signal();
 	
-	/* Clean up current_lines inherited from parent */
+	/* 
+	 * Free the lines array to prevent "still reachable" in valgrind
+	 * This is safe because:
+	 * 1. fork() gives child its own memory space (copy-on-write)
+	 * 2. Child process is about to exit anyway
+	 * 3. Parent maintains its own copy of the data
+	 */
 	if (shell && shell->current_lines)
 	{
 		free_str_array(shell->current_lines);
-		shell->current_lines = NULL;
+		// Don't set to NULL as it's not needed in child about to exit
 	}
 	
-	if (cmd)
-		free_command(cmd);
+	/* 
+	 * For extra cleanliness, also free the environment array copy
+	 * Again, this doesn't affect the parent due to copy-on-write
+	 */
+	if (shell && shell->envp)
+	{
+		free_envp(shell->envp);
+	}
+	
+	/* Free the shell structure itself in child */
 	if (shell)
-		free_shell_data(shell);
+	{
+		free(shell);
+	}
 }
 
 /* Process execution */
@@ -33,29 +50,34 @@ void	execute_child_process(t_command *cmd, t_shell_data *shell)
 {
 	char		*cmd_path;
 	struct stat	path_stat;
+	char		**envp_backup;
 
 	reset_signals();
 	if (setup_redirections(cmd->redirects) == -1)
 	{
-		cleanup_child_inherited_memory(cmd, shell);
+		cleanup_child_inherited_memory(shell);
+		free_command(cmd);
 		exit(1);
 	}
 	if (!cmd->args || !cmd->args[0])
 	{
-		cleanup_child_inherited_memory(cmd, shell);
+		cleanup_child_inherited_memory(shell);
+		free_command(cmd);
 		exit(0);
 	}
 	// Check for empty command name
 	if (cmd->args[0] && *cmd->args[0] == '\0')
 	{
 		write(STDERR_FILENO, "minishell: : command not found\n", 32);
-		cleanup_child_inherited_memory(cmd, shell);
+		cleanup_child_inherited_memory(shell);
+		free_command(cmd);
 		exit(127);
 	}
 	if (is_builtin(cmd->args[0]))
 	{
 		int result = execute_builtin(cmd->args, shell);
-		cleanup_child_inherited_memory(cmd, shell);
+		cleanup_child_inherited_memory(shell);
+		free_command(cmd);
 		exit(result);
 	}
 	cmd_path = find_command_path(cmd->args[0], shell->envp);
@@ -68,7 +90,8 @@ void	execute_child_process(t_command *cmd, t_shell_data *shell)
 			write(STDERR_FILENO, ": No such file or directory\n", 28);
 		else
 			write(STDERR_FILENO, ": command not found\n", 20);
-		cleanup_child_inherited_memory(cmd, shell);
+		cleanup_child_inherited_memory(shell);
+		free_command(cmd);
 		exit(127);
 	}
 	// Check if the path is a directory before calling execve
@@ -80,29 +103,51 @@ void	execute_child_process(t_command *cmd, t_shell_data *shell)
 			write(STDERR_FILENO, cmd->args[0], ft_strlen(cmd->args[0]));
 			write(STDERR_FILENO, ": Is a directory\n", 17);
 			free(cmd_path);
-			cleanup_child_inherited_memory(cmd, shell);
+			cleanup_child_inherited_memory(shell);
+			free_command(cmd);
 			exit(126);
 		}
 	}
+	
+	// Backup envp before cleanup since we need it for execve
+	envp_backup = shell->envp;
+	
+	// Clean up before execve (which replaces the process image)
+	// But don't clean up envp yet since we need it for execve
+	if (shell && shell->current_lines)
+	{
+		free_str_array(shell->current_lines);
+		shell->current_lines = NULL;
+	}
+	
+	// Clean up readline
+	clear_history();
+	rl_clear_history();
+	rl_cleanup_after_signal();
+	
 	// execve will replace the entire process image if successful
 	// If it fails, we need to clean up cmd_path before exit
-	if (execve(cmd_path, cmd->args, shell->envp) == -1)
+	if (execve(cmd_path, cmd->args, envp_backup) == -1)
 	{
-		// execve failed - clean up and exit
+		// execve failed - clean up everything
 		if (errno == EACCES)
 		{
 			write(STDERR_FILENO, "minishell: ", 11);
 			write(STDERR_FILENO, cmd->args[0], ft_strlen(cmd->args[0]));
 			write(STDERR_FILENO, ": Permission denied\n", 20);
 			free(cmd_path);
-			cleanup_child_inherited_memory(cmd, shell);
+			free_envp(envp_backup);
+			free(shell);
+			free_command(cmd);
 			exit(126);
 		}
 		else
 		{
 			perror("execve");
 			free(cmd_path);
-			cleanup_child_inherited_memory(cmd, shell);
+			free_envp(envp_backup);
+			free(shell);
+			free_command(cmd);
 			exit(127);
 		}
 	}
@@ -177,7 +222,8 @@ int	execute_single_command(t_command *cmd, t_shell_data *shell)
 	if (pid == 0)
 		execute_child_process(cmd, shell);
 	waitpid(pid, &status, 0);
-	// Handle signal interruption
+	
+	// Handle signal interruption - these take priority over normal exit status
 	if (g_signal == SIGINT)
 	{
 		set_exit_status(shell, 130);
@@ -188,6 +234,8 @@ int	execute_single_command(t_command *cmd, t_shell_data *shell)
 		set_exit_status(shell, 131);
 		return (131);
 	}
+	
+	// Only process normal exit status if no signal was received
 	if (WIFEXITED(status))
 		set_exit_status(shell, WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
