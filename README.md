@@ -117,7 +117,7 @@ readline.supp     → valgrind suppression file for readline
 ✅ echo "test" << eof > output.txt readline kaynaklı definitely lost ve indirectly lost veriyor
 ✅ cleanup_child_inherited_memory changed -> cmd var deleted - verified safe, cmd memory properly managed by callers
 ✅ echo "'$US'ER'"
-
+✅ heredoc "" expansion fixed
 
 ✅ 
 🟡 

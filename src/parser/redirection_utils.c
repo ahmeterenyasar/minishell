@@ -70,15 +70,14 @@ int	set_redirection_file(t_redirect *redir, t_token *token)
 	redir->was_quoted = token->quoted;
 	if (redir->type == TOKEN_HEREDOC)
 	{
-		// For heredoc expansion rules:
-		// - Single quoted delimiter: NO expansion (expandable = 0, quoted = 1)
-		// - Double quoted delimiter: SHOULD expand (expandable = 1, quoted = 1)
-		// - Unquoted delimiter: SHOULD expand (expandable = 1, quoted = 0)
-		// So we only disable expansion for single quotes (not expandable AND quoted)
-		if (token->quoted && !token->expandable)
-			redir->expand_heredoc = 0; // Single quoted - no expansion
+		// For heredoc expansion rules (following bash behavior):
+		// - Unquoted delimiter: Variables ARE expanded in heredoc content
+		// - Single quoted delimiter: Variables are NOT expanded in heredoc content
+		// - Double quoted delimiter: Variables are NOT expanded in heredoc content
+		if (token->quoted)
+			redir->expand_heredoc = 0; // Any quoted delimiter - no expansion
 		else
-			redir->expand_heredoc = 1; // Double quoted or unquoted - expansion
+			redir->expand_heredoc = 1; // Unquoted delimiter - expansion
 	}
 	return (1);
 }
