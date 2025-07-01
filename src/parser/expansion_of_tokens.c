@@ -4,12 +4,9 @@ void	copy_env_value(char *result, int *j, char *value)
 {
     int	k;
 
-    if (!value || !*value)
-    {
-        if (value)
-            free(value);
+    if (!value)
         return;
-    }
+    
     k = 0;
     while (value[k] && *j < 4095)
     {
@@ -180,60 +177,46 @@ char	*expand_concatenated_vars(const char *str, t_shell_data *shell)
 				
 				// Get the value and expand it
 				value = get_env_value(var_name, shell);
-				if (value && *value)
+				if (value)
 				{
 					int k = 0;
 					while (value[k] && j < 4095)
 						result[j++] = value[k++];
-				}
-				if (value)
 					free(value);
+				}
 			}
 			else
 			{
-				// Regular variable name - use longest match that exists
+				// Regular variable name - extract the full variable name first
 				int name_len = 0;
-				int best_len = 0;
-				char *best_value = NULL;
 				
-				// Try progressively longer variable names to find the longest match
+				// Extract the full variable name
 				while (str[i + name_len] && (ft_isalnum(str[i + name_len]) || str[i + name_len] == '_') && name_len < 255)
 				{
 					name_len++;
-					// Create variable name of this length
+				}
+				
+				if (name_len > 0)
+				{
+					// Create variable name
 					ft_strncpy(var_name, str + i, name_len);
 					var_name[name_len] = '\0';
 					
-					// Check if this variable exists
+					// Get the value (empty string for unset variables)
 					value = get_env_value(var_name, shell);
-					if (value && *value)
+					if (value)
 					{
-						// Found a match - remember it
-						if (best_value)
-							free(best_value);
-						best_value = value;
-						best_len = name_len;
-					}
-					else if (value)
-						free(value);
-				}
-				
-				// Use the longest match found, or the full name if no match
-				if (best_len > 0)
-				{
-					i += best_len;
-					if (best_value && *best_value)
-					{
+						// Copy the value (even if empty)
 						int k = 0;
-						while (best_value[k] && j < 4095)
-							result[j++] = best_value[k++];
+						while (value[k] && j < 4095)
+							result[j++] = value[k++];
+						free(value);
 					}
-					if (best_value)
-						free(best_value);
+					i += name_len;
 				}
 				else
 				{
-					// No match found - copy the $ and continue
+					// No valid variable name found - copy the $ and continue
 					result[j++] = '$';
 				}
 			}
