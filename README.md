@@ -109,8 +109,7 @@ readline.supp     → valgrind suppression file for readline
 
 ## Status
 🔴 $? is gone ;(
-🟡 detailed valgrind tests needed, there is a still reachable problem with the child process I think.
-🟡 debugger functions needs to be cleaned
+🟡 debugger functions and files needs to be cleaned
 🟡 divide into norm rules
 
 
