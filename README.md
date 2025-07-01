@@ -109,7 +109,6 @@ readline.supp     → valgrind suppression file for readline
 
 ## Status
 🔴 some still reachables still exist e.g., echo test | asd | echo test
-🟡 heredoc "" do not expand
 🟡 ^C exit value must be 130 *check exit values
 🟡 debugger functions and files needs to be cleaned
 🟡 divide into norm rules
