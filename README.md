@@ -108,27 +108,11 @@ readline.supp     → valgrind suppression file for readline
 ```
 
 ## Status
-    -> [slack msg] can be solved by deploying another state for the global var whether we are in heredoc or not
+🔴 $? is gone ;(
 🟡 detailed valgrind tests needed, there is a still reachable problem with the child process I think.
 🟡 debugger functions needs to be cleaned
 🟡 divide into norm rules
 
-✅ Test  62: ❌ cat <"./test_files/file name with spaces"
-✅ Test  83: ❌ echo hi >         ./outfiles/outfile01 bye 
-    -> **FIXED**: Replaced printf with write in builtin functions to avoid buffering issues with redirections
-✅ Test  86: ❌ ls >"./outfiles/outfile with spaces"
-✅ Test  87: ❌ ls >"./outfiles/outfile""1""2""3""4""5"
-✅ Test 133: ❌ $PWD
-✅ Test 134: ❌ $EMPTY
-✅ Test 135: ❌ $EMPTY echo hi
-✅ Test 136: ❌ ./test_files/invalid_permission 
-✅ Test 137: ./missing.out
-✅ Test 141: ❌ ./test_files
-✅ Test 142: /test_files
-✅ single quotes heredoc should not expand
-✅ $? values must be checked
-✅ after ctrl+c in heredoc the extra new line problem.
-✅ heredoc -> ctrl+c
 
 ✅ 
 🟡 
