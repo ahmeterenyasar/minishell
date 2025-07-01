@@ -109,11 +109,13 @@ readline.supp     → valgrind suppression file for readline
 
 ## Status
 🔴 some still reachables still exist e.g., echo test | asd | echo test
-🟡 debugger functions and files needs to be cleaned
-🟡 divide into norm rules
 🟡 cleanup_child_inherited_memory changed -> cmd var deleted but check if anything affected
 🟡 echo "'$US'ER'"
 🟡 heredoc "" do not expand
+🟡 ^C exit value must be 130 *check exit values
+
+🟡 debugger functions and files needs to be cleaned
+🟡 divide into norm rules
 
 🟡 echo "test" << eof > output.txt readline kaynaklı definitely lost ve indirectly lost veriyor
 HEAP SUMMARY:
