@@ -97,11 +97,12 @@ int	process_concatenated_word(const char *input, int i, t_token **head)
 			free(word_parts[0]);
 		return (i);
 	}
-	// Concatenate all parts into a single token value
+	// Concatenate all parts into a single token value with quote boundary markers
 	total_len = 0;
 	for (int j = 0; j < part_count; j++)
 		total_len += ft_strlen(word_parts[j]);
-	concatenated = malloc(total_len + 1);
+	// Add space for quote boundary markers (worst case: one marker per part)
+	concatenated = malloc(total_len + part_count * 2 + 1);
 	if (!concatenated)
 	{
 		for (int k = 0; k < part_count; k++)
@@ -109,9 +110,83 @@ int	process_concatenated_word(const char *input, int i, t_token **head)
 		return (i);
 	}
 	concatenated[0] = '\0';
+	
+	// Track if we need to insert boundary markers
+	int need_boundary_markers = 0;
+	// Check if we have both quoted and unquoted parts that could cause variable boundary issues
+	for (int j = 0; j < part_count - 1; j++)
+	{
+		char *current_part = word_parts[j];
+		char *next_part = word_parts[j + 1];
+		int current_len = ft_strlen(current_part);
+		
+		// If current part ends with $ and next part starts with alphanumeric
+		if (current_len > 0 && current_part[current_len - 1] == '$' && 
+			next_part && ft_isalnum(next_part[0]))
+		{
+			need_boundary_markers = 1;
+			break;
+		}
+		// If current part ends with $VAR and next part starts with alphanumeric
+		if (current_len > 1 && current_part[current_len - 1] != '$')
+		{
+			// Look for $ followed by alphanumeric at the end
+			for (int k = current_len - 1; k >= 1; k--)
+			{
+				if (current_part[k - 1] == '$' && ft_isalnum(current_part[k]))
+				{
+					if (next_part && ft_isalnum(next_part[0]))
+					{
+						need_boundary_markers = 1;
+						break;
+					}
+				}
+			}
+			if (need_boundary_markers)
+				break;
+		}
+	}
+	
+	// Concatenate parts with boundary markers if needed
 	for (int j = 0; j < part_count; j++)
 	{
 		ft_strcat(concatenated, word_parts[j]);
+		
+		// Insert boundary marker between quoted and unquoted parts if needed
+		if (need_boundary_markers && j < part_count - 1)
+		{
+			char *current_part = word_parts[j];
+			int current_len = ft_strlen(current_part);
+			
+			// Check if we need a boundary marker after this part
+			if (current_len > 0)
+			{
+				// Look for variables at the end of current part
+				int has_var_at_end = 0;
+				if (current_part[current_len - 1] == '$')
+					has_var_at_end = 1;
+				else
+				{
+					// Look for $VAR pattern at the end
+					for (int k = current_len - 1; k >= 1; k--)
+					{
+						if (current_part[k - 1] == '$' && ft_isalnum(current_part[k]))
+						{
+							has_var_at_end = 1;
+							break;
+						}
+						if (!ft_isalnum(current_part[k]) && current_part[k] != '_')
+							break;
+					}
+				}
+				
+				if (has_var_at_end && word_parts[j + 1] && ft_isalnum(word_parts[j + 1][0]))
+				{
+					ft_strcat(concatenated, "\x01"); // Use ASCII SOH as boundary marker
+				}
+			}
+		}
+		
 		free(word_parts[j]);
 	}
 	// Create the concatenated token

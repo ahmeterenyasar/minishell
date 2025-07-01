@@ -191,7 +191,7 @@ char	*expand_concatenated_vars(const char *str, t_shell_data *shell)
 				int name_len = 0;
 				
 				// Extract the full variable name
-				while (str[i + name_len] && (ft_isalnum(str[i + name_len]) || str[i + name_len] == '_') && name_len < 255)
+				while (str[i + name_len] && str[i + name_len] != '\x01' && (ft_isalnum(str[i + name_len]) || str[i + name_len] == '_') && name_len < 255)
 				{
 					name_len++;
 				}
@@ -220,6 +220,11 @@ char	*expand_concatenated_vars(const char *str, t_shell_data *shell)
 					result[j++] = '$';
 				}
 			}
+		}
+		else if (str[i] == '\x01')
+		{
+			// Skip boundary markers - they're just for variable parsing
+			i++;
 		}
 		else
 		{
