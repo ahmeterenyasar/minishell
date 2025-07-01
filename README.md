@@ -105,7 +105,6 @@ readline.supp     → valgrind suppression file for readline
 
 [Chart will be uploaded here]
 
-```
 
 ## Status
 🟡 getpid() function normally not allowed but we've implemented an additional feature for $$ expansion, I'm not sure if we use that function except the additional feature and has impact on the ease of implementing the mandatory parts.
