@@ -109,69 +109,14 @@ readline.supp     → valgrind suppression file for readline
 
 ## Status
 🔴 some still reachables still exist e.g., echo test | asd | echo test
-🟡 cleanup_child_inherited_memory changed -> cmd var deleted but check if anything affected
-✅ echo "'$US'ER'"
 🟡 heredoc "" do not expand
 🟡 ^C exit value must be 130 *check exit values
 🟡 debugger functions and files needs to be cleaned
 🟡 divide into norm rules
 
-🟡 echo "test" << eof > output.txt readline kaynaklı definitely lost ve indirectly lost veriyor
-HEAP SUMMARY:
-    in use at exit: 208,765 bytes in 234 blocks
-  total heap usage: 790 allocs, 556 frees, 291,470 bytes allocated
-
-4 bytes in 2 blocks are indirectly lost in loss record 1 of 73
-   at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-   by 0x48ACBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A36D5: rl_copy_text (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A4775: rl_delete_text (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A9DA0: _rl_rubout_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x488AE97: _rl_dispatch_subseq (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x488BCC9: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x4894D14: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x40139E: main (in /home/ayasar/Desktop/final_v_minishell/minishell)
-
-32 bytes in 1 blocks are indirectly lost in loss record 17 of 73
-   at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-   by 0x48ACBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A37C2: rl_add_undo (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A47D6: rl_delete_text (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A9DA0: _rl_rubout_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x488AE97: _rl_dispatch_subseq (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x488BCC9: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x4894D14: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x40139E: main (in /home/ayasar/Desktop/final_v_minishell/minishell)
-
-64 bytes in 2 blocks are indirectly lost in loss record 21 of 73
-   at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-   by 0x48ACBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A37C2: rl_add_undo (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A3F4C: rl_insert_text (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A5411: _rl_insert_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48AA154: rl_insert (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x488AE97: _rl_dispatch_subseq (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x488BCC9: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x4894D14: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x40139E: main (in /home/ayasar/Desktop/final_v_minishell/minishell)
-
-132 (32 direct, 100 indirect) bytes in 1 blocks are definitely lost in loss record 27 of 73
-   at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-   by 0x48ACBAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A37C2: rl_add_undo (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A47D6: rl_delete_text (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x48A9DA0: _rl_rubout_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x488AE97: _rl_dispatch_subseq (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x488BCC9: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x4894D14: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-   by 0x40139E: main (in /home/ayasar/Desktop/final_v_minishell/minishell)
-
-LEAK SUMMARY:
-   definitely lost: 32 bytes in 1 blocks
-   indirectly lost: 100 bytes in 5 blocks
-     possibly lost: 0 bytes in 0 blocks
-   still reachable: 0 bytes in 0 blocks
-        suppressed: 208,633 bytes in 228 blocks
+✅ echo "test" << eof > output.txt readline kaynaklı definitely lost ve indirectly lost veriyor
+✅ cleanup_child_inherited_memory changed -> cmd var deleted - verified safe, cmd memory properly managed by callers
+✅ echo "'$US'ER'"
 
 
 ✅ 
