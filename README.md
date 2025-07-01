@@ -113,7 +113,7 @@ readline.supp     → valgrind suppression file for readline
 🟡 divide into norm rules
 🟡 cleanup_child_inherited_memory changed -> cmd var deleted but check if anything affected
 🟡 echo "'$US'ER'"
-
+🟡 heredoc "" do not expand
 
 🟡 echo "test" << eof > output.txt readline kaynaklı definitely lost ve indirectly lost veriyor
 HEAP SUMMARY:
