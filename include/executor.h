@@ -14,7 +14,8 @@ char						*find_command_path(char *cmd, char **envp);
 /* Process execution functions */
 void						execute_child_process(t_command *cmd, t_shell_data *shell);
 void						execute_pipeline_child(t_command *cmd, int cmd_index, 
-                                int **pipes, int pipe_count, t_shell_data *shell);
+                                int **pipes, int pipe_count, t_shell_data *shell, 
+                                t_command *cmd_list, pid_t *pids);
 
 /* Pipeline utility functions */
 int							count_commands(t_command *cmd);

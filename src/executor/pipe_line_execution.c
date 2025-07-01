@@ -1,7 +1,8 @@
 #include "minishell.h"
 
 /* Child process cleanup function to prevent memory leaks in valgrind */
-static void	cleanup_child_inherited_memory(t_shell_data *shell)
+static void	cleanup_child_inherited_memory(t_shell_data *shell, t_command *cmd_list, 
+		int **pipes, int pipe_count, pid_t *pids)
 {
 	/* 
 	 * In child processes, we need to clean up memory inherited from parent
@@ -39,19 +40,32 @@ static void	cleanup_child_inherited_memory(t_shell_data *shell)
 		shell->envp = NULL;
 	}
 	
+	/* Free inherited pipeline structures */
+	if (pipes && pipe_count > 0)
+	{
+		close_pipes(pipes, pipe_count);
+	}
+	
+	if (pids)
+	{
+		free(pids);
+	}
+	
+	/* Free the entire command list inherited from parent */
+	if (cmd_list)
+	{
+		free_command(cmd_list);
+	}
+	
 	/* Free the shell structure itself in child */
 	if (shell)
 	{
 		free(shell);
 	}
-	
-	/* Note: We don't free the cmd structure here because it might still be needed
-	 * for execution. It will be freed by the caller or during process exit.
-	 */
 }
 
 void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
-		int pipe_count, t_shell_data *shell)
+		int pipe_count, t_shell_data *shell, t_command *cmd_list, pid_t *pids)
 {
 	char	*cmd_path;
 	char	**envp_backup;
@@ -62,29 +76,25 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 	// This ensures redirections override pipe settings when needed
 	if (setup_redirections(cmd->redirects) == -1)
 	{
-		cleanup_child_inherited_memory(shell);
-		free_command(cmd);  // Free command structure before exit
+		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(1);
 	}
 	if (!cmd->args || !cmd->args[0])
 	{
-		cleanup_child_inherited_memory(shell);
-		free_command(cmd);  // Free command structure before exit
+		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(0);
 	}
 	// Check for empty command name
 	if (cmd->args[0] && *cmd->args[0] == '\0')
 	{
 		write(STDERR_FILENO, "minishell: : command not found\n", 32);
-		cleanup_child_inherited_memory(shell);
-		free_command(cmd);  // Free command structure before exit
+		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(127);
 	}
 	if (is_builtin(cmd->args[0]))
 	{
 		int result = execute_builtin(cmd->args, shell);
-		cleanup_child_inherited_memory(shell);
-		free_command(cmd);  // Free command structure before exit
+		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(result);
 	}
 	cmd_path = find_command_path(cmd->args[0], shell->envp);
@@ -93,8 +103,7 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 		write(STDERR_FILENO, "minishell: ", 11);
 		write(STDERR_FILENO, cmd->args[0], ft_strlen(cmd->args[0]));
 		write(STDERR_FILENO, ": command not found\n", 20);
-		cleanup_child_inherited_memory(shell);
-		free_command(cmd);  // Free command structure before exit
+		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(127);
 	}
 	
@@ -114,6 +123,20 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 	rl_clear_history();
 	rl_cleanup_after_signal();
 	
+	// Clean up inherited pipeline structures before execve
+	if (pipes && pipe_count > 0)
+	{
+		close_pipes(pipes, pipe_count);
+	}
+	if (pids)
+	{
+		free(pids);
+	}
+	if (cmd_list)
+	{
+		free_command(cmd_list);
+	}
+	
 	// execve will replace the entire process image if successful
 	if (execve(cmd_path, cmd->args, envp_backup) == -1)
 	{
@@ -126,7 +149,6 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 			free(cmd_path);
 			free_envp(envp_backup);
 			free(shell);
-			free_command(cmd);
 			exit(126);
 		}
 		else
@@ -135,7 +157,6 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 			free(cmd_path);
 			free_envp(envp_backup);
 			free(shell);
-			free_command(cmd);
 			exit(127);
 		}
 	}
@@ -187,7 +208,7 @@ int	execute_pipeline(t_command *cmd, t_shell_data *shell)
 		}
 		if (pids[i] == 0)
 		{
-			execute_pipeline_child(current, i, pipes, cmd_count - 1, shell);
+			execute_pipeline_child(current, i, pipes, cmd_count - 1, shell, cmd, pids);
 			// Child should never reach here, but just in case
 			exit(1);
 		}

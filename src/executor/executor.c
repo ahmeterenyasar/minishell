@@ -109,11 +109,11 @@ void	execute_child_process(t_command *cmd, t_shell_data *shell)
 		}
 	}
 	
-	// Backup envp before cleanup since we need it for execve
+	// Backup envp and args before cleanup since we need them for execve
 	envp_backup = shell->envp;
 	
 	// Clean up before execve (which replaces the process image)
-	// But don't clean up envp yet since we need it for execve
+	// But don't clean up envp and cmd yet since we need them for execve
 	if (shell && shell->current_lines)
 	{
 		free_str_array(shell->current_lines);
