@@ -40,6 +40,13 @@ char	**split_commands_by_newlines(const char *input)
 	char	*converted;
 	char	**commands;
 
+	if (!input || !*input)
+	{
+		commands = malloc(sizeof(char *));
+		if (commands)
+			commands[0] = NULL;
+		return (commands);
+	}
 	converted = convert_newlines(input);
 	if (!converted)
 		return (NULL);

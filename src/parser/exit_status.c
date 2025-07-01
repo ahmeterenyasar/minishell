@@ -10,6 +10,7 @@ t_shell_data	*init_shell_data(char **envp)
     if (!shell)
         return (NULL);
     shell->last_exit_status = 0;
+    shell->current_lines = NULL;
     
     // Count environment variables
     count = 0;
@@ -63,6 +64,13 @@ void	free_shell_data(t_shell_data *shell)
 {
     if (!shell)
         return ;
+    
+    // Free current_lines if set
+    if (shell->current_lines)
+    {
+        free_str_array(shell->current_lines);
+        shell->current_lines = NULL;
+    }
     
     // Now we can safely free envp since we created heap copies
     free_envp(shell->envp);
