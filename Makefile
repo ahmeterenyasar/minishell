@@ -6,7 +6,6 @@ SRCS = main.c \
         src/parser/parser_interface.c \
         src/parser/syntax_checker.c \
         src/parser/utils.c \
-        src/parser/utils_debug.c \
         src/parser/free.c \
         src/parser/tokenizer.c \
         src/parser/tokenization_utils.c \

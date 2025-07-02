@@ -28,6 +28,5 @@
 # include "executor.h"
 # include "redirection.h"
 # include "heredoc.h"
-# include "debug.h"
 
 #endif

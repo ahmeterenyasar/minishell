@@ -2,7 +2,13 @@
 
 ## Project Overview
 
-`minishell` is a lightweight Unix‑like shell written in C as part of the 42 Istanbul curriculum. The goal is to reproduce the core interactive features of **bash** while respecting the strict coding standards of the school (no external libraries beyond `readline`, secure memory management, and norm‑compliant style).
+`minishell` is a lightweight Unix‑like shellibft/            → 42 libft (utility library)
+inc/              → header files
+  ├── builtins.h/
+  ├── executor.h/
+  ├── expansions.h/
+  ├── heredoc.h/
+  ├── minishell.h/n in C as part of the 42 Istanbul curriculum. The goal is to reproduce the core interactive features of **bash** while respecting the strict coding standards of the school (no external libraries beyond `readline`, secure memory management, and norm‑compliant style).
 
 Key capabilities include:
 
@@ -78,7 +84,6 @@ The prompt reflects the exit status of the previous command (`$?`). Press `Ctrl
 libft/            → 42 libft (utility library)
 inc/              → header files
   ├── builtins.h/
-  ├── debug.h/
   ├── executor.h/
   ├── expansions.h/
   ├── heredoc.h/
@@ -110,10 +115,10 @@ readline.supp     → valgrind suppression file for readline
 🔴 signal handling issues for heredoc.
 🟡 comprehense pipe test -> 
     ✅ cat << eof | cat << asd | cat << qwe  
-🟡 test: sleep with pipes
-🟡 debugger functions and files needs to be cleaned     
 🟡 divide into norm rules
 
+✅ debugger functions and files needs to be cleaned     
+✅ test: sleep with pipes
 ✅ Fixed: Exit code handling in pipelines (refactored from special return codes to flag-based approach)
     ✅ minishell$ ls | exit 100 → $? = 100
     ✅ minishell$ ls | exit → $? = 0
@@ -122,7 +127,7 @@ readline.supp     → valgrind suppression file for readline
     ✅ Normal exit behavior preserved
     ✅ Exit with too many arguments handled correctly
 
-🟡 minishell$ sleep 100 | ls
+✅ minishell$ sleep 100 | ls
     docs  include  libft  main.c  Makefile	minishell  readline.supp  README.md  src
     ^C
     minishell$ echo $?
