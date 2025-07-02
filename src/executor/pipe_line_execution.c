@@ -107,11 +107,42 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 		exit(127);
 	}
 	
-	// Backup envp before cleanup since we need it for execve
+	// Backup both envp and cmd args before cleanup since we need them for execve
 	envp_backup = shell->envp;
 	
+	// Manually duplicate the args array to avoid use-after-free
+	int args_count = 0;
+	while (cmd->args[args_count])
+		args_count++;
+	
+	char **args_backup = malloc(sizeof(char *) * (args_count + 1));
+	if (!args_backup)
+	{
+		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+		exit(1);
+	}
+	
+	int i = 0;
+	while (i < args_count)
+	{
+		args_backup[i] = ft_strdup(cmd->args[i]);
+		if (!args_backup[i])
+		{
+			// Cleanup on failure
+			while (--i >= 0)
+				free(args_backup[i]);
+			free(args_backup);
+			cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+			exit(1);
+		}
+		i++;
+	}
+	args_backup[args_count] = NULL;
+	
+	char *cmd_name_backup = ft_strdup(cmd->args[0]);  // Duplicate command name for error messages
+	
 	// Clean up before execve (which replaces the process image)
-	// But don't clean up envp yet since we need it for execve
+	// But don't clean up envp and args yet since we need them for execve
 	if (shell && shell->current_lines)
 	{
 		free_str_array(shell->current_lines);
@@ -138,15 +169,17 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 	}
 	
 	// execve will replace the entire process image if successful
-	if (execve(cmd_path, cmd->args, envp_backup) == -1)
+	if (execve(cmd_path, args_backup, envp_backup) == -1)
 	{
 		// execve failed - clean up everything including envp
 		if (errno == EACCES)
 		{
 			write(STDERR_FILENO, "minishell: ", 11);
-			write(STDERR_FILENO, cmd->args[0], ft_strlen(cmd->args[0]));
+			write(STDERR_FILENO, cmd_name_backup, ft_strlen(cmd_name_backup));
 			write(STDERR_FILENO, ": Permission denied\n", 20);
 			free(cmd_path);
+			free_str_array(args_backup);
+			free(cmd_name_backup);
 			free_envp(envp_backup);
 			free(shell);
 			exit(126);
@@ -155,6 +188,8 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 		{
 			perror("execve");
 			free(cmd_path);
+			free_str_array(args_backup);
+			free(cmd_name_backup);
 			free_envp(envp_backup);
 			free(shell);
 			exit(127);

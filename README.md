@@ -107,9 +107,12 @@ readline.supp     → valgrind suppression file for readline
 
 
 ## Status
-🟡 getpid() function normally not allowed but we've implemented an additional feature for $$ expansion, I'm not sure if we use that function except the additional feature and has impact on the ease of implementing the mandatory parts.
+🟡 comprehense pipe test -> 
+    ✅ cat << eof | cat << asd | cat << qwe  
+🟡 test: sleep with pipes
 🟡 debugger functions and files needs to be cleaned
 🟡 divide into norm rules
+signal handling issues for heredoc.
 
 ✅ some still reachables still exist e.g., echo test | asd | echo test
 ✅ ^C exit value must be 130 *check exit values
