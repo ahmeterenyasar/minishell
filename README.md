@@ -111,8 +111,68 @@ readline.supp     → valgrind suppression file for readline
 🟡 comprehense pipe test -> 
     ✅ cat << eof | cat << asd | cat << qwe  
 🟡 test: sleep with pipes
-🟡 debugger functions and files needs to be cleaned
+🟡 debugger functions and files needs to be cleaned     
 🟡 divide into norm rules
+
+🟡 minishell$ sleep 100 | ls
+    docs  include  libft  main.c  Makefile	minishell  readline.supp  README.md  src
+    ^C
+    minishell$ echo $?
+    130
+    minishell$ echo $?
+    0
+
+minishell$ lreöfrle| exit
+exit
+minishell: lreöfrle: command not found
+minishell$ echo $?
+214
+minishell$ ls | exit
+exit
+minishell$ echo $?
+214
+minishell$ ls | exit 100
+exit
+minishell$ echo $?
+214
+minishell$ exit 100 | ls
+docs  include  libft  main.c  Makefile	minishell  readline.supp  README.md  src
+minishell$ echo $?
+0
+minishell$ 
+
+
+ % echo $?                                                                                  
+142
+ayasar@k1m32s02 ~/Desktop/minishell
+ % valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./minishell
+==34871== Memcheck, a memory error detector
+==34871== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==34871== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==34871== Command: ./minishell
+==34871== 
+minishell$ exit 3244444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+exit
+==34871== 
+==34871== HEAP SUMMARY:
+==34871==     in use at exit: 208,175 bytes in 222 blocks
+==34871==   total heap usage: 515 allocs, 293 frees, 241,965 bytes allocated
+==34871== 
+==34871== LEAK SUMMARY:
+==34871==    definitely lost: 0 bytes in 0 blocks
+==34871==    indirectly lost: 0 bytes in 0 blocks
+==34871==      possibly lost: 0 bytes in 0 blocks
+==34871==    still reachable: 0 bytes in 0 blocks
+==34871==         suppressed: 208,175 bytes in 222 blocks
+==34871== 
+==34871== For lists of detected and suppressed errors, rerun with: -s
+==34871== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+ayasar@k1m32s02 ~/Desktop/minishell
+ % echo $?                                                                                  
+28
+
+
+
 
 ✅ some still reachables still exist e.g., echo test | asd | echo test
 ✅ ^C exit value must be 130 *check exit values
