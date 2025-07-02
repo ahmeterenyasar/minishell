@@ -11,6 +11,7 @@ t_shell_data	*init_shell_data(char **envp)
         return (NULL);
     shell->last_exit_status = 0;
     shell->current_lines = NULL;
+    shell->should_exit = 0;
     
     // Count environment variables
     count = 0;

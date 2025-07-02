@@ -207,9 +207,6 @@ int	execute_single_command(t_command *cmd, t_shell_data *shell)
 	if (is_builtin(cmd->args[0]))
 	{
 		result = handle_builtin_redirections(cmd, shell);
-		// Propagate the special exit code (-42) if returned
-		if (result == -42)
-			return (-42);
 		return (result);
 	}
 	pid = fork();

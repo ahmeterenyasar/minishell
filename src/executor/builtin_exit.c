@@ -9,9 +9,9 @@ int	execute_exit(char **args, t_shell_data *shell)
 
 	if (!args[1])
 	{
-		// No arguments - set exit flag and return special code
-		set_exit_status(shell, get_exit_status(shell));
-		return (-42); // Special return code to indicate exit
+		// No arguments - use current exit status
+		shell->should_exit = 1;
+		return (get_exit_status(shell));
 	}
 
 	// Too many arguments
@@ -29,12 +29,14 @@ int	execute_exit(char **args, t_shell_data *shell)
 		write(STDERR_FILENO, args[1], ft_strlen(args[1]));
 		write(STDERR_FILENO, ": numeric argument required\n", 28);
 		set_exit_status(shell, 2);
-		return (-42); // Special return code to indicate exit
+		shell->should_exit = 1;
+		return (2);
 	}
 
 	// Convert to number and handle overflow
 	temp = ft_atoi(args[1]);
 	exit_code = (int)temp;
 	set_exit_status(shell, exit_code);
-	return (-42); // Special return code to indicate exit
+	shell->should_exit = 1;
+	return (exit_code);
 }

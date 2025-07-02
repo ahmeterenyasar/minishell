@@ -67,8 +67,8 @@ int	main(int argc, char **argv, char **envp)
 					exec_result = execute_command(cmd, shell);
 					setup_signals(INTERACTIVE_MODE);
 					
-					// Check if exit was called (special return code -42)
-					if (exec_result == -42)
+					// Check if exit was called
+					if (shell->should_exit)
 					{
 						free_command(cmd);
 						clear_current_lines(shell);  /* Use helper function */

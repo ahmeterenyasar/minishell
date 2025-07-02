@@ -94,12 +94,11 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 	if (is_builtin(cmd->args[0]))
 	{
 		int result = execute_builtin(cmd->args, shell);
-		// Handle special exit return code (-42) by getting exit status BEFORE cleanup
-		if (result == -42)
+		// Check if exit was called and shell should exit
+		if (shell->should_exit)
 		{
-			int actual_exit = get_exit_status(shell);
 			cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
-			exit(actual_exit);
+			exit(result);
 		}
 		else
 		{
