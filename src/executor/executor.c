@@ -244,9 +244,14 @@ int	execute_single_command(t_command *cmd, t_shell_data *shell)
 int	execute_command(t_command *cmd, t_shell_data *shell)
 {
 	int	result;
+	int	cmd_count;
 
 	if (!cmd)
 		return (0);
+	
+	// Reset global signal flag at the start of each command execution
+	g_signal = 0;
+	
 	// Process heredocs first
 	if (process_all_heredocs(cmd, shell) != 0)
 	{
@@ -265,9 +270,26 @@ int	execute_command(t_command *cmd, t_shell_data *shell)
 		set_exit_status(shell, 130);
 		return (130);
 	}
+	
+	// For pipelines, let the pipeline logic handle exit status completely
+	// For single commands, use the traditional signal handling
+	cmd_count = count_commands(cmd);
 	result = execute_pipeline(cmd, shell);
-	// Propagate the special exit code (-42) if returned
-	if (result == -42)
-		return (-42);
+	
+	// Only override with global signal for single commands, not pipelines
+	if (cmd_count == 1 && g_signal == SIGINT)
+	{
+		set_exit_status(shell, 130);
+		return (130);
+	}
+	else if (cmd_count == 1 && g_signal == SIGQUIT)
+	{
+		set_exit_status(shell, 131);
+		return (131);
+	}
+	
+	// Propagate the special exit code if returned (for the should_exit flag)
+	if (shell->should_exit)
+		return (result);
 	return (result);
 }

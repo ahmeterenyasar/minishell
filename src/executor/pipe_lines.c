@@ -118,11 +118,10 @@ int	wait_for_pipeline(pid_t *pids, int cmd_count, t_shell_data *shell)
 		i++;
 	}
 	
-	// Handle global signals
-	if (g_signal == SIGINT)
-		last_status = 130;
-	else if (g_signal == SIGQUIT)
-		last_status = 131;
+	// For pipelines, we always use the last command's actual exit status
+	// regardless of any global signal state in the parent process.
+	// This ensures proper bash-compatible behavior for cases like:
+	// sleep 100 | ls  (with ^C should return 0 if ls completed successfully)
 	
 	set_exit_status(shell, last_status);
 	return (last_status);
