@@ -34,7 +34,7 @@ int	execute_exit(char **args, t_shell_data *shell)
 
 	// Convert to number and handle overflow
 	temp = ft_atoi(args[1]);
-	exit_code = (int)(temp % 256);
+	exit_code = (int)temp;
 	set_exit_status(shell, exit_code);
 	return (-42); // Special return code to indicate exit
 }

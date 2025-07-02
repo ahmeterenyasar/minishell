@@ -114,6 +114,12 @@ readline.supp     → valgrind suppression file for readline
 🟡 debugger functions and files needs to be cleaned     
 🟡 divide into norm rules
 
+✅ Fixed: Exit code handling in pipelines
+    ✅ minishell$ ls | exit 100 → $? = 100
+    ✅ minishell$ ls | exit → $? = 0
+    ✅ minishell$ invalid_cmd | exit 50 → $? = 50
+    ✅ minishell$ exit 42 | ls → $? = 0
+
 🟡 minishell$ sleep 100 | ls
     docs  include  libft  main.c  Makefile	minishell  readline.supp  README.md  src
     ^C

@@ -94,8 +94,18 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 	if (is_builtin(cmd->args[0]))
 	{
 		int result = execute_builtin(cmd->args, shell);
-		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
-		exit(result);
+		// Handle special exit return code (-42) by getting exit status BEFORE cleanup
+		if (result == -42)
+		{
+			int actual_exit = get_exit_status(shell);
+			cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+			exit(actual_exit);
+		}
+		else
+		{
+			cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+			exit(result);
+		}
 	}
 	cmd_path = find_command_path(cmd->args[0], shell->envp);
 	if (!cmd_path)
