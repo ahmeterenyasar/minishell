@@ -31,14 +31,6 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		}
 
-		// Handle Ctrl+C during readline
-		if (g_signal == SIGINT)
-		{
-			set_exit_status(shell, 130);
-			free(input);
-			continue;
-		}
-
 		if (!*input)
 		{
 			free(input);

@@ -112,8 +112,8 @@ readline.supp     → valgrind suppression file for readline
 
 
 ## Status
-🔴 signal handling issues for heredoc.
 🔴 export a="ls -la" and var a call
+🟡 mostly fixed: signal handling issues, check heredoc.
 🟡 comprehense pipe test -> 
     ✅ cat << eof | cat << asd | cat << qwe  
 🟡 divide into norm rules
