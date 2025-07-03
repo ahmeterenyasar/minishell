@@ -8,7 +8,6 @@ int	main(int argc, char **argv, char **envp)
 	t_command		*cmd;
 	t_shell_data	*shell;
 	int				last_exit_status;
-	int				exec_result;
 	char			**lines;
 	int				i;
 	(void)argc;
@@ -64,7 +63,7 @@ int	main(int argc, char **argv, char **envp)
 				if (cmd)
 				{
 					setup_signals(EXECUTING_MODE);
-					exec_result = execute_command(cmd, shell);
+					execute_command(cmd, shell);
 					setup_signals(INTERACTIVE_MODE);
 					
 					// Check if exit was called
