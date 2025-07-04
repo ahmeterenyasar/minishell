@@ -55,7 +55,7 @@ static int	process_command_line(char *line, t_shell_data *shell)
 		{
 			free_command(cmd);
 			clear_current_lines(shell);
-			handle_exit_cleanup(shell);
+			free_shell_data(shell);
 		}
 		free_command(cmd);
 		return (0);
@@ -88,7 +88,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	char			*input;
 	t_shell_data	*shell;
-	int				last_exit_status;
 	char			**lines;
 	int				input_result;
 	(void)argc;
@@ -117,6 +116,6 @@ int	main(int argc, char **argv, char **envp)
 		handle_signal_check(shell);
 		setup_signals(INTERACTIVE_MODE);
 	}
-	handle_exit_cleanup(shell);
+	free_shell_data(shell);
 	return (0);
 }

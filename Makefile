@@ -28,7 +28,10 @@ SRCS = main.c \
         src/parser/redirect_expansion.c \
         src/parser/signals.c \
         src/parser/white_space.c \
-        src/parser/exit_status.c \
+        src/parser/shell_init.c \
+        src/parser/shell_cleanup.c \
+        src/parser/exit_status_manager.c \
+        src/parser/current_lines_manager.c \
         src/parser/printf_utils.c \
         src/parser/arg_counter.c \
         src/parser/arg_filler.c \
