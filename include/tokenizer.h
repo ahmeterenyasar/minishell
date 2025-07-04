@@ -43,6 +43,7 @@ int		create_quoted_token(char quote_char, char *quoted_text, t_token **head,
 int		is_token_delimiter(char c);
 int		is_operator_char(char c);
 int		is_quote_char(char c);
+int		skip_unquoted_text(const char *input, int pos);
 
 /* Syntax checker */
 int		check_syntax(t_token *tokens);
