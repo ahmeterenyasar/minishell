@@ -17,6 +17,11 @@ int							execute_exit(char **args, t_shell_data *shell);
 int							is_builtin(char *cmd);
 int							execute_builtin(char **args, t_shell_data *shell);
 
+/* Export-related functions */
+int							export_without_value(t_shell_data *shell, const char *name);
+int							handle_export_assignment(char *arg, t_shell_data *shell);
+char						**sort_envp_for_export(char **envp);
+
 /* Helper functions for builtins */
 int							is_valid_n_flag(const char *arg);
 int							is_valid_identifier(const char *name);

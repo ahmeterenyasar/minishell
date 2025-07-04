@@ -53,7 +53,9 @@ SRCS = main.c \
         src/executor/builtin_exit.c \
         src/executor/builtin_expr.c \
         src/executor/builtin_export.c \
-        src/executor/builtin_export_utils.c \
+        src/executor/builtin_export_validation.c \
+        src/executor/builtin_export_display.c \
+        src/executor/builtin_export_sorting.c \
         src/executor/env_memory.c \
         src/executor/env_search.c \
         src/executor/env_variable_helpers.c \
