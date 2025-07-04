@@ -26,6 +26,10 @@ void						print_export_vars(char **envp);
 void						print_env(char **envp);
 void						free_envp(char **envp);
 char						**copy_envp(char **envp);
+char						**add_env_var(char **envp, const char *name, const char *value);
+int							update_env_var(char **envp, const char *name, const char *value, int index);
+char						**copy_existing_env_vars(char **envp, int count);
+char						*create_env_variable(const char *name, const char *value);
 
 /* CD command helper functions */
 int							validate_cd_args(char **args, t_shell_data *shell);
