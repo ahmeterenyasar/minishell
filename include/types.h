@@ -58,8 +58,8 @@ typedef struct s_shell_data
 {
 	int					last_exit_status;
 	char				**envp;
-	char				**current_lines;  /* Current command lines being processed */
-	int					should_exit;      /* Flag to indicate shell should exit */
+	char **current_lines; /* Current command lines being processed */
+	int should_exit;      /* Flag to indicate shell should exit */
 }						t_shell_data;
 
 /* Global variable for signal handling - ONLY allowed global */
