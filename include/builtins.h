@@ -30,6 +30,9 @@ char						**add_env_var(char **envp, const char *name, const char *value);
 int							update_env_var(char **envp, const char *name, const char *value, int index);
 char						**copy_existing_env_vars(char **envp, int count);
 char						*create_env_variable(const char *name, const char *value);
+char						**create_env_without_var(char **envp, int skip_index);
+int							remove_env_variable(t_shell_data *shell, const char *name);
+int							process_unset_args(t_shell_data *shell, char **args);
 
 /* CD command helper functions */
 int							validate_cd_args(char **args, t_shell_data *shell);
