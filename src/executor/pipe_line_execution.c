@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 /* Child process cleanup function to prevent memory leaks in valgrind */
-static void	cleanup_child_inherited_memory(t_shell_data *shell, t_command *cmd_list, 
+static void	cleanup_pipeline_child_memory(t_shell_data *shell, t_command *cmd_list, 
 		int **pipes, int pipe_count, pid_t *pids)
 {
 	/* 
@@ -76,19 +76,19 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 	// This ensures redirections override pipe settings when needed
 	if (setup_redirections(cmd->redirects) == -1)
 	{
-		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+		cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(1);
 	}
 	if (!cmd->args || !cmd->args[0])
 	{
-		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+		cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(0);
 	}
 	// Check for empty command name
 	if (cmd->args[0] && *cmd->args[0] == '\0')
 	{
 		write(STDERR_FILENO, "minishell: : command not found\n", 32);
-		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+		cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(127);
 	}
 	if (is_builtin(cmd->args[0]))
@@ -97,12 +97,12 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 		// Check if exit was called and shell should exit
 		if (shell->should_exit)
 		{
-			cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+			cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 			exit(result);
 		}
 		else
 		{
-			cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+			cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 			exit(result);
 		}
 	}
@@ -112,7 +112,7 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 		write(STDERR_FILENO, "minishell: ", 11);
 		write(STDERR_FILENO, cmd->args[0], ft_strlen(cmd->args[0]));
 		write(STDERR_FILENO, ": command not found\n", 20);
-		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+		cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(127);
 	}
 	
@@ -127,7 +127,7 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 	char **args_backup = malloc(sizeof(char *) * (args_count + 1));
 	if (!args_backup)
 	{
-		cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+		cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(1);
 	}
 	
@@ -141,7 +141,7 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 			while (--i >= 0)
 				free(args_backup[i]);
 			free(args_backup);
-			cleanup_child_inherited_memory(shell, cmd_list, pipes, pipe_count, pids);
+			cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 			exit(1);
 		}
 		i++;

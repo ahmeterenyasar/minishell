@@ -3,7 +3,7 @@
 
 # include "types.h"
 
-/* Executor functions */
+/* Main executor functions */
 int							execute_command(t_command *cmd, t_shell_data *shell);
 int							execute_pipeline(t_command *cmd, t_shell_data *shell);
 int							execute_single_command(t_command *cmd, t_shell_data *shell);
@@ -16,6 +16,47 @@ void						execute_child_process(t_command *cmd, t_shell_data *shell);
 void						execute_pipeline_child(t_command *cmd, int cmd_index, 
                                 int **pipes, int pipe_count, t_shell_data *shell, 
                                 t_command *cmd_list, pid_t *pids);
+
+/* Child cleanup functions */
+void						cleanup_readline_history(void);
+void						cleanup_shell_lines(t_shell_data *shell);
+void						cleanup_shell_environment(t_shell_data *shell);
+void						cleanup_child_inherited_memory(t_shell_data *shell);
+void						exit_with_cleanup(t_shell_data *shell, t_command *cmd, 
+                                int exit_code);
+
+/* Command validation functions */
+int							validate_command_args(t_command *cmd);
+void						print_command_not_found_error(char *cmd_name);
+void						print_directory_error(char *cmd_name);
+void						print_permission_error(char *cmd_name);
+
+/* Process signal handling functions */
+int							handle_signal_termination(int status, t_shell_data *shell);
+int							handle_global_signals(t_shell_data *shell);
+int							check_heredoc_interruption(t_shell_data *shell);
+void						reset_global_signal(void);
+
+/* Builtin execution functions */
+int							setup_builtin_redirections(t_command *cmd, int *stdin_backup, 
+                                int *stdout_backup);
+void						restore_builtin_redirections(int stdin_backup, 
+                                int stdout_backup);
+int							handle_builtin_redirections(t_command *cmd, t_shell_data *shell);
+int							execute_builtin_command(t_command *cmd, t_shell_data *shell);
+
+/* Child execution functions */
+int							validate_command_path(char *cmd_path, char *cmd_name, 
+                                t_shell_data *shell, t_command *cmd);
+void						handle_execve_error(char *cmd_path, char *cmd_name, 
+                                t_shell_data *shell, t_command *cmd);
+void						execute_external_command(t_command *cmd, t_shell_data *shell);
+
+/* Executor main functions */
+int							handle_empty_command(t_command *cmd, t_shell_data *shell);
+int							process_command_status(int status, t_shell_data *shell);
+int							process_heredocs_with_signal_check(t_command *cmd, 
+                                t_shell_data *shell);
 
 /* Pipeline utility functions */
 int							count_commands(t_command *cmd);

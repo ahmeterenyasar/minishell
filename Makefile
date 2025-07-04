@@ -51,6 +51,12 @@ SRCS = main.c \
         src/executor/builtin_unset.c \
         src/executor/builtin_utils.c \
         src/executor/executor.c \
+        src/executor/child_cleanup.c \
+        src/executor/command_validation.c \
+        src/executor/process_signals.c \
+        src/executor/builtin_execution.c \
+        src/executor/child_execution.c \
+        src/executor/executor_main.c \
         src/executor/path.c \
         src/executor/pipe_lines.c \
         src/executor/pipe_line_utils.c \
