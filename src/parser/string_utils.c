@@ -264,3 +264,19 @@ int	ft_strcmp(const char *s1, const char *s2)
 	}
 	return (*us1 - *us2);
 }
+
+void	free_str_array(char **arr)
+{
+	int	i;
+
+	if (!arr)
+		return;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		arr[i] = NULL;
+		i++;
+	}
+	free(arr);
+}

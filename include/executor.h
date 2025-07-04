@@ -11,6 +11,9 @@ int							execute_single_command(t_command *cmd, t_shell_data *shell);
 /* Path resolution functions */
 char						*find_command_path(char *cmd, char **envp);
 
+/* Environment utility functions */
+char						*get_env_from_envp(char **envp, const char *name);
+
 /* Process execution functions */
 void						execute_child_process(t_command *cmd, t_shell_data *shell);
 void						execute_pipeline_child(t_command *cmd, int cmd_index, 

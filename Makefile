@@ -63,7 +63,8 @@ SRCS = main.c \
         src/executor/builtin_execution.c \
         src/executor/child_execution.c \
         src/executor/executor_main.c \
-        src/executor/path.c \
+        src/executor/path_resolution.c \
+        src/executor/environment_utils.c \
         src/executor/pipe_management.c \
         src/executor/pipeline_execution.c \
         src/executor/child_cleanup_utils.c \
