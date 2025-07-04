@@ -47,7 +47,7 @@ SRCS = main.c \
         src/executor/builtin_expr.c \
         src/executor/builtin_export.c \
         src/executor/builtin_export_utils.c \
-        src/executor/builtin_export_utils_2.c \
+        src/executor/builtin_export_display.c \
         src/executor/builtin_pwd.c \
         src/executor/builtin_unset.c \
         src/executor/builtin_utils.c \
