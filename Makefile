@@ -20,7 +20,12 @@ SRCS = main.c \
         src/parser/input_processor.c \
         src/parser/token_word_utils.c \
         src/parser/expansions.c \
-        src/parser/expansion_of_tokens.c \
+        src/parser/expansion_utils.c \
+        src/parser/env_expansion.c \
+        src/parser/concat_expansion_utils.c \
+        src/parser/concat_expansion.c \
+        src/parser/token_expansion.c \
+        src/parser/redirect_expansion.c \
         src/parser/signals.c \
         src/parser/white_space.c \
         src/parser/exit_status.c \
