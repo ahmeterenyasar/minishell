@@ -47,4 +47,19 @@ int		is_quote_char(char c);
 /* Syntax checker */
 int		check_syntax(t_token *tokens);
 
+/* Tokenizer helper functions - split into multiple files */
+int		process_quoted_part(const char *input, int *i, char **word_parts,
+			int *part_count, int *expandable);
+int		process_unquoted_part(const char *input, int *i, char **word_parts,
+			int *part_count, int *expandable);
+int		check_boundary_markers_needed(char **word_parts, int part_count);
+char	*concatenate_word_parts(char **word_parts, int part_count,
+			int need_boundary_markers);
+int		handle_single_quoted_token(const char *input, int start_pos,
+			char **word_parts, t_token **head);
+int		calculate_total_length(char **word_parts, int part_count);
+int		finalize_concatenated_word(char **word_parts, int part_count,
+			int start_pos, int expandable, t_token **head,
+			const char *input, int i);
+
 #endif

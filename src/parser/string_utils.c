@@ -162,6 +162,18 @@ static char	**free_split_result(char **result, int count)
 	return (NULL);
 }
 
+static char	*allocate_and_copy_word(const char *s, int len)
+{
+	char	*word;
+
+	word = malloc(len + 1);
+	if (!word)
+		return (NULL);
+	ft_strncpy(word, s, len);
+	word[len] = '\0';
+	return (word);
+}
+
 char	**ft_split(const char *s, char c)
 {
 	char	**res;
@@ -178,11 +190,10 @@ char	**ft_split(const char *s, char c)
 		if (!*s)
 			break ;
 		len = word_length(s, c);
-		res[i] = malloc(len + 1);
+		res[i] = allocate_and_copy_word(s, len);
 		if (!res[i])
 			return (free_split_result(res, i));
-		ft_strncpy(res[i], s, len);
-		res[i++][len] = '\0';
+		i++;
 		s += len;
 	}
 	res[i] = NULL;

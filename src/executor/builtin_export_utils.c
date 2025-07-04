@@ -67,67 +67,75 @@ int	find_env_var(char **envp, const char *name)
 	return (-1);
 }
 
+static char	**copy_existing_env_vars(char **envp, int count)
+{
+	char	**new_envp;
+	int		i;
+
+	new_envp = malloc(sizeof(char *) * (count + 2));
+	if (!new_envp)
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		new_envp[i] = ft_strdup(envp[i]);
+		if (!new_envp[i])
+		{
+			while (--i >= 0)
+				free(new_envp[i]);
+			free(new_envp);
+			return (NULL);
+		}
+		i++;
+	}
+	return (new_envp);
+}
+
+static char	*create_env_variable(const char *name, const char *value)
+{
+	char	*new_var;
+
+	if (value)
+	{
+		new_var = malloc(ft_strlen(name) + ft_strlen(value) + 2);
+		if (!new_var)
+			return (NULL);
+		ft_strcpy(new_var, name);
+		ft_strcat(new_var, "=");
+		ft_strcat(new_var, value);
+	}
+	else
+	{
+		new_var = ft_strdup(name);
+		if (!new_var)
+			return (NULL);
+	}
+	return (new_var);
+}
+
 char	**add_env_var(char **envp, const char *name, const char *value)
 {
-    char	**new_envp;
-    char	*new_var;
-    int		count;
-    int		i;
+	char	**new_envp;
+	char	*new_var;
+	int		count;
 
-    count = 0;
-    while (envp[count])
-        count++;
-
-    new_envp = malloc(sizeof(char *) * (count + 2));
-    if (!new_envp)
-        return (NULL);
-
-    // Copy all existing environment variables (strings, not pointers)
-    i = 0;
-    while (i < count)
-    {
-        new_envp[i] = ft_strdup(envp[i]);  // Create new copies
-        if (!new_envp[i])
-        {
-            // Cleanup on failure
-            while (--i >= 0)
-                free(new_envp[i]);
-            free(new_envp);
-            return (NULL);
-        }
-        i++;
-    }
-
-    // Create new variable string
-    if (value)
-    {
-        new_var = malloc(ft_strlen(name) + ft_strlen(value) + 2);
-        if (!new_var)
-        {
-            while (--i >= 0)
-                free(new_envp[i]);
-            free(new_envp);
-            return (NULL);
-        }
-        ft_strcpy(new_var, name);
-        ft_strcat(new_var, "=");
-        ft_strcat(new_var, value);
-    }
-    else
-    {
-        new_var = ft_strdup(name);
-        if (!new_var)
-        {
-            while (--i >= 0)
-                free(new_envp[i]);
-            free(new_envp);
-            return (NULL);
-        }
-    }
-
-    new_envp[count] = new_var;
-    new_envp[count + 1] = NULL;
-    return (new_envp);
+	count = 0;
+	while (envp[count])
+		count++;
+	new_envp = copy_existing_env_vars(envp, count);
+	if (!new_envp)
+		return (NULL);
+	new_var = create_env_variable(name, value);
+	if (!new_var)
+	{
+		while (--count >= 0)
+			free(new_envp[count]);
+		free(new_envp);
+		return (NULL);
+	}
+	new_envp[count] = new_var;
+	new_envp[count + 1] = NULL;
+	return (new_envp);
 }
 
 int	update_env_var(char **envp, const char *name, const char *value, int index)

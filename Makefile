@@ -8,6 +8,12 @@ SRCS = main.c \
         src/parser/utils.c \
         src/parser/free.c \
         src/parser/tokenizer.c \
+        src/parser/tokenizer_quoted_part.c \
+        src/parser/tokenizer_unquoted_part.c \
+        src/parser/tokenizer_boundary_check.c \
+        src/parser/tokenizer_concatenate.c \
+        src/parser/tokenizer_single_token.c \
+        src/parser/tokenizer_finalize.c \
         src/parser/tokenization_utils.c \
         src/parser/tokenization_handler.c \
         src/parser/token_quote_utils.c \

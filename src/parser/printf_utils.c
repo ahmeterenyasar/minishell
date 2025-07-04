@@ -5,23 +5,11 @@ void	print_error(const char *msg)
 	write(STDERR_FILENO, msg, ft_strlen(msg));
 }
 
-char	*int_to_string(int n)
+static int	calculate_int_length(int n)
 {
-	char	*str;
-	int		len;
-	int		temp;
-	int		i;
-	int		is_negative;
+	int	len;
+	int	temp;
 
-	is_negative = 0;
-	if (n < 0)
-	{
-		is_negative = 1;
-		if (n == -2147483648)
-			return (ft_strdup("-2147483648"));
-		n = -n;
-	}
-	
 	temp = n;
 	if (n == 0)
 		len = 1;
@@ -32,17 +20,15 @@ char	*int_to_string(int n)
 		temp /= 10;
 		len++;
 	}
-	
-	if (is_negative)
-		len++;
-	
-	str = malloc(len + 1);
-	if (!str)
-		return (NULL);
-	
+	return (len);
+}
+
+static void	fill_int_string(char *str, int n, int len, int is_negative)
+{
+	int	i;
+
 	str[len] = '\0';
 	i = len - 1;
-	
 	if (n == 0)
 		str[0] = '0';
 	else
@@ -55,6 +41,28 @@ char	*int_to_string(int n)
 		if (is_negative)
 			str[0] = '-';
 	}
-	
+}
+
+char	*int_to_string(int n)
+{
+	char	*str;
+	int		len;
+	int		is_negative;
+
+	is_negative = 0;
+	if (n < 0)
+	{
+		is_negative = 1;
+		if (n == -2147483648)
+			return (ft_strdup("-2147483648"));
+		n = -n;
+	}
+	len = calculate_int_length(n);
+	if (is_negative)
+		len++;
+	str = malloc(len + 1);
+	if (!str)
+		return (NULL);
+	fill_int_string(str, n, len, is_negative);
 	return (str);
 }
