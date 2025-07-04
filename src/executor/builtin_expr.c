@@ -1,34 +1,60 @@
 #include "minishell.h"
 
-int	execute_expr(char **args, t_shell_data *shell)
+static int	validate_expr_arguments(char **args, t_shell_data *shell)
 {
-	int		lhs;
-	int		rhs;
-	char	*result_str;
-
 	if (!args[1] || !args[2] || !args[3] || args[4])
 	{
 		write(STDERR_FILENO, "expr: usage: expr operand1 + operand2\n", 38);
 		set_exit_status(shell, 1);
 		return (1);
 	}
+	return (0);
+}
+
+static int	validate_expr_operator(char **args, t_shell_data *shell)
+{
 	if (ft_strcmp(args[2], "+") != 0)
 	{
 		write(STDERR_FILENO, "expr: only + operator supported\n", 32);
 		set_exit_status(shell, 1);
 		return (1);
 	}
+	return (0);
+}
+
+static void	output_expr_result(int result)
+{
+	char	*result_str;
+
+	result_str = ft_itoa(result);
+	if (result_str)
+	{
+		write(STDOUT_FILENO, result_str, ft_strlen(result_str));
+		write(STDOUT_FILENO, "\n", 1);
+		free(result_str);
+	}
+}
+
+static int	calculate_addition(char **args)
+{
+	int	lhs;
+	int	rhs;
+
 	lhs = ft_atoi(args[1]);
 	rhs = ft_atoi(args[3]);
-	{
-		result_str = ft_itoa(lhs + rhs);
-		if (result_str)
-		{
-			write(STDOUT_FILENO, result_str, ft_strlen(result_str));
-			write(STDOUT_FILENO, "\n", 1);
-			free(result_str);
-		}
-	}
+	return (lhs + rhs);
+}
+
+int	execute_expr(char **args, t_shell_data *shell)
+{
+	int	result;
+
+	if (validate_expr_arguments(args, shell))
+		return (1);
+	if (validate_expr_operator(args, shell))
+		return (1);
+	result = calculate_addition(args);
+	output_expr_result(result);
 	set_exit_status(shell, 0);
 	return (0);
 }
