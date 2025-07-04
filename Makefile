@@ -58,7 +58,8 @@ SRCS = main.c \
         src/executor/child_execution.c \
         src/executor/executor_main.c \
         src/executor/path.c \
-        src/executor/pipe_lines.c \
+        src/executor/pipe_management.c \
+        src/executor/pipeline_execution.c \
         src/executor/pipe_line_utils.c \
         src/executor/pipe_line_execution.c \
         src/executor/redirection_handling.c \
