@@ -2,8 +2,14 @@
 
 ## Project Overview
 
+`minishell` is a lightweight Unix‑like shell implementation in C as pMakefile
+main.c
+readline.supp     → valgrind suppression file for readlineof the 42 Istanbul curriculum. The goal is to reproduce the core interactive features of **bash** while respecting the strict coding standards of the school (no external libraries beyond `readline`, secure memory management, and norm‑compliant style).
+
+## Project Overview
+
 `minishell` is a lightweight Unix‑like shellibft/            → 42 libft (utility library)
-inc/              → header files
+include/          → header files
   ├── builtins.h/
   ├── executor.h/
   ├── expansions.h/
@@ -83,17 +89,17 @@ The prompt reflects the exit status of the previous command (`$?`). Press `Ctrl
 ```
 libft/            → 42 libft (utility library)
 inc/              → header files
-  ├── builtins.h/
-  ├── executor.h/
-  ├── expansions.h/
-  ├── heredoc.h/
-  ├── minishell.h/
-  ├── parser.h/
-  ├── redirection.h/
-  ├── signals.h/
-  ├── string_utils.h/
-  ├── tokenizer.h/
-  └── types.h/
+  ├── builtins.h
+  ├── executor.h
+  ├── expansions.h
+  ├── heredoc.h
+  ├── minishell.h
+  ├── parser.h
+  ├── redirection.h
+  ├── signals.h
+  ├── string_utils.h
+  ├── tokenizer.h
+  └── types.h
 src/              → source files
   ├── executor/
   └── parser/
@@ -112,53 +118,31 @@ readline.supp     → valgrind suppression file for readline
 
 
 ## Status
-🔴 export a="ls -la" and $a
-🔴 ^C echo $? sometimes not working. I think signals are really fucked up.
-🔴 "  " must give command not found
-🟡 mostly fixed: signal handling issues, check heredoc.
-🟡 comprehense pipe test -> 
-    ✅ cat << eof | cat << asd | cat << qwe  
-🟡 divide into norm rules
 
-✅ debugger functions and files needs to be cleaned     
-✅ test: sleep with pipes
-✅ Fixed: Exit code handling in pipelines (refactored from special return codes to flag-based approach)
-    ✅ minishell$ ls | exit 100 → $? = 100
-    ✅ minishell$ ls | exit → $? = 0
-    ✅ minishell$ invalid_cmd | exit 50 → $? = 50
-    ✅ minishell$ exit 42 | ls → $? = 0
-    ✅ Normal exit behavior preserved
-    ✅ Exit with too many arguments handled correctly
+### Known Issues 🔴
+- `export a="ls -la"` and `$a` expansion issues
+- `^C echo $?` sometimes not working - signal handling needs fixing
+- Empty string commands (`"  "`) should give "command not found"
 
-✅ minishell$ sleep 100 | ls
-    docs  include  libft  main.c  Makefile	minishell  readline.supp  README.md  src
-    ^C
-    minishell$ echo $?
-    130
-    minishell$ echo $?
-    0
-minishell$ exit 100 | ls
-docs  include  libft  main.c  Makefile	minishell  readline.supp  README.md  src
-minishell$ echo $?
-0
-minishell$ 
+### In Progress 🟡
+- Signal handling issues (mostly fixed, needs heredoc verification)
+- Comprehensive pipe testing
+- Code normalization compliance
 
-
- % echo $?                                                                                  
-142
-
-
-
-✅ some still reachables still exist e.g., echo test | asd | echo test
-✅ ^C exit value must be 130 *check exit values
-✅ echo "test" << eof > output.txt readline kaynaklı definitely lost ve indirectly lost veriyor
-✅ cleanup_child_inherited_memory changed -> cmd var deleted - verified safe, cmd memory properly managed by callers
-✅ echo "'$US'ER'"
-✅ heredoc "" expansion fixed
-
-✅ 
-🟡 
-🔴 
+### Completed ✅
+- Exit code handling in pipelines (refactored from special return codes to flag-based approach)
+  - `minishell$ ls | exit 100` → `$? = 100`
+  - `minishell$ ls | exit` → `$? = 0`
+  - `minishell$ invalid_cmd | exit 50` → `$? = 50`
+  - `minishell$ exit 42 | ls` → `$? = 0`
+  - Normal exit behavior preserved
+  - Exit with too many arguments handled correctly
+- Signal handling for `^C` returns exit code 130
+- Heredoc expansion with quotes fixed
+- Memory management improvements
+- Complex pipe handling: `cat << eof | cat << asd | cat << qwe`
+- Sleep with pipes functionality
+- Debugger cleanup 
 
 ---
 
