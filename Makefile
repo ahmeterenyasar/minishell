@@ -2,7 +2,6 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -Iinclude
 SRCS = main.c \
-        src/parser/string_utils.c \
         src/parser/parser_interface.c \
         src/parser/syntax_validator.c \
         src/parser/syntax_checker_utils.c \

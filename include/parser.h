@@ -25,4 +25,11 @@ void						add_redirection(t_command *cmd, t_redirect *redir);
 int							set_redirection_file(t_redirect *redir, t_token *token);
 t_redirect					*create_redirection(t_token *token);
 
+/* General utility functions */
+int							is_all_whitespace(const char *str);
+int							is_operator_char(char c);
+int							is_quote_char(char c);
+int							is_token_delimiter(char c);
+void						free_str_array(char **arr);
+
 #endif
