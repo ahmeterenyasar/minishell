@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 /* Environment display */
 void	print_env(char **envp)
 {

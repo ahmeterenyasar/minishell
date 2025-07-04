@@ -60,8 +60,12 @@ SRCS = main.c \
         src/executor/path.c \
         src/executor/pipe_management.c \
         src/executor/pipeline_execution.c \
+        src/executor/child_cleanup_utils.c \
+        src/executor/child_command_utils.c \
+        src/executor/child_external_execution.c \
+        src/executor/pipeline_child_execution.c \
+        src/executor/pipeline_coordinator.c \
         src/executor/pipe_line_utils.c \
-        src/executor/pipe_line_execution.c \
         src/executor/redirection_handling.c \
         src/executor/redirection_handling_utils.c \
         src/executor/heredoc_parser.c \

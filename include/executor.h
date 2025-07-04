@@ -68,4 +68,24 @@ void						setup_pipe_redirections(int cmd_index, int **pipes,
 int							wait_for_pipeline(pid_t *pids, int cmd_count, 
                                 t_shell_data *shell);
 
+/* Child cleanup functions */
+void						cleanup_pipeline_child_memory(t_shell_data *shell, 
+                                t_command *cmd_list, int **pipes, int pipe_count, 
+                                pid_t *pids);
+
+/* Child command preparation functions */
+int							prepare_child_command(t_command *cmd, t_shell_data *shell, 
+                                t_command *cmd_list, int **pipes, int pipe_count, 
+                                pid_t *pids);
+
+/* Child external command execution functions */
+void						execute_external_child_command(t_command *cmd, char *cmd_path, 
+                                t_shell_data *shell, t_command *cmd_list, int **pipes, 
+                                int pipe_count, pid_t *pids);
+
+/* Pipeline child execution functions */
+void						execute_pipeline_child(t_command *cmd, int cmd_index, 
+                                int **pipes, int pipe_count, t_shell_data *shell, 
+                                t_command *cmd_list, pid_t *pids);
+
 #endif
