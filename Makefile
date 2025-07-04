@@ -77,6 +77,10 @@ SRCS = main.c \
         src/executor/heredoc_parser.c \
         src/executor/heredoc_executor.c \
         src/executor/heredoc_executor_helpers.c \
+        src/executor/heredoc_core_utils.c \
+        src/executor/heredoc_line_processing.c \
+        src/executor/heredoc_reading.c \
+        src/executor/heredoc_setup.c \
 
 OBJS = $(SRCS:.c=.o)
 LIBFT_DIR = libft
