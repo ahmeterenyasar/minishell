@@ -21,14 +21,40 @@ int	main(int argc, char **argv, char **envp)
 
 	while (1)
 	{
+		// Check if CTRL+C was pressed and set exit status before resetting
+		if (g_signal == SIGINT)
+		{
+			set_exit_status(shell, 130);
+		}
 		g_signal = 0;  // Reset signal flag before each prompt
+		
 		input = readline("minishell$ ");
+
+		// Immediately check for CTRL+C after readline
+		if (g_signal == SIGINT)
+		{
+			set_exit_status(shell, 130);
+			if (input)
+			{
+				free(input);
+				input = NULL;
+			}
+			continue;
+		}
 
 		// Handle Ctrl+D (EOF)
 		if (!input)
 		{
 			printf("exit\n");
 			break ;
+		}
+
+		// Check for CTRL+C after EOF handling
+		if (g_signal == SIGINT)
+		{
+			set_exit_status(shell, 130);
+			free(input);
+			continue;
 		}
 
 		if (!*input)
@@ -88,6 +114,12 @@ int	main(int argc, char **argv, char **envp)
 			i++;
 		}
 		clear_current_lines(shell);  /* Use helper function to clear lines */
+		
+		// Check for CTRL+C that might have been pressed after command execution
+		if (g_signal == SIGINT)
+		{
+			set_exit_status(shell, 130);
+		}
 		
 		// Ensure we're in interactive mode after processing commands
 		setup_signals(INTERACTIVE_MODE);

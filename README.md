@@ -112,7 +112,9 @@ readline.supp     → valgrind suppression file for readline
 
 
 ## Status
-🔴 export a="ls -la" and var a call
+🔴 export a="ls -la" and $a
+🔴 ^C echo $? sometimes not working. I think signals are really fucked up.
+🔴 "  " must give command not found
 🟡 mostly fixed: signal handling issues, check heredoc.
 🟡 comprehense pipe test -> 
     ✅ cat << eof | cat << asd | cat << qwe  

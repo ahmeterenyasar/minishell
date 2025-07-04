@@ -220,7 +220,28 @@ int	execute_single_command(t_command *cmd, t_shell_data *shell)
 		execute_child_process(cmd, shell);
 	waitpid(pid, &status, 0);
 	
-	// Handle signal interruption - these take priority over normal exit status
+	// Check if child was terminated by a signal first (this is the correct way)
+	if (WIFSIGNALED(status))
+	{
+		int signal_num = WTERMSIG(status);
+		if (signal_num == SIGINT)
+		{
+			set_exit_status(shell, 130);
+			return (130);
+		}
+		else if (signal_num == SIGQUIT)
+		{
+			set_exit_status(shell, 131);
+			return (131);
+		}
+		else
+		{
+			set_exit_status(shell, 128 + signal_num);
+			return (128 + signal_num);
+		}
+	}
+	
+	// Handle parent signal interruption (global signal was set)
 	if (g_signal == SIGINT)
 	{
 		set_exit_status(shell, 130);
@@ -232,11 +253,10 @@ int	execute_single_command(t_command *cmd, t_shell_data *shell)
 		return (131);
 	}
 	
-	// Only process normal exit status if no signal was received
+	// Process normal exit status if no signal termination occurred
 	if (WIFEXITED(status))
 		set_exit_status(shell, WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-		set_exit_status(shell, 128 + WTERMSIG(status));
+	
 	return (get_exit_status(shell));
 }
 
@@ -244,7 +264,6 @@ int	execute_single_command(t_command *cmd, t_shell_data *shell)
 int	execute_command(t_command *cmd, t_shell_data *shell)
 {
 	int	result;
-	int	cmd_count;
 
 	if (!cmd)
 		return (0);
@@ -271,18 +290,17 @@ int	execute_command(t_command *cmd, t_shell_data *shell)
 		return (130);
 	}
 	
-	// For pipelines, let the pipeline logic handle exit status completely
-	// For single commands, use the traditional signal handling
-	cmd_count = count_commands(cmd);
+	// Execute the command(s) - pipeline logic handles both single and multiple commands
 	result = execute_pipeline(cmd, shell);
 	
-	// Only override with global signal for single commands, not pipelines
-	if (cmd_count == 1 && g_signal == SIGINT)
+	// Check for global signals that might have been set during execution
+	// This handles cases where signals are set but not properly handled
+	if (g_signal == SIGINT)
 	{
 		set_exit_status(shell, 130);
 		return (130);
 	}
-	else if (cmd_count == 1 && g_signal == SIGQUIT)
+	else if (g_signal == SIGQUIT)
 	{
 		set_exit_status(shell, 131);
 		return (131);

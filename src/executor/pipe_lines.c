@@ -108,21 +108,28 @@ int	wait_for_pipeline(pid_t *pids, int cmd_count, t_shell_data *shell)
 	while (i < cmd_count)
 	{
 		waitpid(pids[i], &status, 0);
-		if (i == cmd_count - 1)  // Only care about last command's exit status
+		
+		// For the last command in the pipeline, get its exit status
+		// POSIX: pipeline exit status = exit status of last command
+		if (i == cmd_count - 1)
 		{
 			if (WIFEXITED(status))
 				last_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				last_status = 128 + WTERMSIG(status);
+			{
+				int signal_num = WTERMSIG(status);
+				if (signal_num == SIGINT)
+					last_status = 130;
+				else if (signal_num == SIGQUIT)
+					last_status = 131;
+				else
+					last_status = 128 + signal_num;
+			}
 		}
 		i++;
 	}
 	
-	// For pipelines, we always use the last command's actual exit status
-	// regardless of any global signal state in the parent process.
-	// This ensures proper bash-compatible behavior for cases like:
-	// sleep 100 | ls  (with ^C should return 0 if ls completed successfully)
-	
+	// Use the last command's exit status (POSIX pipeline behavior)
 	set_exit_status(shell, last_status);
 	return (last_status);
 }
