@@ -12,6 +12,7 @@ SRCS = main.c \
         src/parser/tokenizer.c \
         src/parser/tokenizer_quoted_part.c \
         src/parser/tokenizer_unquoted_part.c \
+        src/parser/tokenizer_word_part_utils.c \
         src/parser/tokenizer_boundary_check.c \
         src/parser/tokenizer_concatenate.c \
         src/parser/tokenizer_single_token.c \

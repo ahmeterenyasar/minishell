@@ -63,4 +63,10 @@ int		finalize_concatenated_word(char **word_parts, int part_count,
 			int start_pos, int expandable, t_token **head,
 			const char *input, int i);
 
+/* Word part utility functions */
+void	free_word_parts(char **word_parts, int count);
+int		handle_word_allocation_error(char **word_parts, int part_count);
+int		allocate_word_part(char **word_parts, int part_count, int length);
+void	finalize_word_part(int *part_count);
+
 #endif
