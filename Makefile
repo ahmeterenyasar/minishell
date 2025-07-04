@@ -78,7 +78,10 @@ SRCS = main.c \
         src/executor/pipeline_execution.c \
         src/executor/child_cleanup_utils.c \
         src/executor/child_command_utils.c \
-        src/executor/child_external_execution.c \
+        src/executor/execve_cleanup.c \
+        src/executor/execve_error_handling.c \
+        src/executor/execve_args_utils.c \
+        src/executor/execve_executor.c \
         src/executor/pipeline_child_execution.c \
         src/executor/pipeline_coordinator.c \
         src/executor/pipe_line_utils.c \
