@@ -27,6 +27,8 @@ SRCS = main.c \
         src/parser/token_expansion.c \
         src/parser/redirect_expansion.c \
         src/parser/signals.c \
+        src/parser/signal_handlers.c \
+        src/parser/signal_management.c \
         src/parser/white_space.c \
         src/parser/shell_init.c \
         src/parser/shell_cleanup.c \
