@@ -59,7 +59,8 @@ SRCS = main.c \
         src/executor/env_memory.c \
         src/executor/env_search.c \
         src/executor/env_variable_helpers.c \
-        src/executor/env_operations.c \
+        src/executor/env_add_operations.c \
+        src/executor/env_remove_operations.c \
         src/executor/env_unset_operations.c \
         src/executor/env_interface.c \
         src/executor/builtin_pwd.c \
