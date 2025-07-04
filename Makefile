@@ -91,7 +91,7 @@ SRCS = main.c \
         src/executor/redirection_output.c \
         src/executor/redirection_validation.c \
         src/executor/redirection_coordinator.c \
-        src/executor/redirection_handling_utils.c \
+        src/executor/redirection_file_utils.c \
         src/executor/heredoc_parser.c \
         src/executor/heredoc_executor.c \
         src/executor/heredoc_executor_helpers.c \
