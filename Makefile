@@ -4,7 +4,10 @@ CFLAGS = -Wall -Wextra -Werror -Iinclude
 SRCS = main.c \
         src/parser/string_utils.c \
         src/parser/parser_interface.c \
-        src/parser/syntax_checker.c \
+        src/parser/syntax_validator.c \
+        src/parser/syntax_checker_utils.c \
+        src/parser/syntax_checker_redirection.c \
+        src/parser/syntax_checker_pipe.c \
         src/parser/utils.c \
         src/parser/free.c \
         src/parser/tokenizer.c \

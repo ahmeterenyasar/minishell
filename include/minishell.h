@@ -28,5 +28,6 @@
 # include "executor.h"
 # include "redirection.h"
 # include "heredoc.h"
+# include "syntax_checker.h"
 
 #endif
