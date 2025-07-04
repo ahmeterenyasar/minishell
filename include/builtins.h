@@ -27,4 +27,11 @@ void						print_env(char **envp);
 void						free_envp(char **envp);
 char						**copy_envp(char **envp);
 
+/* CD command helper functions */
+int							validate_cd_args(char **args, t_shell_data *shell);
+char						*get_home_path(t_shell_data *shell, char *old_pwd);
+char						*get_oldpwd_path(t_shell_data *shell, char *old_pwd);
+int							change_to_directory(char *path, char *old_pwd, int should_free_path, t_shell_data *shell);
+int							determine_cd_path(char **args, t_shell_data *shell, char *old_pwd, char **path, int *should_free_path);
+
 #endif

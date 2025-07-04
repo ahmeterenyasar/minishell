@@ -39,6 +39,7 @@ SRCS = main.c \
         src/parser/redirection_parser.c \
         src/parser/redirection_utils.c \
         src/executor/builtin_cd.c \
+        src/executor/builtin_cd_utils.c \
         src/executor/builtin_echo.c \
         src/executor/builtin_env.c \
         src/executor/builtin_executor.c \
