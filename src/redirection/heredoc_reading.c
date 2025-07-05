@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int	check_signal_before_read(int original_stdin, char *clean_delimiter)
+static int	check_signal_before_read(int original_stdin, char **clean_delimiter)
 {
 	if (g_signal == SIGINT)
 	{
@@ -11,7 +11,7 @@ static int	check_signal_before_read(int original_stdin, char *clean_delimiter)
 }
 
 static int	process_single_heredoc_line(int fd, int expand, t_shell_data *shell,
-		int original_stdin, char *clean_delimiter)
+		int original_stdin, char **clean_delimiter)
 {
 	char	*line;
 
@@ -22,14 +22,14 @@ static int	process_single_heredoc_line(int fd, int expand, t_shell_data *shell,
 		return (1);
 	if (handle_eof_condition(line))
 		return (2);
-	if (check_delimiter_match(line, clean_delimiter))
+	if (check_delimiter_match(line, *clean_delimiter))
 		return (2);
 	process_heredoc_line(fd, line, expand, shell);
 	return (0);
 }
 
 int	read_heredoc_loop(int fd, const char *delimiter, int expand,
-		t_shell_data *shell, int original_stdin, char *clean_delimiter)
+		t_shell_data *shell, int original_stdin, char **clean_delimiter)
 {
 	int	result;
 	int	continue_reading;

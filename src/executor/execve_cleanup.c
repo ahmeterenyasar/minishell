@@ -9,7 +9,6 @@ void	cleanup_shell_readline_data(t_shell_data *shell)
 	}
 	clear_history();
 	rl_clear_history();
-	rl_cleanup_after_signal();
 }
 
 void	cleanup_pipeline_resources(int **pipes, int pipe_count, pid_t *pids)

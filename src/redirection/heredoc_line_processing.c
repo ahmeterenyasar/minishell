@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 int	check_signal_interruption(char *line, int original_stdin,
-		char *clean_delimiter)
+		char **clean_delimiter)
 {
 	if (g_signal == SIGINT)
 	{

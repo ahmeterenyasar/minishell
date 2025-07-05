@@ -44,10 +44,13 @@ int	write_heredoc_line(int fd, char *line, int expand, t_shell_data *shell)
 	return (0);
 }
 
-void	cleanup_heredoc_reading(int original_stdin, char *clean_delimiter)
+void	cleanup_heredoc_reading(int original_stdin, char **clean_delimiter)
 {
-	if (clean_delimiter)
-		free(clean_delimiter);
+	if (clean_delimiter && *clean_delimiter)
+	{
+		free(*clean_delimiter);
+		*clean_delimiter = NULL;
+	}
 	dup2(original_stdin, STDIN_FILENO);
 	close(original_stdin);
 	setup_signals(INTERACTIVE_MODE);
