@@ -2,111 +2,111 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -Iinclude
 SRCS = main.c \
+        src/tokenizer/tokenizer.c \
+        src/tokenizer/tokenizer_quoted_part.c \
+        src/tokenizer/tokenizer_unquoted_part.c \
+        src/tokenizer/tokenizer_word_part_utils.c \
+        src/tokenizer/tokenizer_boundary_check.c \
+        src/tokenizer/tokenizer_concatenate.c \
+        src/tokenizer/tokenizer_single_token.c \
+        src/tokenizer/tokenizer_finalize.c \
+        src/tokenizer/token_creation.c \
+        src/tokenizer/token_list.c \
+        src/tokenizer/token_processing.c \
+        src/tokenizer/token_utils.c \
+        src/tokenizer/tokenization_handler.c \
+        src/tokenizer/token_quote_utils.c \
+        src/tokenizer/token_word_utils.c \
+        src/tokenizer/input_processor.c \
+        src/tokenizer/white_space.c \
         src/parser/parser_interface.c \
         src/parser/syntax_validator.c \
         src/parser/syntax_checker_utils.c \
         src/parser/syntax_checker_redirection.c \
         src/parser/syntax_checker_pipe.c \
-        src/parser/utils.c \
-        src/parser/free.c \
-        src/parser/tokenizer.c \
-        src/parser/tokenizer_quoted_part.c \
-        src/parser/tokenizer_unquoted_part.c \
-        src/parser/tokenizer_word_part_utils.c \
-        src/parser/tokenizer_boundary_check.c \
-        src/parser/tokenizer_concatenate.c \
-        src/parser/tokenizer_single_token.c \
-        src/parser/tokenizer_finalize.c \
-        src/parser/token_creation.c \
-        src/parser/token_list.c \
-        src/parser/token_processing.c \
-        src/parser/token_utils.c \
-        src/parser/tokenization_handler.c \
-        src/parser/token_quote_utils.c \
-        src/parser/input_processor.c \
-        src/parser/token_word_utils.c \
-        src/parser/expansions.c \
-        src/parser/expansion_utils.c \
-        src/parser/env_expansion.c \
-        src/parser/concat_expansion_utils.c \
-        src/parser/concat_expansion.c \
-        src/parser/token_expansion.c \
-        src/parser/redirect_expansion.c \
-        src/parser/signals.c \
-        src/parser/signal_handlers.c \
-        src/parser/signal_management.c \
-        src/parser/white_space.c \
-        src/parser/shell_init.c \
-        src/parser/shell_cleanup.c \
-        src/parser/exit_status_manager.c \
-        src/parser/current_lines_manager.c \
-        src/parser/printf_utils.c \
-        src/parser/arg_counter.c \
-        src/parser/arg_filler.c \
         src/parser/command_parser.c \
         src/parser/redirection_parser.c \
         src/parser/redirection_utils.c \
-        src/parser/shell_main_loop.c \
-        src/parser/shell_signal_handlers.c \
-        src/parser/shell_input_handler.c \
-        src/executor/builtin_cd.c \
-        src/executor/builtin_cd_utils.c \
-        src/executor/command_processor.c \
-        src/executor/builtin_echo.c \
-        src/executor/builtin_env.c \
-        src/executor/builtin_executor.c \
-        src/executor/builtin_exit.c \
-        src/executor/builtin_expr.c \
-        src/executor/builtin_export.c \
-        src/executor/builtin_export_validation.c \
-        src/executor/builtin_export_error_handling.c \
-        src/executor/builtin_export_validation_utils.c \
-        src/executor/builtin_export_assignment_processing.c \
-        src/executor/builtin_export_display.c \
-        src/executor/builtin_export_sorting.c \
-        src/executor/env_memory.c \
-        src/executor/env_search.c \
-        src/executor/env_variable_helpers.c \
-        src/executor/env_add_operations.c \
-        src/executor/env_remove_operations.c \
-        src/executor/env_unset_operations.c \
-        src/executor/env_interface.c \
-        src/executor/builtin_pwd.c \
-        src/executor/builtin_unset.c \
-        src/executor/builtin_utils.c \
+        src/parser/arg_counter.c \
+        src/parser/arg_filler.c \
+        src/parser/utils.c \
+        src/parser/free.c \
+        src/expansion/expansions.c \
+        src/expansion/expansion_utils.c \
+        src/expansion/env_expansion.c \
+        src/expansion/concat_expansion_utils.c \
+        src/expansion/concat_expansion.c \
+        src/expansion/token_expansion.c \
+        src/expansion/redirect_expansion.c \
         src/executor/executor.c \
-        src/executor/child_cleanup.c \
-        src/executor/command_validation.c \
-        src/executor/process_signals.c \
-        src/executor/builtin_execution.c \
-        src/executor/child_execution.c \
         src/executor/executor_main.c \
-        src/executor/path_resolution.c \
-        src/executor/environment_utils.c \
-        src/executor/pipe_management.c \
-        src/executor/pipeline_execution.c \
+        src/executor/command_processor.c \
+        src/executor/command_validation.c \
+        src/executor/child_execution.c \
+        src/executor/child_cleanup.c \
         src/executor/child_cleanup_utils.c \
         src/executor/child_command_utils.c \
         src/executor/execve_cleanup.c \
         src/executor/execve_error_handling.c \
         src/executor/execve_args_utils.c \
         src/executor/execve_executor.c \
-        src/executor/pipeline_child_execution.c \
-        src/executor/pipeline_coordinator.c \
-        src/executor/pipe_line_utils.c \
-        src/executor/redirection_input.c \
-        src/executor/redirection_output.c \
-        src/executor/redirection_validation.c \
-        src/executor/redirection_coordinator.c \
-        src/executor/redirection_file_utils.c \
-        src/executor/heredoc_parser.c \
-        src/executor/heredoc_executor.c \
-        src/executor/heredoc_executor_helpers.c \
-        src/executor/heredoc_core_utils.c \
-        src/executor/heredoc_line_processing.c \
-        src/executor/heredoc_reading.c \
-        src/executor/heredoc_setup.c \
-        src/executor/heredoc_file_utils.c \
+        src/executor/path_resolution.c \
+        src/executor/environment_utils.c \
+        src/builtins/builtin_cd.c \
+        src/builtins/builtin_cd_utils.c \
+        src/builtins/builtin_echo.c \
+        src/builtins/builtin_env.c \
+        src/builtins/builtin_execution.c \
+        src/builtins/builtin_executor.c \
+        src/builtins/builtin_exit.c \
+        src/builtins/builtin_expr.c \
+        src/builtins/builtin_export.c \
+        src/builtins/builtin_export_validation.c \
+        src/builtins/builtin_export_error_handling.c \
+        src/builtins/builtin_export_validation_utils.c \
+        src/builtins/builtin_export_assignment_processing.c \
+        src/builtins/builtin_export_display.c \
+        src/builtins/builtin_export_sorting.c \
+        src/builtins/builtin_pwd.c \
+        src/builtins/builtin_unset.c \
+        src/builtins/builtin_utils.c \
+        src/environment/env_memory.c \
+        src/environment/env_search.c \
+        src/environment/env_variable_helpers.c \
+        src/environment/env_add_operations.c \
+        src/environment/env_remove_operations.c \
+        src/environment/env_unset_operations.c \
+        src/environment/env_interface.c \
+        src/pipeline/pipe_management.c \
+        src/pipeline/pipeline_execution.c \
+        src/pipeline/pipeline_child_execution.c \
+        src/pipeline/pipeline_coordinator.c \
+        src/pipeline/pipe_line_utils.c \
+        src/redirection/redirection_input.c \
+        src/redirection/redirection_output.c \
+        src/redirection/redirection_validation.c \
+        src/redirection/redirection_coordinator.c \
+        src/redirection/redirection_file_utils.c \
+        src/redirection/heredoc_parser.c \
+        src/redirection/heredoc_executor.c \
+        src/redirection/heredoc_executor_helpers.c \
+        src/redirection/heredoc_core_utils.c \
+        src/redirection/heredoc_line_processing.c \
+        src/redirection/heredoc_reading.c \
+        src/redirection/heredoc_setup.c \
+        src/redirection/heredoc_file_utils.c \
+        src/signals/signals.c \
+        src/signals/signal_handlers.c \
+        src/signals/signal_management.c \
+        src/signals/process_signals.c \
+        src/signals/shell_signal_handlers.c \
+        src/core/shell_init.c \
+        src/core/shell_cleanup.c \
+        src/core/shell_main_loop.c \
+        src/core/shell_input_handler.c \
+        src/core/exit_status_manager.c \
+        src/core/current_lines_manager.c \
+        src/core/printf_utils.c
 
 OBJS = $(SRCS:.c=.o)
 LIBFT_DIR = libft
