@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-/* Pipeline execution and redirection setup */
-
 void	setup_pipe_redirections(int cmd_index, int **pipes, int pipe_count)
 {
 	if (cmd_index > 0)

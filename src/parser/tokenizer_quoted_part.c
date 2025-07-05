@@ -39,8 +39,8 @@ int	process_quoted_part(const char *input, int *i, char **word_parts,
 	if (prepare_quoted_content(word_parts, *part_count, content_len,
 			quote_end) != 0)
 		return (quote_end + 1);
-	copy_quoted_text(input, quote_start, quote_end,
-		word_parts[*part_count], quote_char);
+	copy_quoted_text(input, quote_start, quote_end, word_parts[*part_count],
+			quote_char);
 	set_expandable_flag(quote_char, expandable);
 	finalize_word_part(part_count);
 	*i = quote_end + 1;

@@ -23,8 +23,8 @@ int	read_heredoc_content(int fd, const char *delimiter, int expand,
 
 	if (prepare_heredoc_reading(delimiter, &original_stdin, &clean_delimiter))
 		return (1);
-	result = read_heredoc_loop(fd, delimiter, expand, shell,
-			original_stdin, clean_delimiter);
+	result = read_heredoc_loop(fd, delimiter, expand, shell, original_stdin,
+			clean_delimiter);
 	cleanup_heredoc_reading(original_stdin, clean_delimiter);
 	return (result);
 }

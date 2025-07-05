@@ -42,7 +42,7 @@ static char	*create_updated_variable(const char *name, const char *value)
 {
 	char	*new_var;
 	char	*temp;
-	
+
 	if (value)
 	{
 		temp = ft_strjoin(name, "=");
@@ -59,7 +59,7 @@ static char	*create_updated_variable(const char *name, const char *value)
 int	update_env_var(char **envp, const char *name, const char *value, int index)
 {
 	char	*new_var;
-	
+
 	new_var = create_updated_variable(name, value);
 	if (!new_var)
 		return (-1);

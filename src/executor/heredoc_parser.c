@@ -4,13 +4,13 @@ char	*remove_quotes_from_delimiter(char *delimiter)
 {
 	int		len;
 	char	*result;
-	int		i, j;
 
+	int i, j;
 	if (!delimiter)
 		return (NULL);
 	len = ft_strlen(delimiter);
-	if (len >= 2 && ((delimiter[0] == '"' && delimiter[len - 1] == '"') ||
-		(delimiter[0] == '\'' && delimiter[len - 1] == '\'')))
+	if (len >= 2 && ((delimiter[0] == '"' && delimiter[len - 1] == '"')
+			|| (delimiter[0] == '\'' && delimiter[len - 1] == '\'')))
 	{
 		result = malloc(len - 1);
 		if (!result)
@@ -32,8 +32,8 @@ int	is_delimiter_quoted(char *delimiter)
 	if (!delimiter)
 		return (0);
 	len = ft_strlen(delimiter);
-	if (len >= 2 && ((delimiter[0] == '"' && delimiter[len - 1] == '"') ||
-		(delimiter[0] == '\'' && delimiter[len - 1] == '\'')))
+	if (len >= 2 && ((delimiter[0] == '"' && delimiter[len - 1] == '"')
+			|| (delimiter[0] == '\'' && delimiter[len - 1] == '\'')))
 		return (1);
 	return (0);
 }

@@ -1,8 +1,6 @@
 #include "minishell.h"
 
-/* Main pipeline execution coordinator */
-
-static int	handle_pipeline_fork_error(pid_t *pids, int started_children, 
+static int	handle_pipeline_fork_error(pid_t *pids, int started_children,
 		int **pipes, int pipe_count, t_shell_data *shell)
 {
 	int	i;
@@ -21,7 +19,7 @@ static int	handle_pipeline_fork_error(pid_t *pids, int started_children,
 	return (1);
 }
 
-static int	initialize_pipeline_resources(int cmd_count, int ***pipes, 
+static int	initialize_pipeline_resources(int cmd_count, int ***pipes,
 		pid_t **pids, t_shell_data *shell)
 {
 	*pipes = create_pipes(cmd_count - 1);
@@ -40,7 +38,7 @@ static int	initialize_pipeline_resources(int cmd_count, int ***pipes,
 	return (0);
 }
 
-static int	execute_pipeline_children(t_command *cmd, int cmd_count, 
+static int	execute_pipeline_children(t_command *cmd, int cmd_count,
 		int **pipes, pid_t *pids, t_shell_data *shell)
 {
 	t_command	*current;
@@ -52,12 +50,12 @@ static int	execute_pipeline_children(t_command *cmd, int cmd_count,
 	{
 		pids[i] = fork();
 		if (pids[i] == -1)
-			return (handle_pipeline_fork_error(pids, i, pipes, 
-					cmd_count - 1, shell));
+			return (handle_pipeline_fork_error(pids, i, pipes, cmd_count - 1,
+					shell));
 		if (pids[i] == 0)
 		{
-			execute_pipeline_child(current, i, pipes, cmd_count - 1, 
-				shell, cmd, pids);
+			execute_pipeline_child(current, i, pipes, cmd_count - 1, shell, cmd,
+					pids);
 			exit(1);
 		}
 		current = current->next;

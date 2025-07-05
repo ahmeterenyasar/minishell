@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-static int	count_quote_segments(const char *input, int start_pos, int *has_unquoted)
+static int	count_quote_segments(const char *input, int start_pos,
+		int *has_unquoted)
 {
 	int		pos;
 	int		quote_segments;

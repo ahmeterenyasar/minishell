@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-/* Echo command implementation */
 int	is_valid_n_flag(const char *arg)
 {
 	int	i;
@@ -24,13 +23,11 @@ int	execute_echo(char **args, t_shell_data *shell)
 
 	newline = 1;
 	i = 1;
-	// Process all consecutive valid -n flags
 	while (args[i] && is_valid_n_flag(args[i]))
 	{
 		newline = 0;
 		i++;
 	}
-	// Print remaining arguments
 	while (args[i])
 	{
 		write(STDOUT_FILENO, args[i], ft_strlen(args[i]));

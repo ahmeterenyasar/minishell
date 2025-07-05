@@ -1,9 +1,6 @@
 #include "minishell.h"
 #include "syntax_checker.h"
 
-/**
- * Check if token starts a command line incorrectly
- */
 int	check_start_syntax(t_token *tokens)
 {
 	if (!tokens)
@@ -16,9 +13,6 @@ int	check_start_syntax(t_token *tokens)
 	return (SUCCESS);
 }
 
-/**
- * Check entire token list for syntax errors
- */
 int	check_syntax(t_token *tokens)
 {
 	if (check_start_syntax(tokens) != SUCCESS)

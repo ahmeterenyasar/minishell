@@ -1,9 +1,6 @@
 #include "minishell.h"
 #include <signal.h>
 
-/**
- * Set up signal handlers based on the current context
- */
 static void	set_signal(int sig, void (*handler)(int))
 {
 	signal(sig, handler);

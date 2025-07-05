@@ -12,4 +12,3 @@ int	skip_white_space(const char *input, int i)
 		i++;
 	return (i);
 }
-

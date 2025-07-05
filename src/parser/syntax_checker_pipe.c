@@ -1,9 +1,6 @@
 #include "minishell.h"
 #include "syntax_checker.h"
 
-/**
- * Check pipe operators have valid syntax
- */
 int	check_pipe_syntax(t_token *tokens)
 {
 	t_token	*current;

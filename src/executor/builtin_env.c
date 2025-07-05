@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-/* Environment display */
 void	print_env(char **envp)
 {
 	int	i;
@@ -14,7 +13,6 @@ void	print_env(char **envp)
 	}
 }
 
-/* ENV command implementation */
 int	execute_env(char **args, t_shell_data *shell)
 {
 	if (args[1])

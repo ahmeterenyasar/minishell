@@ -1,7 +1,8 @@
 #include "minishell.h"
 
-static int	setup_heredoc_file_and_process(t_redirect *redirect, 
-		t_shell_data *shell, char **filename)
+static int	setup_heredoc_file_and_process(t_redirect *redirect,
+											t_shell_data *shell,
+											char **filename)
 {
 	int	fd;
 	int	result;
@@ -12,8 +13,8 @@ static int	setup_heredoc_file_and_process(t_redirect *redirect,
 		write(2, "minishell: failed to setup heredoc file\n", 41);
 		return (-1);
 	}
-	result = read_heredoc_content(fd, redirect->file, 
-			redirect->expand_heredoc, shell);
+	result = read_heredoc_content(fd, redirect->file, redirect->expand_heredoc,
+			shell);
 	close(fd);
 	return (result);
 }

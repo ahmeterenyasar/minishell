@@ -1,8 +1,6 @@
 #include "minishell.h"
 
-/* Child process command validation and preparation */
-
-static int	validate_child_command(t_command *cmd, t_shell_data *shell, 
+static int	validate_child_command(t_command *cmd, t_shell_data *shell,
 		t_command *cmd_list, int **pipes, int pipe_count, pid_t *pids)
 {
 	if (!cmd->args || !cmd->args[0])
@@ -19,7 +17,7 @@ static int	validate_child_command(t_command *cmd, t_shell_data *shell,
 	return (0);
 }
 
-static int	execute_child_builtin(t_command *cmd, t_shell_data *shell, 
+static int	execute_child_builtin(t_command *cmd, t_shell_data *shell,
 		t_command *cmd_list, int **pipes, int pipe_count, pid_t *pids)
 {
 	int	result;
@@ -29,7 +27,7 @@ static int	execute_child_builtin(t_command *cmd, t_shell_data *shell,
 	exit(result);
 }
 
-int	prepare_child_command(t_command *cmd, t_shell_data *shell, 
+int	prepare_child_command(t_command *cmd, t_shell_data *shell,
 		t_command *cmd_list, int **pipes, int pipe_count, pid_t *pids)
 {
 	validate_child_command(cmd, shell, cmd_list, pipes, pipe_count, pids);

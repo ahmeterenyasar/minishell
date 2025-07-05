@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-/* Build full path from directory and command */
 static char	*build_command_path(char *dir, char *cmd)
 {
 	char	*temp;
@@ -16,7 +15,6 @@ static char	*build_command_path(char *dir, char *cmd)
 	return (full_path);
 }
 
-/* Search command in PATH directories */
 static char	*search_in_path_dirs(char **paths, char *cmd)
 {
 	char	*full_path;
@@ -39,7 +37,6 @@ static char	*search_in_path_dirs(char **paths, char *cmd)
 	return (NULL);
 }
 
-/* Main path resolution function */
 char	*find_command_path(char *cmd, char **envp)
 {
 	char	**paths;

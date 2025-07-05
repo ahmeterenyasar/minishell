@@ -34,7 +34,7 @@ void	free_str_array(char **arr)
 	int	i;
 
 	if (!arr)
-		return;
+		return ;
 	i = 0;
 	while (arr[i])
 	{

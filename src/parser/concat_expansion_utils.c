@@ -1,7 +1,6 @@
 #include "minishell.h"
 
-void	skip_leading_whitespace(const char *str, int *i, 
-	char *result, int *j)
+void	skip_leading_whitespace(const char *str, int *i, char *result, int *j)
 {
 	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t'))
 	{
@@ -10,8 +9,8 @@ void	skip_leading_whitespace(const char *str, int *i,
 	}
 }
 
-void	handle_special_vars(const char *str, int *i, 
-	char *var_name, t_shell_data *shell, char *result, int *j)
+void	handle_special_vars(const char *str, int *i, char *var_name,
+		t_shell_data *shell, char *result, int *j)
 {
 	char	*value;
 	int		k;
@@ -45,8 +44,8 @@ static int	extract_var_name_len(const char *str, int i)
 	return (name_len);
 }
 
-void	handle_regular_vars(const char *str, int *i, 
-	char *var_name, t_shell_data *shell, char *result, int *j)
+void	handle_regular_vars(const char *str, int *i, char *var_name,
+		t_shell_data *shell, char *result, int *j)
 {
 	int		name_len;
 	char	*value;

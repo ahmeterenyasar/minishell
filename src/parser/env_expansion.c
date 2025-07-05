@@ -1,7 +1,7 @@
 #include "minishell.h"
 
-static void	process_dollar_sign(const char *str, int *i, int *j, 
-	char *result, char *var_name, t_shell_data *shell)
+static void	process_dollar_sign(const char *str, int *i, int *j, char *result,
+		char *var_name, t_shell_data *shell)
 {
 	char	*value;
 
@@ -11,8 +11,8 @@ static void	process_dollar_sign(const char *str, int *i, int *j,
 	copy_env_value(result, j, value);
 }
 
-void	expand_loop(const char *str, char *result, 
-	char *var_name, t_shell_data *shell)
+void	expand_loop(const char *str, char *result, char *var_name,
+		t_shell_data *shell)
 {
 	int	i;
 	int	j;

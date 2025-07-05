@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-/* Functions for cleanup operations before execve */
-
 void	cleanup_shell_readline_data(t_shell_data *shell)
 {
 	if (shell && shell->current_lines)
@@ -28,8 +26,8 @@ void	cleanup_command_data(t_command *cmd_list)
 		free_command(cmd_list);
 }
 
-void	cleanup_before_execve(t_shell_data *shell, int **pipes, 
-		int pipe_count, pid_t *pids, t_command *cmd_list)
+void	cleanup_before_execve(t_shell_data *shell, int **pipes, int pipe_count,
+		pid_t *pids, t_command *cmd_list)
 {
 	cleanup_shell_readline_data(shell);
 	cleanup_pipeline_resources(pipes, pipe_count, pids);

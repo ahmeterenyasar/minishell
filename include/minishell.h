@@ -24,6 +24,7 @@
 # include "heredoc.h"
 # include "parser.h"
 # include "redirection.h"
+# include "shell_main.h"
 # include "signals.h"
 # include "string_utils.h"
 # include "syntax_checker.h"

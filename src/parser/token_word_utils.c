@@ -8,9 +8,9 @@ int	extract_word_len(const char *input, int i)
 	while (input[i + len])
 	{
 		if (is_token_delimiter(input[i + len]))
-			break;
+			break ;
 		if (is_quote_char(input[i + len]))
-			break;
+			break ;
 		if (input[i + len] == '\\' && input[i + len + 1])
 			len += 2;
 		else
@@ -21,8 +21,8 @@ int	extract_word_len(const char *input, int i)
 
 void	copy_word_chars(const char *input, int i, char *word, int len)
 {
-	int		j;
-	int		k;
+	int	j;
+	int	k;
 
 	j = i;
 	k = 0;
@@ -64,7 +64,7 @@ int	find_closing_quote(const char *input, int i, char quote_char)
 		if (quote_char == '"' && input[i] == '\\' && input[i + 1] == '"')
 		{
 			i += 2;
-			continue;
+			continue ;
 		}
 		if (input[i] == quote_char)
 			return (i);

@@ -5,8 +5,8 @@ static int	check_var_boundary_conflict(char *current_part, char *next_part)
 	int	current_len;
 
 	current_len = ft_strlen(current_part);
-	if (current_len > 0 && current_part[current_len - 1] == '$'
-		&& next_part && ft_isalnum(next_part[0]))
+	if (current_len > 0 && current_part[current_len - 1] == '$' && next_part
+		&& ft_isalnum(next_part[0]))
 		return (1);
 	return (0);
 }

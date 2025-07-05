@@ -66,18 +66,13 @@ int	set_redirection_file(t_redirect *redir, t_token *token)
 	redir->file = ft_strdup(token->value);
 	if (!redir->file)
 		return (0);
-	// Track if the filename was originally quoted
 	redir->was_quoted = token->quoted;
 	if (redir->type == TOKEN_HEREDOC)
 	{
-		// For heredoc expansion rules (following bash behavior):
-		// - Unquoted delimiter: Variables ARE expanded in heredoc content
-		// - Single quoted delimiter: Variables are NOT expanded in heredoc content
-		// - Double quoted delimiter: Variables are NOT expanded in heredoc content
 		if (token->quoted)
-			redir->expand_heredoc = 0; // Any quoted delimiter - no expansion
+			redir->expand_heredoc = 0;
 		else
-			redir->expand_heredoc = 1; // Unquoted delimiter - expansion
+			redir->expand_heredoc = 1;
 	}
 	return (1);
 }

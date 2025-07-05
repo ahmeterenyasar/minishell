@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-/* Pipeline child process main execution */
-
 void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 		int pipe_count, t_shell_data *shell, t_command *cmd_list, pid_t *pids)
 {
@@ -24,6 +22,6 @@ void	execute_pipeline_child(t_command *cmd, int cmd_index, int **pipes,
 		cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(127);
 	}
-	execute_external_child_command(cmd, cmd_path, shell, cmd_list, 
-		pipes, pipe_count, pids);
+	execute_external_child_command(cmd, cmd_path, shell, cmd_list, pipes,
+			pipe_count, pids);
 }

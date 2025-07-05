@@ -10,7 +10,8 @@ static int	count_env_variables(char **envp)
 	return (count);
 }
 
-static int	copy_env_without_target(char **old_envp, char **new_envp, int skip_index)
+static int	copy_env_without_target(char **old_envp, char **new_envp,
+		int skip_index)
 {
 	int	i;
 	int	j;

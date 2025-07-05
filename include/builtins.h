@@ -23,6 +23,18 @@ int		export_without_value(t_shell_data *shell, const char *name);
 int		handle_export_assignment(char *arg, t_shell_data *shell);
 char	**sort_envp_for_export(char **envp);
 
+/* Export error handling functions */
+int		export_validate_and_report_error(char *arg);
+int		export_report_memory_error(void);
+
+/* Export validation utility functions */
+char	*export_duplicate_argument(char *arg);
+int		export_validate_identifier(char *name, char *arg);
+int		export_check_assignment_format(char *arg);
+
+/* Export assignment processing functions */
+int		export_handle_assignment_processing(char *arg, t_shell_data *shell);
+
 /* Helper functions for builtins */
 int		is_valid_n_flag(const char *arg);
 int		is_valid_identifier(const char *name);

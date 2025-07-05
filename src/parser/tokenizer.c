@@ -15,11 +15,11 @@ int	process_concatenated_word(const char *input, int i, t_token **head)
 		&& !is_operator_char(input[i]))
 	{
 		if (is_quote_char(input[i]))
-			result = process_quoted_part(input, &i, word_parts,
-					&part_count, &expandable);
+			result = process_quoted_part(input, &i, word_parts, &part_count,
+					&expandable);
 		else
-			result = process_unquoted_part(input, &i, word_parts,
-					&part_count, &expandable);
+			result = process_unquoted_part(input, &i, word_parts, &part_count,
+					&expandable);
 		if (result != 0)
 			return (result);
 	}

@@ -2,16 +2,16 @@
 
 int	find_env_var(char **envp, const char *name)
 {
-	int		i;
-	int		name_len;
-	
+	int	i;
+	int	name_len;
+
 	if (!envp || !name)
 		return (-1);
 	name_len = ft_strlen(name);
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], name, name_len) == 0 && 
+		if (ft_strncmp(envp[i], name, name_len) == 0 &&
 			(envp[i][name_len] == '=' || envp[i][name_len] == '\0'))
 			return (i);
 		i++;

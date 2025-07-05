@@ -1,9 +1,6 @@
 #include "minishell.h"
 #include "syntax_checker.h"
 
-/**
- * Check redirection token has valid following token
- */
 static int	validate_redirection_token(t_token *current)
 {
 	if (!current->next || current->next->type != TOKEN_WORD)
@@ -17,9 +14,6 @@ static int	validate_redirection_token(t_token *current)
 	return (SUCCESS);
 }
 
-/**
- * Check all redirection operators have valid syntax
- */
 int	check_redirection_syntax(t_token *tokens)
 {
 	t_token	*current;
@@ -37,9 +31,6 @@ int	check_redirection_syntax(t_token *tokens)
 	return (SUCCESS);
 }
 
-/**
- * Check for consecutive redirection operators
- */
 int	check_consecutive_redirections(t_token *tokens)
 {
 	t_token	*current;

@@ -10,8 +10,8 @@ static int	check_signal_before_read(int original_stdin, char *clean_delimiter)
 	return (0);
 }
 
-static int	process_single_heredoc_line(int fd, int expand, 
-		t_shell_data *shell, int original_stdin, char *clean_delimiter)
+static int	process_single_heredoc_line(int fd, int expand, t_shell_data *shell,
+		int original_stdin, char *clean_delimiter)
 {
 	char	*line;
 
@@ -38,8 +38,8 @@ int	read_heredoc_loop(int fd, const char *delimiter, int expand,
 	continue_reading = 1;
 	while (continue_reading)
 	{
-		result = process_single_heredoc_line(fd, expand, shell,
-				original_stdin, clean_delimiter);
+		result = process_single_heredoc_line(fd, expand, shell, original_stdin,
+				clean_delimiter);
 		if (result == 1)
 			return (1);
 		if (result == 2)

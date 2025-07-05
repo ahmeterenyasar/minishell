@@ -46,8 +46,12 @@ SRCS = main.c \
         src/parser/command_parser.c \
         src/parser/redirection_parser.c \
         src/parser/redirection_utils.c \
+        src/parser/shell_main_loop.c \
+        src/parser/shell_signal_handlers.c \
+        src/parser/shell_input_handler.c \
         src/executor/builtin_cd.c \
         src/executor/builtin_cd_utils.c \
+        src/executor/command_processor.c \
         src/executor/builtin_echo.c \
         src/executor/builtin_env.c \
         src/executor/builtin_executor.c \
@@ -55,6 +59,9 @@ SRCS = main.c \
         src/executor/builtin_expr.c \
         src/executor/builtin_export.c \
         src/executor/builtin_export_validation.c \
+        src/executor/builtin_export_error_handling.c \
+        src/executor/builtin_export_validation_utils.c \
+        src/executor/builtin_export_assignment_processing.c \
         src/executor/builtin_export_display.c \
         src/executor/builtin_export_sorting.c \
         src/executor/env_memory.c \

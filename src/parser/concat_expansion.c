@@ -1,7 +1,7 @@
 #include "minishell.h"
 
-static void	process_variable_expansion(const char *str, int *i, 
-	char *var_name, t_shell_data *shell, char *result, int *j)
+static void	process_variable_expansion(const char *str, int *i, char *var_name,
+		t_shell_data *shell, char *result, int *j)
 {
 	(*i)++;
 	if (str[*i] == '?' || str[*i] == '$')
@@ -14,8 +14,8 @@ static void	process_variable_expansion(const char *str, int *i,
 	}
 }
 
-static void	concat_expand_loop(const char *str, char *result, 
-	char *var_name, t_shell_data *shell)
+static void	concat_expand_loop(const char *str, char *result, char *var_name,
+		t_shell_data *shell)
 {
 	int	i;
 	int	j;

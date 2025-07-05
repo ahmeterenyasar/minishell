@@ -14,7 +14,7 @@ static int	has_variable_at_end(char *part)
 		if (part[k - 1] == '$' && ft_isalnum(part[k]))
 			return (1);
 		if (!ft_isalnum(part[k]) && part[k] != '_')
-			break;
+			break ;
 		k--;
 	}
 	return (0);

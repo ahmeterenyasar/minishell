@@ -1,7 +1,7 @@
 #include "minishell.h"
 
-int	validate_command_path(char *cmd_path, char *cmd_name, 
-	t_shell_data *shell, t_command *cmd)
+int	validate_command_path(char *cmd_path, char *cmd_name, t_shell_data *shell,
+		t_command *cmd)
 {
 	struct stat	path_stat;
 
@@ -22,8 +22,8 @@ int	validate_command_path(char *cmd_path, char *cmd_name,
 	return (0);
 }
 
-void	handle_execve_error(char *cmd_path, char *cmd_name, 
-	t_shell_data *shell, t_command *cmd)
+void	handle_execve_error(char *cmd_path, char *cmd_name, t_shell_data *shell,
+		t_command *cmd)
 {
 	if (errno == EACCES)
 	{

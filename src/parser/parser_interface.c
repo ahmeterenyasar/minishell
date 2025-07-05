@@ -22,7 +22,6 @@ t_command	*parse_input(const char *line, t_shell_data *shell)
 	tokens = NULL;
 	if (cmd)
 	{
-		// Expand redirection files after command parsing
 		expand_command_redirects(cmd, shell);
 	}
 	return (cmd);

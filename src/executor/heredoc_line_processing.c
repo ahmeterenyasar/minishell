@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	check_signal_interruption(char *line, int original_stdin, 
+int	check_signal_interruption(char *line, int original_stdin,
 		char *clean_delimiter)
 {
 	if (g_signal == SIGINT)
@@ -18,7 +18,8 @@ int	handle_eof_condition(char *line)
 	if (!line)
 	{
 		write(STDERR_FILENO,
-			"\nminishell: warning: heredoc delimited by EOF\n", 45);
+				"\nminishell: warning: heredoc delimited by EOF\n",
+				45);
 		return (1);
 	}
 	return (0);
@@ -34,8 +35,7 @@ int	check_delimiter_match(char *line, char *clean_delimiter)
 	return (0);
 }
 
-int	process_heredoc_line(int fd, char *line, int expand,
-		t_shell_data *shell)
+int	process_heredoc_line(int fd, char *line, int expand, t_shell_data *shell)
 {
 	write_heredoc_line(fd, line, expand, shell);
 	free(line);

@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void free_tokens(t_token *tokens)
+void	free_tokens(t_token *tokens)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	while (tokens)
 	{
@@ -13,10 +13,10 @@ void free_tokens(t_token *tokens)
 	}
 }
 
-void free_redirect(t_redirect *redirect)
+void	free_redirect(t_redirect *redirect)
 {
-	t_redirect *next;
-	
+	t_redirect	*next;
+
 	while (redirect)
 	{
 		next = redirect->next;
@@ -26,15 +26,14 @@ void free_redirect(t_redirect *redirect)
 	}
 }
 
-void free_command(t_command *cmd)
+void	free_command(t_command *cmd)
 {
-	t_command *next;
-	int i;
-	
+	t_command	*next;
+	int			i;
+
 	while (cmd)
 	{
 		next = cmd->next;
-		
 		if (cmd->args)
 		{
 			i = 0;
@@ -45,7 +44,6 @@ void free_command(t_command *cmd)
 			}
 			free(cmd->args);
 		}
-		
 		free_redirect(cmd->redirects);
 		free(cmd);
 		cmd = next;

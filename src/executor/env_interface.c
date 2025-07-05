@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-static int	update_existing_env_var(t_shell_data *shell, const char *name, 
-					const char *value, int index)
+static int	update_existing_env_var(t_shell_data *shell, const char *name,
+		const char *value, int index)
 {
 	if (update_env_var(shell->envp, name, value, index) == -1)
 		return (-1);
 	return (0);
 }
 
-static int	add_new_env_var(t_shell_data *shell, const char *name, 
-					const char *value)
+static int	add_new_env_var(t_shell_data *shell, const char *name,
+		const char *value)
 {
 	char	**new_envp;
 	char	**old_envp;

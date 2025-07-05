@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-/**
- * Convert literal \n sequences to actual newlines
- */
 char	*convert_newlines(const char *input)
 {
 	char	*result;
@@ -32,9 +29,6 @@ char	*convert_newlines(const char *input)
 	return (result);
 }
 
-/**
- * Split input by newlines (both literal \n and actual newlines)
- */
 char	**split_commands_by_newlines(const char *input)
 {
 	char	*converted;
@@ -50,7 +44,6 @@ char	**split_commands_by_newlines(const char *input)
 	converted = convert_newlines(input);
 	if (!converted)
 		return (NULL);
-	
 	commands = ft_split(converted, '\n');
 	free(converted);
 	return (commands);

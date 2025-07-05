@@ -72,7 +72,7 @@ t_command	*parse_tokens(t_token *tokens)
 	{
 		cmd = parse_command(&token);
 		if (!cmd)
-			break;
+			break ;
 		add_command(&head, &current, cmd);
 		if (token)
 		{

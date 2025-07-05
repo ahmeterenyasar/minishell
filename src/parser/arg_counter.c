@@ -6,13 +6,10 @@ int	is_valid_word_token(t_token *current)
 		return (0);
 	if (!current->value)
 		return (0);
-	// For empty strings, only count them if they were originally quoted
-	if (!*current->value) // Empty string
+	if (!*current->value)
 	{
-		// Only count empty strings if they were originally quoted
 		return (current->quoted);
 	}
-	// Skip tokens that are only whitespace (but not empty)
 	if (is_all_whitespace(current->value))
 		return (0);
 	return (1);

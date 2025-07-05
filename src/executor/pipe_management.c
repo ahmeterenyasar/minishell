@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-/* Pipe creation and management */
-
 void	close_pipes(int **pipes, int pipe_count)
 {
 	int	i;

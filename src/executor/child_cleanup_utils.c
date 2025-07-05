@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-/* Child process cleanup functions */
-
 static void	cleanup_child_readline(void)
 {
 	clear_history();
@@ -23,7 +21,7 @@ static void	cleanup_child_shell_data(t_shell_data *shell)
 	}
 }
 
-static void	cleanup_child_pipeline_data(int **pipes, int pipe_count, 
+static void	cleanup_child_pipeline_data(int **pipes, int pipe_count,
 		pid_t *pids, t_command *cmd_list)
 {
 	if (pipes && pipe_count > 0)
@@ -34,7 +32,7 @@ static void	cleanup_child_pipeline_data(int **pipes, int pipe_count,
 		free_command(cmd_list);
 }
 
-void	cleanup_pipeline_child_memory(t_shell_data *shell, t_command *cmd_list, 
+void	cleanup_pipeline_child_memory(t_shell_data *shell, t_command *cmd_list,
 		int **pipes, int pipe_count, pid_t *pids)
 {
 	cleanup_child_readline();
