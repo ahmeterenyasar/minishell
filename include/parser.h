@@ -4,25 +4,33 @@
 # include "types.h"
 
 /* Parser functions */
-t_command					*parse_tokens(t_token *tokens);
-t_redirect					*parse_redirection(t_token **token_ptr);
-int							count_args(t_token *tokens);
-t_command					*parse_command(t_token **token_ptr);
-void						free_redirect(t_redirect *redirect);
-void						free_command(t_command *cmd);
-t_token 					*process_parser_token(t_token *token, t_command *cmd, int *arg_index);
+t_command	*parse_tokens(t_token *tokens);
+t_redirect	*parse_redirection(t_token **token_ptr);
+int			count_args(t_token *tokens);
+t_command	*parse_command(t_token **token_ptr);
+void		free_redirect(t_redirect *redirect);
+void		free_command(t_command *cmd);
+t_token		*process_parser_token(t_token *token, t_command *cmd,
+				int *arg_index);
 
 /* Integrated interface */
-t_command					*parse_input(const char *line, t_shell_data *shell);
+t_command	*parse_input(const char *line, t_shell_data *shell);
 
 /* Parser utility functions */
-int							redir_is_redirection(t_token *token);
-t_token						*handle_redirection_arg(t_token *token, t_command *cmd);
-char						**allocate_args(int count);
-void						fill_args(t_command *cmd, t_token **tokens, int arg_count);
-int							is_valid_redir_token(t_token *token);
-void						add_redirection(t_command *cmd, t_redirect *redir);
-int							set_redirection_file(t_redirect *redir, t_token *token);
-t_redirect					*create_redirection(t_token *token);
+int			redir_is_redirection(t_token *token);
+t_token		*handle_redirection_arg(t_token *token, t_command *cmd);
+char		**allocate_args(int count);
+void		fill_args(t_command *cmd, t_token **tokens, int arg_count);
+int			is_valid_redir_token(t_token *token);
+void		add_redirection(t_command *cmd, t_redirect *redir);
+int			set_redirection_file(t_redirect *redir, t_token *token);
+t_redirect	*create_redirection(t_token *token);
+
+/* General utility functions */
+int			is_all_whitespace(const char *str);
+int			is_operator_char(char c);
+int			is_quote_char(char c);
+int			is_token_delimiter(char c);
+void		free_str_array(char **arr);
 
 #endif

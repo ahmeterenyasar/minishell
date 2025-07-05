@@ -6,13 +6,10 @@ int	should_add_word_arg(t_token *token)
 		return (0);
 	if (!token->value)
 		return (0);
-	// For empty strings, only keep them if they came from quotes
-	if (!*token->value) // Empty string
+	if (!*token->value)
 	{
-		// Keep empty strings only if they were originally quoted
 		return (token->quoted);
 	}
-	// Skip tokens that are only whitespace (but not empty)
 	if (is_all_whitespace(token->value))
 		return (0);
 	return (1);
@@ -23,14 +20,12 @@ t_token	*process_word_token(t_token *token, t_command *cmd, int *arg_index)
 	if (should_add_word_arg(token))
 	{
 		cmd->args[*arg_index] = ft_strdup(token->value);
-		if (!cmd->args[*arg_index]) // Handle strdup failure
+		if (!cmd->args[*arg_index])
 		{
-			// Could set an error flag here
 			return (token->next);
 		}
 		(*arg_index)++;
 	}
-	// Skip empty tokens by just advancing to next without adding
 	return (token->next);
 }
 

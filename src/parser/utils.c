@@ -28,3 +28,19 @@ int	is_token_delimiter(char c)
 {
 	return (isspace(c) || is_operator_char(c) || c == '\0');
 }
+
+void	free_str_array(char **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		arr[i] = NULL;
+		i++;
+	}
+	free(arr);
+}

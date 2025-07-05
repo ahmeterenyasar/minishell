@@ -2,22 +2,16 @@
 
 ## Project Overview
 
-`minishell` is a lightweight Unix‑like shellibft/            → 42 libft (utility library)
-inc/              → header files
-  ├── builtins.h/
-  ├── executor.h/
-  ├── expansions.h/
-  ├── heredoc.h/
-  ├── minishell.h/n in C as part of the 42 Istanbul curriculum. The goal is to reproduce the core interactive features of **bash** while respecting the strict coding standards of the school (no external libraries beyond `readline`, secure memory management, and norm‑compliant style).
+`minishell` is a lightweight Unix‑like shell implementation in C as part of the 42 Istanbul curriculum. The goal is to reproduce the core interactive features of **bash** while respecting the strict coding standards of the school (no external libraries beyond `readline`, secure memory management, and norm‑compliant style).
 
 Key capabilities include:
 
-* Prompt with command history and line‑editing (GNU Readline)
-* Lexing, parsing, expansion, and execution pipeline mirroring POSIX shells
+* Prompt with command history and line‑editing (GNU Readline)
+* Lexing, parsing, expansion, and execution pipeline mirroring POSIX shells
 * Built‑in commands (`echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`)
 * Pipes (`|`), input/output redirections (`<`, `>`, `>>`) and here‑documents (`<<`)
 * Environment‑variable expansion, including `$?` for the last exit status
-* Proper signal handling for `Ctrl‑C`, `Ctrl‑\`, and `Ctrl‑D`
+* Proper signal handling for `Ctrl‑C`, `Ctrl‑\`, and `Ctrl‑D`
 
 ---
 
@@ -31,7 +25,7 @@ Internally **minishell** keeps to a clear four‑stage processing pipeline, but 
    * `argv[]` – arguments (after quote handling)
    * `redir`  – list of redirections / heredocs
    * `next`   – pointer to the following command when part of a pipeline
-3. **Expander** – walks the list, applying environment‑variable expansion, parameter substitution, and quote removal, then rebuilds each node’s `argv`.
+3. **Expander** – walks the list, applying environment‑variable expansion, parameter substitution, and quote removal, then rebuilds each node's `argv`.
 4. **Executor** – iterates over the list:
 
    * built‑ins run directly in the parent when side effects are required (e.g. `cd`, `export`)
@@ -43,14 +37,14 @@ Internally **minishell** keeps to a clear four‑stage processing pipeline, but 
 
 ---
 
-## Installation & Compilation
+## Installation & Compilation
 
 ```bash
 # Clone
 $ git clone https://github.com/ahmeterenyasar/minishell.git
 $ cd minishell
 
-# Build (requires GNU make and clang or gcc)
+# Build (requires GNU make and clang or gcc)
 $ make            # builds libft and minishell binary
 
 # Optional clean targets
@@ -59,7 +53,7 @@ $ make fclean     # remove objects + binary
 $ make re         # full rebuild
 ```
 
-*Dependencies*: `readline` headers/libs (e.g. `libreadline-dev` on Debian/Ubuntu).
+*Dependencies*: `readline` headers/libs (e.g. `libreadline-dev` on Debian/Ubuntu).
 
 ---
 
@@ -74,89 +68,79 @@ minishell$ ./myscript.sh < in.txt >> out.log 2>&1
 minishell$ exit 0
 ```
 
-The prompt reflects the exit status of the previous command (`$?`). Press `Ctrl‑D` to send EOF and exit gracefully.
+The prompt reflects the exit status of the previous command (`$?`). Press `Ctrl‑D` to send EOF and exit gracefully.
 
 ---
 
 ## File Structure
 
 ```
-libft/            → 42 libft (utility library)
-inc/              → header files
-  ├── builtins.h/
-  ├── executor.h/
-  ├── expansions.h/
-  ├── heredoc.h/
-  ├── minishell.h/
-  ├── parser.h/
-  ├── redirection.h/
-  ├── signals.h/
-  ├── string_utils.h/
-  ├── tokenizer.h/
-  └── types.h/
+libft/            → 42 libft (utility library)
+include/          → header files
+  ├── builtins.h
+  ├── executor.h
+  ├── expansions.h
+  ├── heredoc.h
+  ├── minishell.h
+  ├── parser.h
+  ├── redirection.h
+  ├── shell_main.h
+  ├── signals.h
+  ├── string_utils.h
+  ├── syntax_checker.h
+  ├── tokenizer.h
+  └── types.h
 src/              → source files
+  ├── builtins/
+  ├── core/
+  ├── environment/
   ├── executor/
-  └── parser/
+  ├── expansion/
+  ├── parser/
+  ├── pipeline/
+  ├── redirection/
+  ├── signals/
+  └── tokenizer/
 Makefile
 main.c
-STATUS.txt
-readline.supp     → valgrind suppression file for readline
+README.md
+readline.supp     → valgrind suppression file for readline
 ```
 
 ---
 
 ## Flow Diagram
 
-
 [Chart will be uploaded here]
 
+---
 
 ## Status
-🔴 export a="ls -la" and var a call
-🟡 mostly fixed: signal handling issues, check heredoc.
-🟡 comprehense pipe test -> 
-    ✅ cat << eof | cat << asd | cat << qwe  
-🟡 divide into norm rules
 
-✅ debugger functions and files needs to be cleaned     
-✅ test: sleep with pipes
-✅ Fixed: Exit code handling in pipelines (refactored from special return codes to flag-based approach)
-    ✅ minishell$ ls | exit 100 → $? = 100
-    ✅ minishell$ ls | exit → $? = 0
-    ✅ minishell$ invalid_cmd | exit 50 → $? = 50
-    ✅ minishell$ exit 42 | ls → $? = 0
-    ✅ Normal exit behavior preserved
-    ✅ Exit with too many arguments handled correctly
+### Known Issues 🔴
+- `export a="ls -la"` and `$a` expansion issues
+- `^C echo $?` sometimes not working - signal handling needs fixing
+- Empty string commands (`"  "`) should give "command not found"
 
-✅ minishell$ sleep 100 | ls
-    docs  include  libft  main.c  Makefile	minishell  readline.supp  README.md  src
-    ^C
-    minishell$ echo $?
-    130
-    minishell$ echo $?
-    0
-minishell$ exit 100 | ls
-docs  include  libft  main.c  Makefile	minishell  readline.supp  README.md  src
-minishell$ echo $?
-0
-minishell$ 
+### In Progress 🟡
+- Signal handling issues (mostly fixed, needs heredoc verification)
+- Comprehensive pipe testing
+- Code normalization compliance
 
-
- % echo $?                                                                                  
-142
-
-
-
-✅ some still reachables still exist e.g., echo test | asd | echo test
-✅ ^C exit value must be 130 *check exit values
-✅ echo "test" << eof > output.txt readline kaynaklı definitely lost ve indirectly lost veriyor
-✅ cleanup_child_inherited_memory changed -> cmd var deleted - verified safe, cmd memory properly managed by callers
-✅ echo "'$US'ER'"
-✅ heredoc "" expansion fixed
-
-✅ 
-🟡 
-🔴 
+### Completed 🟢
+- Exit code handling in pipelines (refactored from special return codes to flag-based approach)
+  - `minishell$ ls | exit 100` → `$? = 100`
+  - `minishell$ ls | exit` → `$? = 0`
+  - `minishell$ invalid_cmd | exit 50` → `$? = 50`
+  - `minishell$ exit 42 | ls` → `$? = 0`
+  - Normal exit behavior preserved
+  - Exit with too many arguments handled correctly
+- Signal handling for `^C` returns exit code 130
+- Heredoc expansion with quotes fixed
+- Memory management improvements
+- Complex pipe handling: `cat << eof | cat << asd | cat << qwe`
+- Sleep with pipes functionality
+- Debugger cleanup 
 
 ---
 

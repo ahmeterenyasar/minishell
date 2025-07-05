@@ -3,6 +3,7 @@
         "stdio.h": "c",
         "minishell.h": "c",
         "types.h": "c",
-        "functional": "cpp"
+        "functional": "cpp",
+        "unistd.h": "c"
     }
 }
