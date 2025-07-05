@@ -127,7 +127,7 @@ readline.supp     → valgrind suppression file for readline
 - Comprehensive pipe testing
 - Code normalization compliance
 
-### Completed 🟢
+### Completed ✅
 - Exit code handling in pipelines (refactored from special return codes to flag-based approach)
   - `minishell$ ls | exit 100` → `$? = 100`
   - `minishell$ ls | exit` → `$? = 0`
