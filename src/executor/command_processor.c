@@ -8,11 +8,7 @@ static int	execute_parsed_command(t_command *cmd, t_shell_data *shell)
 	execute_command(cmd, shell);
 	setup_signals(INTERACTIVE_MODE);
 	if (shell->should_exit)
-	{
-		free_command(cmd);
-		clear_current_lines(shell);
-		free_shell_data(shell);
-	}
+		return (1);
 	return (0);
 }
 
@@ -26,13 +22,14 @@ static int	handle_parsing_failure(t_shell_data *shell)
 int	process_single_command(char *line, t_shell_data *shell)
 {
 	t_command	*cmd;
+	int			result;
 
 	cmd = parse_input(line, shell);
 	if (cmd)
 	{
-		execute_parsed_command(cmd, shell);
+		result = execute_parsed_command(cmd, shell);
 		free_command(cmd);
-		return (0);
+		return (result);
 	}
 	else
 	{
@@ -43,12 +40,17 @@ int	process_single_command(char *line, t_shell_data *shell)
 void	process_multiple_commands(char **lines, t_shell_data *shell)
 {
 	int	i;
+	int	result;
 
 	i = 0;
 	while (lines[i])
 	{
 		if (*lines[i])
-			process_single_command(lines[i], shell);
+		{
+			result = process_single_command(lines[i], shell);
+			if (result == 1)  // Shell should exit
+				return;
+		}
 		i++;
 	}
 }

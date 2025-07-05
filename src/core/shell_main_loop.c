@@ -14,6 +14,8 @@ static int	process_input_line(char *input, t_shell_data *shell)
 	set_current_lines(shell, lines);
 	process_multiple_commands(lines, shell);
 	clear_current_lines(shell);
+	if (shell->should_exit)
+		return (-1);
 	return (0);
 }
 
@@ -28,7 +30,9 @@ static int	handle_main_loop_iteration(t_shell_data *shell)
 		return (-1);
 	if (input_result == 1)
 		return (1);
-	process_input_line(input, shell);
+	input_result = process_input_line(input, shell);
+	if (input_result == -1)
+		return (-1);
 	handle_signal_check(shell);
 	setup_signals(INTERACTIVE_MODE);
 	return (0);
