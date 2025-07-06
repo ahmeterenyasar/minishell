@@ -47,10 +47,12 @@ int	wait_for_pipeline(pid_t *pids, int cmd_count, t_shell_data *shell)
 	while (i < cmd_count)
 	{
 		waitpid(pids[i], &status, 0);
+		/* Always use the last command's exit status */
 		if (i == cmd_count - 1)
 			last_status = get_process_exit_status(status);
 		i++;
 	}
+	/* In pipelines, the exit status comes from the last command */
 	set_exit_status(shell, last_status);
 	return (last_status);
 }

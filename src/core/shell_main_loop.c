@@ -24,16 +24,20 @@ static int	handle_main_loop_iteration(t_shell_data *shell)
 	char	*input;
 	int		input_result;
 
-	handle_signal_check(shell);
 	input_result = get_user_input(&input, shell);
 	if (input_result == -1)
 		return (-1);
 	if (input_result == 1)
+	{
+		/* Signal occurred but no command was processed */
+		/* Signal already handled in input handler, reset signals for next iteration */
+		setup_signals(INTERACTIVE_MODE);
 		return (1);
+	}
 	input_result = process_input_line(input, shell);
 	if (input_result == -1)
 		return (-1);
-	handle_signal_check(shell);
+	/* Don't call handle_signal_check here - commands handle their own signals */
 	setup_signals(INTERACTIVE_MODE);
 	return (0);
 }

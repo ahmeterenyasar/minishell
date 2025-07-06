@@ -17,14 +17,17 @@ int	process_command_status(int status, t_shell_data *shell)
 {
 	int	signal_result;
 
+	/* First, handle signals that terminated the process */
 	signal_result = handle_signal_termination(status, shell);
 	if (signal_result > 0)
 		return (signal_result);
-	signal_result = handle_global_signals(shell);
-	if (signal_result > 0)
-		return (signal_result);
+	
+	/* For normal exit, set the exit status */
 	if (WIFEXITED(status))
 		set_exit_status(shell, WEXITSTATUS(status));
+	
+	/* Don't call handle_global_signals here - it can override the 
+	   actual process exit status incorrectly */
 	return (get_exit_status(shell));
 }
 
