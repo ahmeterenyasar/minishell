@@ -26,9 +26,6 @@ int	process_heredoc(t_redirect *redirect, t_shell_data *shell)
 
 	if (validate_heredoc_redirect(redirect))
 		return (1);
-	write(2, "minishell: processing heredoc for delimiter: ", 46);
-	write(2, redirect->file, ft_strlen(redirect->file));
-	write(2, "\n", 1);
 	result = setup_heredoc_file_and_process(redirect, shell, &filename);
 	if (result == -1)
 	{

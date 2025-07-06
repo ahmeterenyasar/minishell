@@ -44,7 +44,4 @@ void	finalize_heredoc_success(t_redirect *redirect, char *filename)
 {
 	free(redirect->file);
 	redirect->file = filename;
-	write(2, "minishell: heredoc file created: ", 33);
-	write(2, redirect->file, ft_strlen(redirect->file));
-	write(2, "\n", 1);
 }

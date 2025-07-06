@@ -11,8 +11,6 @@ static void	expand_single_token(t_token *token, t_shell_data *shell)
 		{
 			free(token->value);
 			token->value = expanded;
-			/* Apply word splitting after expansion */
-			split_expanded_token(token);
 		}
 	}
 }

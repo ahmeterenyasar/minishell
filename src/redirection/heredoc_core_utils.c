@@ -5,7 +5,9 @@ int	setup_heredoc_reading(int *original_stdin)
 	int	tty_fd;
 
 	if (!isatty(STDIN_FILENO))
-		write(2, "🚨 STDIN is not terminal!\n", 27);
+	{
+		/* STDIN is not a terminal - this is expected in some cases */
+	}
 	*original_stdin = dup(STDIN_FILENO);
 	if (*original_stdin == -1)
 		return (1);
