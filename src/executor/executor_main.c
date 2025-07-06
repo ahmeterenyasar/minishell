@@ -4,9 +4,9 @@ int	handle_empty_command(t_command *cmd, t_shell_data *shell)
 {
 	if (!cmd->args || !cmd->args[0])
 		return (0);
-	if (cmd->args[0] && *cmd->args[0] == '\0')
+	if (cmd->args[0] && (*cmd->args[0] == '\0' || is_all_whitespace(cmd->args[0])))
 	{
-		write(STDERR_FILENO, "minishell: : command not found\n", 32);
+		print_command_not_found_error(cmd->args[0]);
 		set_exit_status(shell, 127);
 		return (127);
 	}

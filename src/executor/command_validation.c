@@ -6,6 +6,8 @@ int	validate_command_args(t_command *cmd)
 		return (0);
 	if (cmd->args[0] && *cmd->args[0] == '\0')
 		return (-1);
+	if (cmd->args[0] && is_all_whitespace(cmd->args[0]))
+		return (-1);
 	return (1);
 }
 

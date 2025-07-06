@@ -8,9 +8,9 @@ static int	validate_child_command(t_command *cmd, t_shell_data *shell,
 		cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(0);
 	}
-	if (cmd->args[0] && *cmd->args[0] == '\0')
+	if (cmd->args[0] && (*cmd->args[0] == '\0' || is_all_whitespace(cmd->args[0])))
 	{
-		write(STDERR_FILENO, "minishell: : command not found\n", 32);
+		print_command_not_found_error(cmd->args[0]);
 		cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(127);
 	}

@@ -68,7 +68,7 @@ void	execute_child_process(t_command *cmd, t_shell_data *shell)
 		exit_with_cleanup(shell, cmd, 0);
 	if (validation_result == -1)
 	{
-		write(STDERR_FILENO, "minishell: : command not found\n", 32);
+		print_command_not_found_error(cmd->args[0]);
 		exit_with_cleanup(shell, cmd, 127);
 	}
 	if (is_builtin(cmd->args[0]))

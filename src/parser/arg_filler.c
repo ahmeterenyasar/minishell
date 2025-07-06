@@ -11,7 +11,7 @@ int	should_add_word_arg(t_token *token)
 		return (token->quoted);
 	}
 	if (is_all_whitespace(token->value))
-		return (0);
+		return (token->quoted);
 	return (1);
 }
 

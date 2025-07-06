@@ -11,7 +11,7 @@ int	is_valid_word_token(t_token *current)
 		return (current->quoted);
 	}
 	if (is_all_whitespace(current->value))
-		return (0);
+		return (current->quoted);
 	return (1);
 }
 
