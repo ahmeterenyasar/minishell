@@ -1,0 +1,808 @@
+======== HEADERS ========
+include/builtins.h:
+  add_env_var
+  change_to_directory
+  copy_envp
+  copy_existing_env_vars
+  create_env_variable
+  create_env_without_var
+  determine_cd_path
+  execute_builtin
+  execute_cd
+  execute_echo
+  execute_env
+  execute_exit
+  execute_export
+  execute_expr
+  execute_pwd
+  execute_unset
+  export_check_assignment_format
+  export_duplicate_argument
+  export_handle_assignment_processing
+  export_report_memory_error
+  export_validate_and_report_error
+  export_validate_identifier
+  export_without_value
+  find_env_var
+  free_envp
+  get_home_path
+  get_oldpwd_path
+  handle_export_assignment
+  is_builtin
+  is_numeric_string
+  is_valid_identifier
+  is_valid_n_flag
+  print_env
+  print_export_vars
+  process_unset_args
+  remove_env_variable
+  set_env_variable
+  sort_envp_for_export
+  update_env_var
+  update_pwd_vars
+  validate_cd_args
+
+include/executor.h:
+  allocate_args_backup
+  check_heredoc_interruption
+  cleanup_before_execve
+  cleanup_child_inherited_memory
+  cleanup_command_data
+  cleanup_pipeline_child_memory
+  cleanup_pipeline_resources
+  cleanup_readline_history
+  cleanup_shell_environment
+  cleanup_shell_lines
+  cleanup_shell_readline_data
+  close_all_pipes
+  close_pipes
+  copy_args_to_backup
+  count_command_args
+  count_commands
+  create_pipes
+  duplicate_args_for_execve
+  execute_builtin_command
+  execute_child_process
+  execute_command
+  execute_external_child_command
+  execute_external_command
+  execute_pipeline
+  execute_pipeline_child
+  execute_pipeline_child
+  execute_single_command
+  exit_with_cleanup
+  find_command_path
+  free_execve_backup_data
+  free_partial_args_backup
+  get_env_from_envp
+  handle_builtin_redirections
+  handle_empty_command
+  handle_execve_error
+  handle_execve_error_cases
+  handle_execve_general_error
+  handle_execve_permission_error
+  handle_global_signals
+  handle_signal_termination
+  prepare_child_command
+  print_command_not_found_error
+  print_directory_error
+  print_permission_denied_error
+  print_permission_error
+  process_command_status
+  process_heredocs_with_signal_check
+  reset_global_signal
+  restore_builtin_redirections
+  setup_builtin_redirections
+  setup_pipe_redirections
+  validate_command_args
+  validate_command_path
+  wait_for_pipeline
+
+include/expansions.h:
+  allocate_result_buffer
+  check_dollar_expansion
+  copy_env_value
+  copy_regular_char
+  expand_command_redirects
+  expand_concatenated_vars
+  expand_env_vars
+  expand_loop
+  expand_tokens
+  extract_env_name
+  get_env_value
+  get_exit_status_str
+  handle_regular_vars
+  handle_special_vars
+  skip_leading_whitespace
+
+include/heredoc.h:
+  check_delimiter_match
+  check_signal_interruption
+  cleanup_heredoc_reading
+  finalize_heredoc_success
+  handle_eof_condition
+  handle_heredoc_failure
+  is_delimiter_quoted
+  process_all_heredocs
+  process_cmd_heredocs
+  process_heredoc
+  process_heredoc_line
+  read_heredoc_content
+  read_heredoc_loop
+  remove_quotes_from_delimiter
+  setup_heredoc_file
+  setup_heredoc_reading
+  validate_heredoc_redirect
+  write_heredoc_line
+
+include/parser.h:
+  add_redirection
+  allocate_args
+  count_args
+  create_redirection
+  fill_args
+  free_command
+  free_redirect
+  free_str_array
+  handle_redirection_arg
+  is_all_whitespace
+  is_operator_char
+  is_quote_char
+  is_token_delimiter
+  is_valid_redir_token
+  parse_command
+  parse_input
+  parse_redirection
+  parse_tokens
+  process_parser_token
+  redir_is_redirection
+  set_redirection_file
+
+include/redirection.h:
+  check_file_permissions
+  print_file_error
+  setup_input_redirection
+  setup_output_redirection
+  setup_redirections
+  validate_redirection_file
+
+include/shell_main.h:
+  get_user_input
+  handle_sigint_after_readline
+  handle_sigint_in_parsing
+  handle_sigint_in_readline
+  handle_signal_check
+  process_multiple_commands
+  process_single_command
+  run_shell_main_loop
+
+include/signals.h:
+  clear_current_lines
+  free_shell_data
+  get_exit_status
+  handle_sigint_executing
+  handle_sigint_heredoc
+  handle_sigint_interactive
+  handle_sigquit_executing
+  init_shell_data
+  reset_signals
+  set_current_lines
+  set_exit_status
+  setup_signals
+  setup_signals_executing
+  setup_signals_heredoc
+  setup_signals_interactive
+
+include/string_utils.h:
+  ft_strcat
+  ft_strcmp
+  ft_strcpy
+  int_to_string
+  is_white_space
+  print_error
+  skip_white_space
+
+include/syntax_checker.h:
+  check_consecutive_redirections
+  check_pipe_syntax
+  check_redirection_syntax
+  check_start_syntax
+  check_syntax
+  is_redirection
+  print_redirection_error
+  skip_empty_tokens
+
+include/tokenizer.h:
+  add_token
+  add_word_token
+  allocate_word_part
+  calculate_total_length
+  check_boundary_markers_needed
+  check_syntax
+  concatenate_word_parts
+  convert_newlines
+  copy_quoted_text
+  copy_word_chars
+  create_quoted_token
+  create_quoted_token_with_flag
+  create_token
+  extract_word_len
+  finalize_concatenated_word
+  finalize_word_part
+  find_closing_quote
+  free_tokens
+  free_word_parts
+  handle_newlines
+  handle_pipe
+  handle_quotes
+  handle_redir_in
+  handle_redir_out
+  handle_single_quoted_token
+  handle_word_allocation_error
+  is_operator_char
+  is_quote_char
+  is_token_delimiter
+  process_concatenated_word
+  process_quoted_part
+  process_token
+  process_unquoted_part
+  should_escape_char
+  should_use_concatenation
+  skip_unquoted_text
+  split_commands_by_newlines
+  tokenize
+
+======== MAIN ========
+
+main.c:
+  initialize_shell
+  main
+
+======== SRC ========
+
+src/builtins/builtin_cd.c:
+  execute_cd
+
+src/builtins/builtin_cd_utils.c:
+  change_to_directory
+  determine_cd_path
+  get_home_path
+  get_oldpwd_path
+  validate_cd_args
+
+src/builtins/builtin_echo.c:
+  execute_echo
+  is_valid_n_flag
+
+src/builtins/builtin_env.c:
+  execute_env
+  print_env
+
+src/builtins/builtin_execution.c:
+  execute_builtin_command
+  handle_builtin_redirections
+  restore_builtin_redirections
+  setup_builtin_redirections
+
+src/builtins/builtin_executor.c:
+  execute_builtin
+  is_builtin
+
+src/builtins/builtin_exit.c:
+  execute_exit
+  handle_exit_invalid_arg
+  handle_exit_no_args
+  handle_exit_too_many_args
+  handle_exit_with_code
+
+src/builtins/builtin_export_assignment_processing.c:
+  export_handle_assignment_processing
+  export_parse_assignment
+  export_process_validated_assignment
+
+src/builtins/builtin_export.c:
+  execute_export
+  export_without_value
+  handle_export_variable
+  process_export_argument
+  process_export_no_args
+
+src/builtins/builtin_export_display.c:
+  print_export_vars
+  print_export_var_without_value
+  print_export_var_with_value
+  print_sorted_vars
+
+src/builtins/builtin_export_error_handling.c:
+  export_report_memory_error
+  export_validate_and_report_error
+
+src/builtins/builtin_export_sorting.c:
+  bubble_sort_env
+  copy_env_array
+  count_env_vars
+  sort_envp_for_export
+  swap_env_vars
+
+src/builtins/builtin_export_validation.c:
+  handle_export_assignment
+
+src/builtins/builtin_export_validation_utils.c:
+  export_check_assignment_format
+  export_duplicate_argument
+  export_validate_identifier
+
+src/builtins/builtin_expr.c:
+  calculate_addition
+  execute_expr
+  output_expr_result
+  validate_expr_arguments
+  validate_expr_operator
+
+src/builtins/builtin_pwd.c:
+  execute_pwd
+  set_oldpwd_from_parameter
+  update_oldpwd_variable
+  update_pwd_vars
+
+src/builtins/builtin_unset.c:
+  execute_unset
+  handle_no_arguments
+
+src/builtins/builtin_utils.c:
+  is_numeric_string
+  is_valid_identifier
+
+src/core/current_lines_manager.c:
+  clear_current_lines
+  free_existing_lines
+  set_current_lines
+
+src/core/exit_status_manager.c:
+  get_exit_status
+  set_exit_status
+
+src/core/printf_utils.c:
+  calculate_int_length
+  fill_int_string
+  int_to_string
+  print_error
+
+src/core/shell_cleanup.c:
+  free_envp_if_exists
+  free_shell_data
+
+src/core/shell_init.c:
+  allocate_env_array
+  allocate_shell_structure
+  copy_env_vars
+  count_env_vars
+  init_shell_data
+
+src/core/shell_input_handler.c:
+  get_user_input
+  handle_post_readline_checks
+  handle_readline_result
+
+src/core/shell_main_loop.c:
+  handle_main_loop_iteration
+  process_input_line
+  run_shell_main_loop
+
+src/environment/env_add_operations.c:
+  add_env_var
+  cleanup_failed_add_env
+  count_env_variables
+  create_updated_variable
+  update_env_var
+
+src/environment/env_interface.c:
+  add_new_env_var
+  set_env_variable
+  update_existing_env_var
+
+src/environment/env_memory.c:
+  allocate_env_array
+  copy_envp
+  count_env_vars
+  free_envp
+  free_partial_envp
+
+src/environment/env_remove_operations.c:
+  cleanup_failed_copy
+  copy_env_without_target
+  count_env_variables
+  create_env_without_var
+
+src/environment/env_search.c:
+  find_env_var
+
+src/environment/env_unset_operations.c:
+  process_unset_args
+  process_unset_argument
+  remove_env_variable
+
+src/environment/env_variable_helpers.c:
+  allocate_expanded_env
+  copy_env_vars_to_new
+  copy_existing_env_vars
+  create_env_variable
+  create_env_with_value
+
+src/executor/child_cleanup.c:
+  cleanup_child_inherited_memory
+  cleanup_readline_history
+  cleanup_shell_environment
+  cleanup_shell_lines
+  exit_with_cleanup
+
+src/executor/child_cleanup_utils.c:
+  cleanup_child_pipeline_data
+  cleanup_child_readline
+  cleanup_child_shell_data
+  cleanup_pipeline_child_memory
+
+src/executor/child_command_utils.c:
+  execute_child_builtin
+  prepare_child_command
+  validate_child_command
+
+src/executor/child_execution.c:
+  execute_child_process
+  execute_external_command
+  handle_execve_error
+  validate_command_path
+
+src/executor/command_processor.c:
+  execute_parsed_command
+  handle_parsing_failure
+  process_multiple_commands
+  process_single_command
+
+src/executor/command_validation.c:
+  print_command_not_found_error
+  print_directory_error
+  print_permission_error
+  validate_command_args
+
+src/executor/environment_utils.c:
+  get_env_from_envp
+
+src/executor/executor.c:
+  execute_command
+
+src/executor/executor_main.c:
+  execute_single_command
+  handle_empty_command
+  process_command_status
+  process_heredocs_with_signal_check
+
+src/executor/execve_args_utils.c:
+  allocate_args_backup
+  copy_args_to_backup
+  count_command_args
+  free_partial_args_backup
+
+src/executor/execve_cleanup.c:
+  cleanup_before_execve
+  cleanup_command_data
+  cleanup_pipeline_resources
+  cleanup_shell_readline_data
+
+src/executor/execve_error_handling.c:
+  free_execve_backup_data
+  handle_execve_general_error
+  handle_execve_permission_error
+  print_permission_denied_error
+
+src/executor/execve_executor.c:
+  duplicate_args_for_execve
+  execute_external_child_command
+  handle_execve_error_cases
+
+src/executor/path_resolution.c:
+  build_command_path
+  find_command_path
+  search_in_path_dirs
+
+src/expansion/concat_expansion.c:
+  concat_expand_loop
+  expand_concatenated_vars
+  process_variable_expansion
+
+src/expansion/concat_expansion_utils.c:
+  extract_var_name_len
+  handle_regular_vars
+  handle_special_vars
+  skip_leading_whitespace
+
+src/expansion/env_expansion.c:
+  expand_env_vars
+  expand_loop
+  process_dollar_sign
+
+src/expansion/expansions.c:
+  extract_env_name
+  get_env_value
+  get_exit_status_str
+  get_shell_pid
+
+src/expansion/expansion_utils.c:
+  allocate_result_buffer
+  check_dollar_expansion
+  copy_env_value
+  copy_regular_char
+  is_valid_var_char
+
+src/expansion/redirect_expansion.c:
+  expand_command_redirects
+  expand_env_vars_in_redirects
+  expand_redirect_files
+  expand_single_redirect
+
+src/expansion/token_expansion.c:
+  expand_single_token
+  expand_tokens
+
+src/parser/arg_counter.c:
+  allocate_args
+  count_args
+  is_valid_word_token
+  skip_redirection_tokens
+
+src/parser/arg_filler.c:
+  fill_args
+  process_parser_token
+  process_word_token
+  should_add_word_arg
+
+src/parser/command_parser.c:
+  add_command
+  create_command
+  initialize_command_args
+  parse_command
+  parse_tokens
+
+src/parser/free.c:
+  free_command
+  free_redirect
+  free_tokens
+
+src/parser/parser_interface.c:
+  parse_input
+
+src/parser/redirection_parser.c:
+  handle_redirection_arg
+  parse_redirection
+
+src/parser/redirection_utils.c:
+  add_redirection
+  create_redirection
+  is_valid_redir_token
+  redir_is_redirection
+  set_redirection_file
+
+src/parser/syntax_checker_pipe.c:
+  check_pipe_syntax
+
+src/parser/syntax_checker_redirection.c:
+  check_consecutive_redirections
+  check_redirection_syntax
+  validate_redirection_token
+
+src/parser/syntax_checker_utils.c:
+  is_redirection
+  print_redirection_error
+  skip_empty_tokens
+
+src/parser/syntax_validator.c:
+  check_start_syntax
+  check_syntax
+
+src/parser/utils.c:
+  free_str_array
+  is_all_whitespace
+  is_operator_char
+  is_quote_char
+  is_token_delimiter
+
+src/pipeline/pipeline_child_execution.c:
+  execute_pipeline_child
+
+src/pipeline/pipeline_coordinator.c:
+  execute_pipeline
+  execute_pipeline_children
+  handle_pipeline_fork_error
+  initialize_pipeline_resources
+
+src/pipeline/pipeline_execution.c:
+  get_process_exit_status
+  get_signal_exit_status
+  setup_pipe_redirections
+  wait_for_pipeline
+
+src/pipeline/pipe_line_utils.c:
+  count_commands
+
+src/pipeline/pipe_management.c:
+  allocate_pipe_array
+  cleanup_pipes_on_error
+  close_all_pipes
+  close_pipes
+  create_pipes
+
+src/redirection/heredoc_core_utils.c:
+  cleanup_heredoc_reading
+  setup_heredoc_reading
+  write_heredoc_line
+
+src/redirection/heredoc_executor.c:
+  process_heredoc
+  setup_heredoc_file_and_process
+
+src/redirection/heredoc_executor_helpers.c:
+  process_all_heredocs
+  process_cmd_heredocs
+
+src/redirection/heredoc_file_utils.c:
+  build_filename_path
+  create_pid_counter_strings
+  generate_heredoc_filename
+  setup_heredoc_file
+
+src/redirection/heredoc_line_processing.c:
+  check_delimiter_match
+  check_signal_interruption
+  handle_eof_condition
+  process_heredoc_line
+
+src/redirection/heredoc_parser.c:
+  is_delimiter_quoted
+  remove_quotes_from_delimiter
+  validate_heredoc_redirect
+
+src/redirection/heredoc_reading.c:
+  check_signal_before_read
+  process_single_heredoc_line
+  read_heredoc_loop
+
+src/redirection/heredoc_setup.c:
+  finalize_heredoc_success
+  handle_heredoc_failure
+  prepare_heredoc_reading
+  read_heredoc_content
+
+src/redirection/redirection_coordinator.c:
+  handle_input_redirections
+  handle_output_redirections
+  process_single_redirection
+  setup_redirections
+
+src/redirection/redirection_file_utils.c:
+  check_file_permissions
+  check_file_stat
+  check_read_permissions
+  check_write_permissions
+  print_file_error
+
+src/redirection/redirection_input.c:
+  handle_file_input_redirection
+  handle_heredoc_redirection
+  setup_input_redirection
+
+src/redirection/redirection_output.c:
+  get_output_flags
+  open_and_dup_output_file
+  setup_output_redirection
+
+src/redirection/redirection_validation.c:
+  check_ambiguous_redirect
+  validate_redirection_file
+
+src/signals/process_signals.c:
+  check_heredoc_interruption
+  handle_global_signals
+  handle_signal_termination
+  reset_global_signal
+
+src/signals/shell_signal_handlers.c:
+  handle_sigint_after_readline
+  handle_sigint_in_parsing
+  handle_sigint_in_readline
+  handle_signal_check
+
+src/signals/signal_handlers.c:
+  handle_sigint_executing
+  handle_sigint_heredoc
+  handle_sigint_interactive
+  handle_sigquit_executing
+
+src/signals/signal_management.c:
+  reset_signals
+  set_signal
+  setup_signals_executing
+  setup_signals_heredoc
+  setup_signals_interactive
+
+src/signals/signals.c:
+  setup_signals
+
+src/tokenizer/input_processor.c:
+  convert_newlines
+  split_commands_by_newlines
+
+src/tokenizer/token_creation.c:
+  create_quoted_token_with_flag
+  create_token
+
+src/tokenizer/tokenization_handler.c:
+  handle_pipe
+  handle_quotes
+  handle_redir_in
+  handle_redir_out
+
+src/tokenizer/tokenizer_boundary_check.c:
+  check_boundary_markers_needed
+  check_var_at_end
+  check_var_boundary_conflict
+
+src/tokenizer/tokenizer.c:
+  process_concatenated_word
+  tokenize
+
+src/tokenizer/tokenizer_concatenate.c:
+  concatenate_word_parts
+  has_variable_at_end
+
+src/tokenizer/tokenizer_finalize.c:
+  finalize_concatenated_word
+
+src/tokenizer/tokenizer_quoted_part.c:
+  handle_quote_error
+  prepare_quoted_content
+  process_quoted_part
+  set_expandable_flag
+
+src/tokenizer/tokenizer_single_token.c:
+  calculate_total_length
+  handle_single_quoted_token
+
+src/tokenizer/tokenizer_unquoted_part.c:
+  calculate_unquoted_length
+  prepare_unquoted_content
+  process_unquoted_part
+  skip_escaped_char
+
+src/tokenizer/tokenizer_word_part_utils.c:
+  allocate_word_part
+  finalize_word_part
+  free_word_parts
+  handle_word_allocation_error
+
+src/tokenizer/token_list.c:
+  add_token
+
+src/tokenizer/token_processing.c:
+  count_quote_segments
+  handle_quote_processing
+  process_token
+  should_use_concatenation
+
+src/tokenizer/token_quote_utils.c:
+  copy_quoted_text
+  create_quoted_token
+  should_escape_char
+
+src/tokenizer/token_utils.c:
+  handle_newlines
+  skip_unquoted_text
+
+src/tokenizer/token_word_utils.c:
+  add_word_token
+  copy_word_chars
+  extract_word_len
+  find_closing_quote
+
+src/tokenizer/white_space.c:
+  is_white_space
+  skip_white_space
