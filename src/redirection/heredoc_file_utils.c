@@ -2,10 +2,9 @@
 
 static char	*create_pid_counter_strings(char **pid_str, char **counter_str)
 {
-	static int	counter;
+	static int	counter = 0;
 	int			pid;
 
-	counter = 0;
 	pid = getpid();
 	*pid_str = int_to_string(pid);
 	if (!*pid_str)

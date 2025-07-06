@@ -31,7 +31,11 @@ int	process_heredoc(t_redirect *redirect, t_shell_data *shell)
 	write(2, "\n", 1);
 	result = setup_heredoc_file_and_process(redirect, shell, &filename);
 	if (result == -1)
+	{
+		if (filename)
+			free(filename);
 		return (1);
+	}
 	if (handle_heredoc_failure(filename, result))
 		return (1);
 	finalize_heredoc_success(redirect, filename);
