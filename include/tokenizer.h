@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:19 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 13:41:03 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 14:17:03 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ int		add_word_token(const char *input, int i, t_token **head);
 int		find_closing_quote(const char *input, int i, char quote_char);
 
 /* Quote token utility functions */
-void	copy_quoted_text(const char *input, t_quote_pos pos,
-			char *quoted_text);
+void	copy_quoted_text(const char *input, t_quote_pos pos, char *quoted_text);
 int		should_escape_char(char c);
 int		create_quoted_token(char quote_char, char *quoted_text, t_token **head,
 			int end);
@@ -62,8 +61,10 @@ int		skip_unquoted_text(const char *input, int pos);
 int		check_syntax(t_token *tokens);
 
 /* Tokenizer helper functions - split into multiple files */
-int		process_quoted_part(const char *input, int *i, t_word_parts_params *params);
-int		process_unquoted_part(const char *input, int *i, t_word_parts_params *params);
+int		process_quoted_part(const char *input, int *i,
+			t_word_parts_params *params);
+int		process_unquoted_part(const char *input, int *i,
+			t_word_parts_params *params);
 int		check_boundary_markers_needed(char **word_parts, int part_count);
 char	*concatenate_word_parts(char **word_parts, int part_count,
 			int need_boundary_markers);

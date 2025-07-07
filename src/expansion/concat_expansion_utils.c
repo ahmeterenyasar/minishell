@@ -6,36 +6,39 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:55 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:52:56 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:52:01 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	skip_leading_whitespace(const char *str, int *i, char *result, int *j)
+void	skip_leading_whitespace(t_var_expand_params *params)
 {
-	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t'))
+	char	c;
+
+	c = params->str[*(params->i)];
+	while (c && (c == ' ' || c == '\t'))
 	{
-		copy_regular_char(result, j, str[*i]);
-		(*i)++;
+		copy_regular_char(params->result, params->j, c);
+		(*(params->i))++;
+		c = params->str[*(params->i)];
 	}
 }
 
-void	handle_special_vars(const char *str, int *i, char *var_name,
-		t_shell_data *shell, char *result, int *j)
+void	handle_special_vars(t_var_expand_params *params)
 {
 	char	*value;
 	int		k;
 
-	var_name[0] = str[*i];
-	var_name[1] = '\0';
-	(*i)++;
-	value = get_env_value(var_name, shell);
+	params->var_name[0] = params->str[*(params->i)];
+	params->var_name[1] = '\0';
+	(*(params->i))++;
+	value = get_env_value(params->var_name, params->shell);
 	if (value)
 	{
 		k = 0;
-		while (value[k] && *j < 4095)
-			result[(*j)++] = value[k++];
+		while (value[k] && *(params->j) < 4095)
+			params->result[(*(params->j))++] = value[k++];
 		free(value);
 	}
 }
@@ -56,30 +59,29 @@ static int	extract_var_name_len(const char *str, int i)
 	return (name_len);
 }
 
-void	handle_regular_vars(const char *str, int *i, char *var_name,
-		t_shell_data *shell, char *result, int *j)
+void	handle_regular_vars(t_var_expand_params *params)
 {
 	int		name_len;
 	char	*value;
 	int		k;
 
-	name_len = extract_var_name_len(str, *i);
+	name_len = extract_var_name_len(params->str, *(params->i));
 	if (name_len > 0)
 	{
-		ft_strncpy(var_name, str + *i, name_len);
-		var_name[name_len] = '\0';
-		value = get_env_value(var_name, shell);
+		ft_strncpy(params->var_name, params->str + *(params->i), name_len);
+		params->var_name[name_len] = '\0';
+		value = get_env_value(params->var_name, params->shell);
 		if (value)
 		{
 			k = 0;
-			while (value[k] && *j < 4095)
-				result[(*j)++] = value[k++];
+			while (value[k] && *(params->j) < 4095)
+				params->result[(*(params->j))++] = value[k++];
 			free(value);
 		}
-		*i += name_len;
+		*(params->i) += name_len;
 	}
 	else
 	{
-		copy_regular_char(result, j, '$');
+		copy_regular_char(params->result, params->j, '$');
 	}
 }

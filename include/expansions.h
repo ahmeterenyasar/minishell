@@ -6,12 +6,12 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:56 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:59:57 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:52:01 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPANSION_H
-# define EXPANSION_H
+#ifndef EXPANSIONS_H
+# define EXPANSIONS_H
 
 # include "types.h"
 
@@ -30,11 +30,19 @@ char	*get_env_value(const char *name, t_shell_data *shell);
 char	*get_exit_status_str(t_shell_data *shell);
 
 /* Concatenated variable expansion */
-void	handle_special_vars(const char *str, int *i, char *var_name,
-			t_shell_data *shell, char *result, int *j);
-void	handle_regular_vars(const char *str, int *i, char *var_name,
-			t_shell_data *shell, char *result, int *j);
-void	skip_leading_whitespace(const char *str, int *i, char *result, int *j);
+typedef struct s_var_expand_params
+{
+	const char		*str;
+	int				*i;
+	char			*var_name;
+	t_shell_data	*shell;
+	char			*result;
+	int				*j;
+}	t_var_expand_params;
+
+void	handle_special_vars(t_var_expand_params *params);
+void	handle_regular_vars(t_var_expand_params *params);
+void	skip_leading_whitespace(t_var_expand_params *params);
 char	*expand_concatenated_vars(const char *str, t_shell_data *shell);
 
 /* Token expansion */
