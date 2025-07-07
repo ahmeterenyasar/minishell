@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:54:20 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:54:21 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 14:43:48 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,10 @@ int	wait_for_pipeline(pid_t *pids, int cmd_count, t_shell_data *shell)
 	while (i < cmd_count)
 	{
 		waitpid(pids[i], &status, 0);
-		/* Always use the last command's exit status */
 		if (i == cmd_count - 1)
 			last_status = get_process_exit_status(status);
 		i++;
 	}
-	/* In pipelines, the exit status comes from the last command */
 	set_exit_status(shell, last_status);
 	return (last_status);
 }

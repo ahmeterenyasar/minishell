@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:51:50 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:51:51 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 14:52:53 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,22 @@ static void	cleanup_child_shell_data(t_shell_data *shell)
 	}
 }
 
-static void	cleanup_child_pipeline_data(int **pipes, int pipe_count,
-		pid_t *pids, t_command *cmd_list)
+static void	cleanup_child_pipeline_data(t_pipeline_context *ctx)
 {
-	if (pipes && pipe_count > 0)
-		close_pipes(pipes, pipe_count);
-	if (pids)
-		free(pids);
-	if (cmd_list)
-		free_command(cmd_list);
+	if (ctx->pipes && ctx->pipe_count > 0)
+		close_pipes(ctx->pipes, ctx->pipe_count);
+	if (ctx->pids)
+		free(ctx->pids);
+	if (ctx->cmd_list)
+		free_command(ctx->cmd_list);
 }
 
-void	cleanup_pipeline_child_memory(t_shell_data *shell, t_command *cmd_list,
-		int **pipes, int pipe_count, pid_t *pids)
+void	cleanup_pipeline_child_memory(t_shell_data *shell,
+		t_pipeline_context *ctx)
 {
 	cleanup_child_readline();
 	cleanup_child_shell_data(shell);
-	cleanup_child_pipeline_data(pipes, pipe_count, pids, cmd_list);
+	cleanup_child_pipeline_data(ctx);
 	if (shell)
 		free(shell);
 }

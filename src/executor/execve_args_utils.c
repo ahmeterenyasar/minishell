@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:38 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:07:19 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 14:52:53 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ int	count_command_args(t_command *cmd)
 }
 
 char	**allocate_args_backup(int args_count, t_shell_data *shell,
-		t_command *cmd_list, int **pipes, int pipe_count, pid_t *pids)
+		t_pipeline_context *ctx)
 {
 	char	**args_backup;
 
 	args_backup = malloc(sizeof(char *) * (args_count + 1));
 	if (!args_backup)
 	{
-		cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
+		cleanup_pipeline_child_memory(shell, ctx);
 		exit(1);
 	}
 	return (args_backup);
@@ -44,8 +44,7 @@ void	free_partial_args_backup(char **args_backup, int count)
 }
 
 void	copy_args_to_backup(t_command *cmd, char **args_backup, int args_count,
-		t_shell_data *shell, t_command *cmd_list, int **pipes, int pipe_count,
-		pid_t *pids)
+		t_shell_data *shell, t_pipeline_context *ctx)
 {
 	int	i;
 
@@ -56,8 +55,7 @@ void	copy_args_to_backup(t_command *cmd, char **args_backup, int args_count,
 		if (!args_backup[i])
 		{
 			free_partial_args_backup(args_backup, i);
-			cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count,
-					pids);
+			cleanup_pipeline_child_memory(shell, ctx);
 			exit(1);
 		}
 		i++;

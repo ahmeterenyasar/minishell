@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:23 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 14:31:51 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 14:52:53 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,14 @@ typedef struct s_heredoc_context
 	int					expand;
 	t_shell_data		*shell;
 }						t_heredoc_context;
+
+typedef struct s_pipeline_context
+{
+	int					**pipes;
+	int					pipe_count;
+	pid_t				*pids;
+	t_command			*cmd_list;
+}						t_pipeline_context;
 
 extern sig_atomic_t		g_signal;
 
