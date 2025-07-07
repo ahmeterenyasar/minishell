@@ -118,16 +118,14 @@ readline.supp     → valgrind suppression file for readline
 ## Status
 
 ### Known Issues 🔴
-- `export a="ls -la"` and `$a` expansion issues
-- `^C echo $?` sometimes not working - signal handling needs fixing
-- Empty string commands (`"  "`) should give "command not found"
 
 ### In Progress 🟡
-- Signal handling issues (mostly fixed, needs heredoc verification)
+- Complex valgrind tests are required.
 - Comprehensive pipe testing
-- Code normalization compliance
 
 ### Completed 🟢
+- `^C echo $?` sometimes not working - signal handling needs fixing
+- Empty string commands (`"  "`) should give "command not found"
 - Exit code handling in pipelines (refactored from special return codes to flag-based approach)
   - `minishell$ ls | exit 100` → `$? = 100`
   - `minishell$ ls | exit` → `$? = 0`
