@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:49:57 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:03:33 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 16:12:15 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,26 +85,26 @@ int	change_to_directory(char *path, char *old_pwd, int should_free_path,
 }
 
 int	determine_cd_path(char **args, t_shell_data *shell, char *old_pwd,
-		char **path, int *should_free_path)
+		t_cd_path *cd_info)
 {
 	if (!args[1] || ft_strcmp(args[1], "~") == 0)
 	{
-		*path = get_home_path(shell, old_pwd);
-		if (!*path)
+		cd_info->path = get_home_path(shell, old_pwd);
+		if (!cd_info->path)
 			return (1);
-		*should_free_path = 1;
+		cd_info->should_free_path = 1;
 	}
 	else if (ft_strcmp(args[1], "-") == 0)
 	{
-		*path = get_oldpwd_path(shell, old_pwd);
-		if (!*path)
+		cd_info->path = get_oldpwd_path(shell, old_pwd);
+		if (!cd_info->path)
 			return (1);
-		*should_free_path = 1;
+		cd_info->should_free_path = 1;
 	}
 	else
 	{
-		*path = args[1];
-		*should_free_path = 0;
+		cd_info->path = args[1];
+		cd_info->should_free_path = 0;
 	}
 	return (0);
 }
