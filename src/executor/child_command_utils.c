@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:02 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:52:03 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:05:54 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static int	validate_child_command(t_command *cmd, t_shell_data *shell,
 		cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);
 		exit(0);
 	}
-	if (cmd->args[0] && (*cmd->args[0] == '\0' || is_all_whitespace(cmd->args[0])))
+	if (cmd->args[0] && (*cmd->args[0] == '\0'
+			|| is_all_whitespace(cmd->args[0])))
 	{
 		print_command_not_found_error(cmd->args[0]);
 		cleanup_pipeline_child_memory(shell, cmd_list, pipes, pipe_count, pids);

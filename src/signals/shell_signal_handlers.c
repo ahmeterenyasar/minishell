@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:17 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:55:18 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:08:08 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ void	handle_sigint_after_readline(t_shell_data *shell, char *input)
 void	handle_sigint_in_parsing(t_shell_data *shell)
 {
 	set_exit_status(shell, 130);
-	g_signal = 0;  /* Reset signal after handling */
+	g_signal = 0;
 	setup_signals(INTERACTIVE_MODE);
 }

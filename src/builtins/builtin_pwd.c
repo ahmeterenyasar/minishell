@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:50:52 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:50:53 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:04:27 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ int	execute_pwd(t_shell_data *shell)
 void	update_pwd_vars(t_shell_data *shell, char *old_pwd)
 {
 	char	*new_pwd;
-	
+
 	if (!shell)
-		return;
+		return ;
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd)
-		return;
+		return ;
 	update_oldpwd_variable(shell, old_pwd);
 	set_env_variable(shell, "PWD", new_pwd);
 	free(new_pwd);

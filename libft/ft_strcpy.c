@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:57:15 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:57:16 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:03:15 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 char	*ft_strcpy(char *dest, const char *src)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (src[i])
 	{
 		dest[i] = src[i];

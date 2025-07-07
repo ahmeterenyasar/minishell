@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:51:26 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:51:27 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:05:33 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,12 @@ static int	handle_main_loop_iteration(t_shell_data *shell)
 		return (-1);
 	if (input_result == 1)
 	{
-		/* Signal occurred but no command was processed */
-		/* Signal already handled in input handler, reset signals for next iteration */
 		setup_signals(INTERACTIVE_MODE);
 		return (1);
 	}
 	input_result = process_input_line(input, shell);
 	if (input_result == -1)
 		return (-1);
-	/* Don't call handle_signal_check here - commands handle their own signals */
 	setup_signals(INTERACTIVE_MODE);
 	return (0);
 }

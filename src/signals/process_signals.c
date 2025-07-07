@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:14 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:55:15 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:08:02 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ int	handle_global_signals(t_shell_data *shell)
 	if (g_signal == SIGINT)
 	{
 		set_exit_status(shell, 130);
-		g_signal = 0;  /* Reset signal after handling */
+		g_signal = 0;
 		return (130);
 	}
 	if (g_signal == SIGQUIT)
 	{
 		set_exit_status(shell, 131);
-		g_signal = 0;  /* Reset signal after handling */
+		g_signal = 0;
 		return (131);
 	}
 	return (0);
@@ -55,7 +55,7 @@ int	check_heredoc_interruption(t_shell_data *shell)
 	if (g_signal == SIGINT)
 	{
 		set_exit_status(shell, 130);
-		g_signal = 0;  /* Reset signal after handling */
+		g_signal = 0;
 		return (130);
 	}
 	return (0);

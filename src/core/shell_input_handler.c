@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:51:24 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:51:25 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:05:19 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	handle_readline_result(char **input, t_shell_data *shell)
 		if (g_signal == SIGINT)
 		{
 			handle_sigint_in_readline(shell, input);
-			g_signal = 0;  /* Reset signal after handling */
+			g_signal = 0;
 			return (1);
 		}
 		printf("exit\n");
@@ -35,7 +35,7 @@ static int	handle_post_readline_checks(char **input, t_shell_data *shell)
 	if (g_signal == SIGINT)
 	{
 		handle_sigint_after_readline(shell, *input);
-		g_signal = 0;  /* Reset signal after handling */
+		g_signal = 0;
 		return (1);
 	}
 	if (!**input)
@@ -50,7 +50,7 @@ int	get_user_input(char **input, t_shell_data *shell)
 {
 	int	result;
 
-	g_signal = 0;  /* Clear any previous signal */
+	g_signal = 0;
 	*input = readline("minishell$ ");
 	result = handle_readline_result(input, shell);
 	if (result != 0)

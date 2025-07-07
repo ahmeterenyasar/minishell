@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:49:57 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:49:58 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:03:33 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ char	*get_oldpwd_path(t_shell_data *shell, char *old_pwd)
 	return (path);
 }
 
-int	change_to_directory(char *path, char *old_pwd, int should_free_path, t_shell_data *shell)
+int	change_to_directory(char *path, char *old_pwd, int should_free_path,
+		t_shell_data *shell)
 {
 	if (chdir(path) == -1)
 	{
@@ -83,7 +84,8 @@ int	change_to_directory(char *path, char *old_pwd, int should_free_path, t_shell
 	return (0);
 }
 
-int	determine_cd_path(char **args, t_shell_data *shell, char *old_pwd, char **path, int *should_free_path)
+int	determine_cd_path(char **args, t_shell_data *shell, char *old_pwd,
+		char **path, int *should_free_path)
 {
 	if (!args[1] || ft_strcmp(args[1], "~") == 0)
 	{

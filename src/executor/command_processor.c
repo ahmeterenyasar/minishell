@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:07 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:52:08 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:06:16 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ void	process_multiple_commands(char **lines, t_shell_data *shell)
 		if (*lines[i])
 		{
 			result = process_single_command(lines[i], shell);
-			if (result == 1)  // Shell should exit
-				return;
+			if (result == 1)
+				return ;
 		}
 		i++;
 	}

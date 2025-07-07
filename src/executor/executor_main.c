@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:14 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:52:25 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:06:33 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	handle_empty_command(t_command *cmd, t_shell_data *shell)
 {
 	if (!cmd->args || !cmd->args[0])
 		return (0);
-	if (cmd->args[0] && (*cmd->args[0] == '\0' || is_all_whitespace(cmd->args[0])))
+	if (cmd->args[0] && (*cmd->args[0] == '\0'
+			|| is_all_whitespace(cmd->args[0])))
 	{
 		print_command_not_found_error(cmd->args[0]);
 		set_exit_status(shell, 127);

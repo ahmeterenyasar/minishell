@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:50:18 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:50:19 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:04:21 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ static int	export_parse_assignment(char *temp, char **name, char **value)
 	return (1);
 }
 
-static int	export_process_validated_assignment(char *name, char *value, 
-	char *arg, t_shell_data *shell)
+static int	export_process_validated_assignment(char *name, char *value,
+		char *arg, t_shell_data *shell)
 {
 	if (export_validate_identifier(name, arg))
 		return (1);

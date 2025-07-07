@@ -6,14 +6,14 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:50:09 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:50:10 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:03:48 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	setup_builtin_redirections(t_command *cmd, int *stdin_backup, 
-	int *stdout_backup)
+int	setup_builtin_redirections(t_command *cmd, int *stdin_backup,
+		int *stdout_backup)
 {
 	*stdin_backup = dup(STDIN_FILENO);
 	*stdout_backup = dup(STDOUT_FILENO);

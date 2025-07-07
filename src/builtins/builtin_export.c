@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:50:47 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:50:48 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:04:08 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	export_without_value(t_shell_data *shell, const char *name)
 {
 	int	index;
-	
+
 	index = find_env_var(shell->envp, name);
 	if (index >= 0)
 		return (0);
