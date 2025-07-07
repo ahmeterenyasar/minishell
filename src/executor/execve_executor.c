@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:46 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 14:52:53 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 15:25:09 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ void	handle_execve_error_cases(char *cmd_path, char *cmd_name_backup,
 {
 	if (errno == EACCES)
 		handle_execve_permission_error(cmd_path, cmd_name_backup, args_backup,
-				envp_backup, shell);
+			envp_backup, shell);
 	else
 		handle_execve_general_error(cmd_path, cmd_name_backup, args_backup,
-				envp_backup, shell);
+			envp_backup, shell);
 }
 
 void	execute_external_child_command(t_command *cmd, char *cmd_path,
@@ -46,8 +46,8 @@ void	execute_external_child_command(t_command *cmd, char *cmd_path,
 	args_backup = duplicate_args_for_execve(cmd, shell, ctx);
 	cmd_name_backup = ft_strdup(cmd->args[0]);
 	cleanup_before_execve(shell, ctx->pipes, ctx->pipe_count, ctx->pids,
-			ctx->cmd_list);
+		ctx->cmd_list);
 	if (execve(cmd_path, args_backup, envp_backup) == -1)
 		handle_execve_error_cases(cmd_path, cmd_name_backup, args_backup,
-				envp_backup, shell);
+			envp_backup, shell);
 }
