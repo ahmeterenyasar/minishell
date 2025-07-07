@@ -6,36 +6,42 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:53:00 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:53:01 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 15:06:56 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	process_dollar_sign(const char *str, int *i, int *j, char *result,
-		char *var_name, t_shell_data *shell)
+static void	process_dollar_sign(t_env_expand_data *data)
 {
 	char	*value;
 
-	(*i)++;
-	*i = extract_env_name(str, *i, var_name, 256);
-	value = get_env_value(var_name, shell);
-	copy_env_value(result, j, value);
+	(*(data->i))++;
+	*(data->i) = extract_env_name(data->str, *(data->i), data->var_name, 256);
+	value = get_env_value(data->var_name, data->shell);
+	copy_env_value(data->result, data->j, value);
 }
 
 void	expand_loop(const char *str, char *result, char *var_name,
 		t_shell_data *shell)
 {
-	int	i;
-	int	j;
+	t_env_expand_data	data;
+	int					i;
+	int					j;
 
 	i = 0;
 	j = 0;
+	data.str = str;
+	data.i = &i;
+	data.j = &j;
+	data.result = result;
+	data.var_name = var_name;
+	data.shell = shell;
 	while (str[i] && j < 4095)
 	{
 		if (check_dollar_expansion(str, i))
 		{
-			process_dollar_sign(str, &i, &j, result, var_name, shell);
+			process_dollar_sign(&data);
 		}
 		else
 		{
