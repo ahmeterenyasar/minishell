@@ -30,7 +30,24 @@ int	is_valid_identifier(const char *name)
 	return (1);
 }
 
-int	is_numeric_string(const char *str)
+static char	*remove_quotes_if_quoted(const char *str)
+{
+	int		len;
+	char	*result;
+
+	if (!str)
+		return (NULL);
+	len = ft_strlen(str);
+	if (len >= 2 && ((str[0] == '"' && str[len - 1] == '"')
+			|| (str[0] == '\'' && str[len - 1] == '\'')))
+	{
+		result = ft_substr(str, 1, len - 2);
+		return (result);
+	}
+	return (ft_strdup(str));
+}
+
+static int	check_numeric_content(const char *str)
 {
 	int	i;
 
@@ -48,4 +65,17 @@ int	is_numeric_string(const char *str)
 		i++;
 	}
 	return (1);
+}
+
+int	is_numeric_string(const char *str)
+{
+	char	*unquoted;
+	int		result;
+
+	unquoted = remove_quotes_if_quoted(str);
+	if (!unquoted)
+		return (0);
+	result = check_numeric_content(unquoted);
+	free(unquoted);
+	return (result);
 }

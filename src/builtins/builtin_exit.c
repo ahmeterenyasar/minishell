@@ -35,13 +35,39 @@ static int	handle_exit_invalid_arg(char *arg, t_shell_data *shell)
 	return (2);
 }
 
+static char	*remove_quotes_if_quoted(const char *str)
+{
+	int		len;
+	char	*result;
+
+	if (!str)
+		return (NULL);
+	len = ft_strlen(str);
+	if (len >= 2 && ((str[0] == '"' && str[len - 1] == '"')
+			|| (str[0] == '\'' && str[len - 1] == '\'')))
+	{
+		result = ft_substr(str, 1, len - 2);
+		return (result);
+	}
+	return (ft_strdup(str));
+}
+
 static int	handle_exit_with_code(char *arg, t_shell_data *shell)
 {
 	long	temp;
 	int		exit_code;
+	char	*unquoted;
 
-	temp = ft_atoi(arg);
-	exit_code = (int)temp;
+	unquoted = remove_quotes_if_quoted(arg);
+	if (!unquoted)
+	{
+		set_exit_status(shell, 2);
+		shell->should_exit = 1;
+		return (2);
+	}
+	temp = ft_atoi(unquoted);
+	free(unquoted);
+	exit_code = (unsigned char)temp;
 	set_exit_status(shell, exit_code);
 	shell->should_exit = 1;
 	return (exit_code);

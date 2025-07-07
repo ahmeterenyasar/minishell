@@ -28,6 +28,7 @@ static t_shell_data	*initialize_shell(char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell_data	*shell;
+	int				exit_status;
 
 	(void)argc;
 	(void)argv;
@@ -35,6 +36,7 @@ int	main(int argc, char **argv, char **envp)
 	if (!shell)
 		return (1);
 	run_shell_main_loop(shell);
+	exit_status = get_exit_status(shell);
 	free_shell_data(shell);
-	return (0);
+	return (exit_status);
 }
