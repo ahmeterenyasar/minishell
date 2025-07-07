@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:58 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:55:59 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:17:56 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ static int	prepare_quoted_content(char **word_parts, int part_count,
 int	process_quoted_part(const char *input, int *i, char **word_parts,
 		int *part_count, int *expandable)
 {
-	char	quote_char;
-	int		quote_start;
-	int		quote_end;
-	int		content_len;
+	char		quote_char;
+	int			quote_start;
+	int			quote_end;
+	int			content_len;
+	t_quote_pos	pos;
 
 	quote_char = input[*i];
 	quote_start = *i + 1;
@@ -51,8 +52,10 @@ int	process_quoted_part(const char *input, int *i, char **word_parts,
 	if (prepare_quoted_content(word_parts, *part_count, content_len,
 			quote_end) != 0)
 		return (quote_end + 1);
-	copy_quoted_text(input, quote_start, quote_end, word_parts[*part_count],
-			quote_char);
+	pos.start = quote_start;
+	pos.end = quote_end;
+	pos.quote_char = quote_char;
+	copy_quoted_text(input, pos, word_parts[*part_count]);
 	set_expandable_flag(quote_char, expandable);
 	finalize_word_part(part_count);
 	*i = quote_end + 1;

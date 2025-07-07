@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:23 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:10:12 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:17:56 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ typedef struct s_command
 	t_redirect			*redirects;
 	struct s_command	*next;
 }						t_command;
+
+typedef struct s_quote_pos
+{
+	int					start;
+	int					end;
+	char				quote_char;
+}						t_quote_pos;
 
 typedef struct s_shell_data
 {

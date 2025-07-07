@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:19 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:00:20 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:17:56 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int		add_word_token(const char *input, int i, t_token **head);
 int		find_closing_quote(const char *input, int i, char quote_char);
 
 /* Quote token utility functions */
-void	copy_quoted_text(const char *input, int start, int end,
-			char *quoted_text, char quote_char);
+void	copy_quoted_text(const char *input, t_quote_pos pos,
+			char *quoted_text);
 int		should_escape_char(char c);
 int		create_quoted_token(char quote_char, char *quoted_text, t_token **head,
 			int end);

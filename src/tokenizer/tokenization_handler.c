@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:48 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:55:49 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:17:56 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,11 @@ int	handle_redir_out(const char *input, int i, t_token **head)
 
 int	handle_quotes(const char *input, int i, t_token **head)
 {
-	char	quote_char;
-	int		start;
-	int		end;
-	char	*quoted_text;
+	char		quote_char;
+	int			start;
+	int			end;
+	char		*quoted_text;
+	t_quote_pos	pos;
 
 	quote_char = input[i++];
 	start = i;
@@ -84,6 +85,9 @@ int	handle_quotes(const char *input, int i, t_token **head)
 	quoted_text = malloc(end - start + 1);
 	if (!quoted_text)
 		return (end + 1);
-	copy_quoted_text(input, start, end, quoted_text, quote_char);
+	pos.start = start;
+	pos.end = end;
+	pos.quote_char = quote_char;
+	copy_quoted_text(input, pos, quoted_text);
 	return (create_quoted_token(quote_char, quoted_text, head, end));
 }

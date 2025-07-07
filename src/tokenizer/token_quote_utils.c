@@ -6,23 +6,23 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:41 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:55:42 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:17:56 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	copy_quoted_text(const char *input, int start, int end,
-		char *quoted_text, char quote_char)
+void	copy_quoted_text(const char *input, t_quote_pos pos,
+		char *quoted_text)
 {
 	int	j;
 	int	k;
 
-	j = start;
+	j = pos.start;
 	k = 0;
-	while (j < end)
+	while (j < pos.end)
 	{
-		if (quote_char == '"' && input[j] == '\\' && j + 1 < end)
+		if (pos.quote_char == '"' && input[j] == '\\' && j + 1 < pos.end)
 		{
 			if (should_escape_char(input[j + 1]))
 			{
