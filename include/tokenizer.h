@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:19 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:17:56 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:38:28 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,7 @@ int		handle_single_quoted_token(const char *input, int start_pos,
 			char **word_parts, t_token **head);
 int		calculate_total_length(char **word_parts, int part_count);
 int		finalize_concatenated_word(char **word_parts, int part_count,
-			int start_pos, int expandable, t_token **head, const char *input,
-			int i);
+			t_finalize_params params, t_token **head);
 
 /* Word part utility functions */
 void	free_word_parts(char **word_parts, int count);

@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:56:07 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:56:08 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:38:28 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 int	process_concatenated_word(const char *input, int i, t_token **head)
 {
-	char	*word_parts[256];
-	int		part_count;
-	int		start_pos;
-	int		expandable;
-	int		result;
+	char				*word_parts[256];
+	int					part_count;
+	int					start_pos;
+	int					expandable;
+	int					result;
+	t_finalize_params	params;
 
 	part_count = 0;
 	expandable = 0;
@@ -35,8 +36,11 @@ int	process_concatenated_word(const char *input, int i, t_token **head)
 		if (result != 0)
 			return (result);
 	}
-	return (finalize_concatenated_word(word_parts, part_count, start_pos,
-			expandable, head, input, i));
+	params.start_pos = start_pos;
+	params.expandable = expandable;
+	params.input = input;
+	params.current_pos = i;
+	return (finalize_concatenated_word(word_parts, part_count, params, head));
 }
 
 t_token	*tokenize(const char *input)

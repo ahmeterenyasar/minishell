@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:23 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:17:56 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:38:28 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,14 @@ typedef struct s_quote_pos
 	int					end;
 	char				quote_char;
 }						t_quote_pos;
+
+typedef struct s_finalize_params
+{
+	int					start_pos;
+	int					expandable;
+	const char			*input;
+	int					current_pos;
+}						t_finalize_params;
 
 typedef struct s_shell_data
 {
