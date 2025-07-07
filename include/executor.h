@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:53 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 14:52:53 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 16:07:01 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,30 +95,27 @@ void	execute_external_child_command(t_command *cmd, char *cmd_path,
 void	cleanup_shell_readline_data(t_shell_data *shell);
 void	cleanup_pipeline_resources(int **pipes, int pipe_count, pid_t *pids);
 void	cleanup_command_data(t_command *cmd_list);
-void	cleanup_before_execve(t_shell_data *shell, int **pipes, int pipe_count,
-			pid_t *pids, t_command *cmd_list);
+void	cleanup_before_execve(t_shell_data *shell, t_pipeline_context *ctx);
 
 /* Execve error handling functions */
-void	free_execve_backup_data(char *cmd_path, char *cmd_name,
-			char **args_backup, char **envp_backup, t_shell_data *shell);
+void	free_execve_backup_data(t_execve_data *execve_data, t_shell_data *shell);
 void	print_permission_denied_error(char *cmd_name);
-void	handle_execve_permission_error(char *cmd_path, char *cmd_name,
-			char **args_backup, char **envp_backup, t_shell_data *shell);
-void	handle_execve_general_error(char *cmd_path, char *cmd_name,
-			char **args_backup, char **envp_backup, t_shell_data *shell);
+void	handle_execve_permission_error(t_execve_data *execve_data,
+		t_shell_data *shell);
+void	handle_execve_general_error(t_execve_data *execve_data,
+		t_shell_data *shell);
 
 /* Execve argument utility functions */
 int		count_command_args(t_command *cmd);
-char	**allocate_args_backup(int args_count, t_shell_data *shell,
-			t_pipeline_context *ctx);
+char	**allocate_args_backup(int args_count, t_args_backup_context *backup_ctx);
 void	free_partial_args_backup(char **args_backup, int count);
 void	copy_args_to_backup(t_command *cmd, char **args_backup, int args_count,
-			t_shell_data *shell, t_pipeline_context *ctx);
+		t_args_backup_context *backup_ctx);
 
 /* Execve executor functions */
 char	**duplicate_args_for_execve(t_command *cmd, t_shell_data *shell,
-			t_pipeline_context *ctx);
-void	handle_execve_error_cases(char *cmd_path, char *cmd_name_backup,
-			char **args_backup, char **envp_backup, t_shell_data *shell);
+		t_pipeline_context *ctx);
+void	handle_execve_error_cases(t_execve_data *execve_data,
+		t_shell_data *shell);
 
 #endif

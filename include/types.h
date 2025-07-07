@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:23 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 14:52:53 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 16:07:01 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,20 @@ typedef struct s_pipeline_context
 	pid_t				*pids;
 	t_command			*cmd_list;
 }						t_pipeline_context;
+
+typedef struct s_execve_data
+{
+	char				*cmd_path;
+	char				*cmd_name_backup;
+	char				**args_backup;
+	char				**envp_backup;
+}						t_execve_data;
+
+typedef struct s_args_backup_context
+{
+	t_shell_data		*shell;
+	t_pipeline_context	*ctx;
+}						t_args_backup_context;
 
 extern sig_atomic_t		g_signal;
 
