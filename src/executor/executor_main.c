@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_main.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/07 11:52:14 by ayasar            #+#    #+#             */
+/*   Updated: 2025/07/07 11:52:25 by ayasar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	handle_empty_command(t_command *cmd, t_shell_data *shell)
@@ -17,17 +29,11 @@ int	process_command_status(int status, t_shell_data *shell)
 {
 	int	signal_result;
 
-	/* First, handle signals that terminated the process */
 	signal_result = handle_signal_termination(status, shell);
 	if (signal_result > 0)
 		return (signal_result);
-	
-	/* For normal exit, set the exit status */
 	if (WIFEXITED(status))
 		set_exit_status(shell, WEXITSTATUS(status));
-	
-	/* Don't call handle_global_signals here - it can override the 
-	   actual process exit status incorrectly */
 	return (get_exit_status(shell));
 }
 
