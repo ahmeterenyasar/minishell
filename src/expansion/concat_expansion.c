@@ -6,51 +6,67 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:58 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:52:59 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 15:13:42 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	process_variable_expansion(const char *str, int *i, char *var_name,
-		t_shell_data *shell, char *result, int *j)
+void	process_variable_expansion(t_var_expand_params *params)
 {
-	(*i)++;
-	if (str[*i] == '?' || str[*i] == '$')
+	(*(params->i))++;
+	if (params->str[*(params->i)] == '?' || params->str[*(params->i)] == '$')
 	{
-		handle_special_vars(str, i, var_name, shell, result, j);
+		handle_special_vars(params);
 	}
 	else
 	{
-		handle_regular_vars(str, i, var_name, shell, result, j);
+		handle_regular_vars(params);
 	}
+}
+
+static void	init_expand_params(t_var_expand_params *params,
+		t_expand_init_data *init_data, int *i, int *j)
+{
+	params->str = init_data->str;
+	params->i = i;
+	params->var_name = init_data->var_name;
+	params->shell = init_data->shell;
+	params->result = init_data->result;
+	params->j = j;
+}
+
+static void	process_expand_loop(t_var_expand_params *params)
+{
+	int	i;
+	int	j;
+
+	i = *(params->i);
+	j = *(params->j);
+	while (params->str[i] && j < 4095)
+	{
+		handle_loop_iteration(params, &i, &j);
+	}
+	*(params->i) = i;
+	*(params->j) = j;
 }
 
 static void	concat_expand_loop(const char *str, char *result, char *var_name,
 		t_shell_data *shell)
 {
-	int	i;
-	int	j;
+	t_var_expand_params	params;
+	t_expand_init_data	init_data;
+	int					i;
+	int					j;
 
 	i = 0;
 	j = 0;
-	skip_leading_whitespace(str, &i, result, &j);
-	while (str[i] && j < 4095)
-	{
-		if (check_dollar_expansion(str, i))
-		{
-			process_variable_expansion(str, &i, var_name, shell, result, &j);
-		}
-		else if (str[i] == '\x01')
-		{
-			i++;
-		}
-		else
-		{
-			copy_regular_char(result, &j, str[i]);
-			i++;
-		}
-	}
+	setup_init_data(&init_data, str, shell);
+	init_data.result = result;
+	init_data.var_name = var_name;
+	init_expand_params(&params, &init_data, &i, &j);
+	skip_leading_whitespace(&params);
+	process_expand_loop(&params);
 	result[j] = '\0';
 }
 

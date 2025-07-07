@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:58 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:59:59 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 14:31:51 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ char	*remove_quotes_from_delimiter(char *delimiter);
 /* Heredoc reading and processing functions */
 int		read_heredoc_content(int fd, const char *delimiter, int expand,
 			t_shell_data *shell);
-int		read_heredoc_loop(int fd, const char *delimiter, int expand,
-			t_shell_data *shell, int original_stdin, char **clean_delimiter);
+int		read_heredoc_loop(int fd, const char *delimiter,
+			t_heredoc_context *ctx);
 int		check_signal_interruption(char *line, int original_stdin,
 			char **clean_delimiter);
 int		handle_eof_condition(char *line);

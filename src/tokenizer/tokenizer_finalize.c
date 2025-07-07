@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:55 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:39:08 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:22:43 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	finalize_concatenated_word(char **word_parts, int part_count,
 		return (params.current_pos);
 	}
 	need_boundary_markers = check_boundary_markers_needed(word_parts,
-															part_count);
+			part_count);
 	concatenated = concatenate_word_parts(word_parts, part_count,
 			need_boundary_markers);
 	if (!concatenated)

@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:51:15 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:51:16 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 16:12:10 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	set_exit_status(t_shell_data *shell, int status)
 {
 	if (!shell)
 		return ;
-	/* Ensure exit status is in valid range (0-255) like bash */
 	shell->last_exit_status = status & 0xFF;
 }
 

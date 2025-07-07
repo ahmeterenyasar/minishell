@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:56:02 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:56:03 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:41:19 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ static int	prepare_unquoted_content(char **word_parts, int part_count,
 	return (0);
 }
 
-int	process_unquoted_part(const char *input, int *i, char **word_parts,
-		int *part_count, int *expandable)
+int	process_unquoted_part(const char *input, int *i,
+		t_word_parts_params *params)
 {
 	int	word_start;
 	int	word_len;
@@ -53,11 +53,13 @@ int	process_unquoted_part(const char *input, int *i, char **word_parts,
 
 	word_start = *i;
 	word_len = calculate_unquoted_length(input, i);
-	result = prepare_unquoted_content(word_parts, *part_count, word_len, *i);
+	result = prepare_unquoted_content(params->word_parts, *params->part_count,
+			word_len, *i);
 	if (result != 0)
 		return (result);
-	copy_word_chars(input, word_start, word_parts[*part_count], word_len);
-	*expandable = 1;
-	finalize_word_part(part_count);
+	copy_word_chars(input, word_start, params->word_parts[*params->part_count],
+		word_len);
+	*params->expandable = 1;
+	finalize_word_part(params->part_count);
 	return (0);
 }

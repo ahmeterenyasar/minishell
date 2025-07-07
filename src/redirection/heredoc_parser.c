@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:54:38 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:54:39 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 14:21:18 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ char	*remove_quotes_from_delimiter(char *delimiter)
 {
 	int		len;
 	char	*result;
+	int		i;
+	int		j;
 
-	int i, j;
 	if (!delimiter)
 		return (NULL);
 	len = ft_strlen(delimiter);

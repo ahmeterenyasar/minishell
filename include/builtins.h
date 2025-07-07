@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:51 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:08:58 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 16:12:15 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 # define BUILTINS_H
 
 # include "types.h"
+
+/* CD path structure */
+typedef struct s_cd_path
+{
+	char	*path;
+	int		should_free_path;
+}			t_cd_path;
 
 /* Built-in command functions */
 int		execute_echo(char **args, t_shell_data *shell);
@@ -72,6 +79,6 @@ char	*get_oldpwd_path(t_shell_data *shell, char *old_pwd);
 int		change_to_directory(char *path, char *old_pwd, int should_free_path,
 			t_shell_data *shell);
 int		determine_cd_path(char **args, t_shell_data *shell, char *old_pwd,
-			char **path, int *should_free_path);
+			t_cd_path *cd_info);
 
 #endif

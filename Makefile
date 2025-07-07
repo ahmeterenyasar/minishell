@@ -35,6 +35,7 @@ SRCS = main.c \
         src/expansion/expansion_utils.c \
         src/expansion/env_expansion.c \
         src/expansion/concat_expansion_utils.c \
+        src/expansion/concat_loop_utils.c \
         src/expansion/concat_expansion.c \
         src/expansion/token_expansion.c \
         src/expansion/redirect_expansion.c \

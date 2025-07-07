@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:23 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:38:28 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 16:07:01 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,13 @@ typedef struct s_finalize_params
 	int					current_pos;
 }						t_finalize_params;
 
+typedef struct s_word_parts_params
+{
+	char				**word_parts;
+	int					*part_count;
+	int					*expandable;
+}						t_word_parts_params;
+
 typedef struct s_shell_data
 {
 	int					last_exit_status;
@@ -81,6 +88,36 @@ typedef struct s_shell_data
 	char				**current_lines;
 	int					should_exit;
 }						t_shell_data;
+
+typedef struct s_heredoc_context
+{
+	int					original_stdin;
+	char				**clean_delimiter;
+	int					expand;
+	t_shell_data		*shell;
+}						t_heredoc_context;
+
+typedef struct s_pipeline_context
+{
+	int					**pipes;
+	int					pipe_count;
+	pid_t				*pids;
+	t_command			*cmd_list;
+}						t_pipeline_context;
+
+typedef struct s_execve_data
+{
+	char				*cmd_path;
+	char				*cmd_name_backup;
+	char				**args_backup;
+	char				**envp_backup;
+}						t_execve_data;
+
+typedef struct s_args_backup_context
+{
+	t_shell_data		*shell;
+	t_pipeline_context	*ctx;
+}						t_args_backup_context;
 
 extern sig_atomic_t		g_signal;
 

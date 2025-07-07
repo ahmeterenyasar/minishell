@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:54:40 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:54:41 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 14:31:51 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,26 @@ static int	check_signal_before_read(int original_stdin, char **clean_delimiter)
 	return (0);
 }
 
-static int	process_single_heredoc_line(int fd, int expand, t_shell_data *shell,
-		int original_stdin, char **clean_delimiter)
+static int	process_single_heredoc_line(int fd, t_heredoc_context *ctx)
 {
 	char	*line;
 
-	if (check_signal_before_read(original_stdin, clean_delimiter))
+	if (check_signal_before_read(ctx->original_stdin, ctx->clean_delimiter))
 		return (1);
 	line = readline("heredoc> ");
-	if (check_signal_interruption(line, original_stdin, clean_delimiter))
+	if (check_signal_interruption(line, ctx->original_stdin,
+			ctx->clean_delimiter))
 		return (1);
 	if (handle_eof_condition(line))
 		return (2);
-	if (check_delimiter_match(line, *clean_delimiter))
+	if (check_delimiter_match(line, *(ctx->clean_delimiter)))
 		return (2);
-	process_heredoc_line(fd, line, expand, shell);
+	process_heredoc_line(fd, line, ctx->expand, ctx->shell);
 	return (0);
 }
 
-int	read_heredoc_loop(int fd, const char *delimiter, int expand,
-		t_shell_data *shell, int original_stdin, char **clean_delimiter)
+int	read_heredoc_loop(int fd, const char *delimiter,
+		t_heredoc_context *ctx)
 {
 	int	result;
 	int	continue_reading;
@@ -50,8 +50,7 @@ int	read_heredoc_loop(int fd, const char *delimiter, int expand,
 	continue_reading = 1;
 	while (continue_reading)
 	{
-		result = process_single_heredoc_line(fd, expand, shell, original_stdin,
-				clean_delimiter);
+		result = process_single_heredoc_line(fd, ctx);
 		if (result == 1)
 			return (1);
 		if (result == 2)

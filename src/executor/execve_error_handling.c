@@ -6,19 +6,18 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:43 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:07:12 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 16:02:19 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_execve_backup_data(char *cmd_path, char *cmd_name,
-		char **args_backup, char **envp_backup, t_shell_data *shell)
+void	free_execve_backup_data(t_execve_data *execve_data, t_shell_data *shell)
 {
-	free(cmd_path);
-	free_str_array(args_backup);
-	free(cmd_name);
-	free_envp(envp_backup);
+	free(execve_data->cmd_path);
+	free_str_array(execve_data->args_backup);
+	free(execve_data->cmd_name_backup);
+	free_envp(execve_data->envp_backup);
 	free(shell);
 }
 
@@ -29,20 +28,18 @@ void	print_permission_denied_error(char *cmd_name)
 	write(STDERR_FILENO, ": Permission denied\n", 20);
 }
 
-void	handle_execve_permission_error(char *cmd_path, char *cmd_name,
-		char **args_backup, char **envp_backup, t_shell_data *shell)
+void	handle_execve_permission_error(t_execve_data *execve_data,
+	t_shell_data *shell)
 {
-	print_permission_denied_error(cmd_name);
-	free_execve_backup_data(cmd_path, cmd_name, args_backup, envp_backup,
-			shell);
+	print_permission_denied_error(execve_data->cmd_name_backup);
+	free_execve_backup_data(execve_data, shell);
 	exit(126);
 }
 
-void	handle_execve_general_error(char *cmd_path, char *cmd_name,
-		char **args_backup, char **envp_backup, t_shell_data *shell)
+void	handle_execve_general_error(t_execve_data *execve_data,
+		t_shell_data *shell)
 {
 	perror("execve");
-	free_execve_backup_data(cmd_path, cmd_name, args_backup, envp_backup,
-			shell);
+	free_execve_backup_data(execve_data, shell);
 	exit(127);
 }

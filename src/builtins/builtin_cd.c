@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:50:01 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:50:02 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 16:12:15 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,14 @@
 
 int	execute_cd(char **args, t_shell_data *shell)
 {
-	char	*path;
-	char	*old_pwd;
-	int		should_free_path;
+	char		*old_pwd;
+	t_cd_path	cd_info;
 
 	if (validate_cd_args(args, shell))
 		return (1);
 	old_pwd = getcwd(NULL, 0);
-	should_free_path = 0;
-	if (determine_cd_path(args, shell, old_pwd, &path, &should_free_path))
+	if (determine_cd_path(args, shell, old_pwd, &cd_info))
 		return (1);
-	return (change_to_directory(path, old_pwd, should_free_path, shell));
+	return (change_to_directory(cd_info.path, old_pwd,
+			cd_info.should_free_path, shell));
 }

@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:41 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:52:42 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 16:04:27 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,9 @@ void	cleanup_command_data(t_command *cmd_list)
 		free_command(cmd_list);
 }
 
-void	cleanup_before_execve(t_shell_data *shell, int **pipes, int pipe_count,
-		pid_t *pids, t_command *cmd_list)
+void	cleanup_before_execve(t_shell_data *shell, t_pipeline_context *ctx)
 {
 	cleanup_shell_readline_data(shell);
-	cleanup_pipeline_resources(pipes, pipe_count, pids);
-	cleanup_command_data(cmd_list);
+	cleanup_pipeline_resources(ctx->pipes, ctx->pipe_count, ctx->pids);
+	cleanup_command_data(ctx->cmd_list);
 }

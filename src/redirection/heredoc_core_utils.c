@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:54:24 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:54:25 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 14:41:04 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@ int	setup_heredoc_reading(int *original_stdin)
 {
 	int	tty_fd;
 
-	if (!isatty(STDIN_FILENO))
-	{
-		/* STDIN is not a terminal - this is expected in some cases */
-	}
 	*original_stdin = dup(STDIN_FILENO);
 	if (*original_stdin == -1)
 		return (1);
