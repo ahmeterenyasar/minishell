@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:23 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 13:20:39 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 14:31:51 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,14 @@ typedef struct s_shell_data
 	char				**current_lines;
 	int					should_exit;
 }						t_shell_data;
+
+typedef struct s_heredoc_context
+{
+	int					original_stdin;
+	char				**clean_delimiter;
+	int					expand;
+	t_shell_data		*shell;
+}						t_heredoc_context;
 
 extern sig_atomic_t		g_signal;
 

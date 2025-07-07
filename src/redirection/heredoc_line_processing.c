@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:54:35 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:54:36 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 14:40:32 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ int	handle_eof_condition(char *line)
 	if (!line)
 	{
 		write(STDERR_FILENO,
-				"\nminishell: warning: heredoc delimited by EOF\n",
-				45);
+			"\nminishell: warning: heredoc delimited by EOF\n", 45);
 		return (1);
 	}
 	return (0);
