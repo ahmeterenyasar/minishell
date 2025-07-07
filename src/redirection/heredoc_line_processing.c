@@ -29,8 +29,6 @@ int	handle_eof_condition(char *line)
 {
 	if (!line)
 	{
-		write(STDERR_FILENO,
-			"\nminishell: warning: heredoc delimited by EOF\n", 45);
 		return (1);
 	}
 	return (0);
