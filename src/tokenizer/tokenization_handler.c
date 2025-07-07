@@ -6,18 +6,16 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:48 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:17:56 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:32:06 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// FIXME unused attribute.
 int	handle_pipe(const char *input, int i, t_token **head)
 {
 	t_token	*new_token;
 
-	// input parametresi kullanılıyor - bounds checking için gerekli
 	if (!input)
 		return (i + 1);
 	new_token = create_token(TOKEN_PIPE, ft_strdup("|"), 0);

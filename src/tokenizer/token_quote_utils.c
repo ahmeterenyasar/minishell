@@ -6,14 +6,13 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:41 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:17:56 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 12:19:34 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	copy_quoted_text(const char *input, t_quote_pos pos,
-		char *quoted_text)
+void	copy_quoted_text(const char *input, t_quote_pos pos, char *quoted_text)
 {
 	int	j;
 	int	k;
