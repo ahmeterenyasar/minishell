@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:51:00 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:51:01 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 18:54:42 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	is_valid_identifier(const char *name)
 	return (1);
 }
 
-static char	*remove_quotes_if_quoted(const char *str)
+char	*remove_quotes_if_quoted(const char *str)
 {
 	int		len;
 	char	*result;

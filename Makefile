@@ -60,6 +60,7 @@ SRCS = main.c \
         src/builtins/builtin_execution.c \
         src/builtins/builtin_executor.c \
         src/builtins/builtin_exit.c \
+        src/builtins/builtin_exit_utils.c \
         src/builtins/builtin_expr.c \
         src/builtins/builtin_export.c \
         src/builtins/builtin_export_validation.c \

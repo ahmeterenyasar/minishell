@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:51 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 16:12:15 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 18:54:42 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int		export_handle_assignment_processing(char *arg, t_shell_data *shell);
 int		is_valid_n_flag(const char *arg);
 int		is_valid_identifier(const char *name);
 int		is_numeric_string(const char *str);
+char	*remove_quotes_if_quoted(const char *str);
 void	update_pwd_vars(t_shell_data *shell, char *old_pwd);
 void	print_export_vars(char **envp);
 void	print_env(char **envp);
@@ -71,6 +72,12 @@ char	*create_env_variable(const char *name, const char *value);
 char	**create_env_without_var(char **envp, int skip_index);
 int		remove_env_variable(t_shell_data *shell, const char *name);
 int		process_unset_args(t_shell_data *shell, char **args);
+
+/* Exit command helper functions */
+int		handle_exit_no_args(t_shell_data *shell);
+int		handle_exit_too_many_args(t_shell_data *shell);
+int		handle_exit_invalid_arg(char *arg, t_shell_data *shell);
+int		handle_exit_with_code(char *arg, t_shell_data *shell);
 
 /* CD command helper functions */
 int		validate_cd_args(char **args, t_shell_data *shell);

@@ -6,19 +6,49 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:14 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:06:33 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 18:48:21 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	handle_standalone_redirections(t_command *cmd, t_shell_data *shell)
+{
+	pid_t	pid;
+	int		status;
+
+	if (!cmd->redirects)
+		return (0);
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		set_exit_status(shell, 1);
+		return (1);
+	}
+	if (pid == 0)
+	{
+		if (setup_redirections(cmd->redirects) == -1)
+			exit(1);
+		exit(0);
+	}
+	waitpid(pid, &status, 0);
+	return (process_command_status(status, shell));
+}
+
 int	handle_empty_command(t_command *cmd, t_shell_data *shell)
 {
 	if (!cmd->args || !cmd->args[0])
+	{
+		if (cmd->redirects)
+			return (handle_standalone_redirections(cmd, shell));
 		return (0);
+	}
 	if (cmd->args[0] && (*cmd->args[0] == '\0'
 			|| is_all_whitespace(cmd->args[0])))
 	{
+		if (cmd->redirects)
+			return (handle_standalone_redirections(cmd, shell));
 		print_command_not_found_error(cmd->args[0]);
 		set_exit_status(shell, 127);
 		return (127);
