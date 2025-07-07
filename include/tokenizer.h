@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:19 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 13:20:39 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:30:17 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,7 @@ int		skip_unquoted_text(const char *input, int pos);
 int		check_syntax(t_token *tokens);
 
 /* Tokenizer helper functions - split into multiple files */
-int		process_quoted_part(const char *input, int *i, char **word_parts,
-			int *part_count, int *expandable);
+int		process_quoted_part(const char *input, int *i, t_word_parts_params *params);
 int		process_unquoted_part(const char *input, int *i, char **word_parts,
 			int *part_count, int *expandable);
 int		check_boundary_markers_needed(char **word_parts, int part_count);

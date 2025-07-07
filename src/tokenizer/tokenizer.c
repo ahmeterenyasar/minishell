@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:56:07 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 13:20:39 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:30:17 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ static int	process_word_parts_loop(const char *input, int *i,
 		&& !is_operator_char(input[*i]))
 	{
 		if (is_quote_char(input[*i]))
-			result = process_quoted_part(input, i, params->word_parts,
-					params->part_count, params->expandable);
+			result = process_quoted_part(input, i, params);
 		else
 			result = process_unquoted_part(input, i, params->word_parts,
 					params->part_count, params->expandable);
