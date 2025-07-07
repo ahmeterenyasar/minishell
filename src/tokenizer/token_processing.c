@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:38 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:55:39 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:20:39 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,17 @@ int	process_token(const char *input, int i, t_token **head)
 	if (input[i] == '>')
 		return (handle_redir_out(input, i, head));
 	return (add_word_token(input, i, head));
+}
+
+int	process_single_token(char *processed_input, int i, t_token **head)
+{
+	int	result;
+
+	result = process_token(processed_input, i, head);
+	if (result == -1)
+	{
+		free(processed_input);
+		return (-1);
+	}
+	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:19 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:38:28 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 13:20:39 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_token	*create_quoted_token_with_flag(t_token_type type, char *value,
 			int expandable, int quoted);
 char	*handle_newlines(const char *input);
 int		process_token(const char *input, int i, t_token **head);
+int		process_single_token(char *processed_input, int i, t_token **head);
 int		process_concatenated_word(const char *input, int i, t_token **head);
 int		should_use_concatenation(const char *input, int i);
 
