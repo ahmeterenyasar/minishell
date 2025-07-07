@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:38 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 13:20:39 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 19:07:58 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,6 @@ int	process_single_token(char *processed_input, int i, t_token **head)
 
 	result = process_token(processed_input, i, head);
 	if (result == -1)
-	{
-		free(processed_input);
 		return (-1);
-	}
 	return (result);
 }
