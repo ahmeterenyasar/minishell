@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:58 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 15:13:42 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 17:30:00 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,23 @@ static void	init_expand_params(t_var_expand_params *params,
 
 static void	process_expand_loop(t_var_expand_params *params)
 {
-	int	i;
-	int	j;
-
-	i = *(params->i);
-	j = *(params->j);
-	while (params->str[i] && j < 4095)
+	while (params->str[*(params->i)] && *(params->j) < 4095)
 	{
-		handle_loop_iteration(params, &i, &j);
+		if (check_dollar_expansion(params->str, *(params->i)))
+		{
+			process_variable_expansion(params);
+		}
+		else if (params->str[*(params->i)] == '\x01')
+		{
+			(*(params->i))++;
+		}
+		else
+		{
+			copy_regular_char(params->result, params->j,
+				params->str[*(params->i)]);
+			(*(params->i))++;
+		}
 	}
-	*(params->i) = i;
-	*(params->j) = j;
 }
 
 static void	concat_expand_loop(const char *str, char *result, char *var_name,

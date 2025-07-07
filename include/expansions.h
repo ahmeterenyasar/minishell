@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:56 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 16:11:53 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/07 17:27:46 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ void				skip_leading_whitespace(t_var_expand_params *params);
 int					calculate_var_name_length(t_var_expand_params *params);
 void				process_var_value(t_var_expand_params *params,
 						int name_len);
-void				handle_loop_iteration(t_var_expand_params *params, int *i,
-						int *j);
 void				process_variable_expansion(t_var_expand_params *params);
 void				setup_init_data(t_expand_init_data *init_data,
 						const char *str,
