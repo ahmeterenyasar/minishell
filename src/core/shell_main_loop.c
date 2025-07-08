@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_main_loop.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: raktas <raktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:51:26 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:05:33 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/08 16:10:11 by raktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	handle_main_loop_iteration(t_shell_data *shell)
 	if (input_result == 1)
 	{
 		setup_signals(INTERACTIVE_MODE);
-		return (1);
+		return (0);
 	}
 	input_result = process_input_line(input, shell);
 	if (input_result == -1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: raktas <raktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:19 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:55:20 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/08 16:07:11 by raktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	handle_sigint_interactive(int signo)
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	handle_sigint_executing(int signo)
