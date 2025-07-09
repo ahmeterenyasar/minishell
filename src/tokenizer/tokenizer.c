@@ -48,15 +48,12 @@ int	process_concatenated_word(const char *input, int i, t_token **head)
 	int					part_count;
 	int					expandable;
 	int					start_pos;
-	t_word_parts_params	params;
 
 	part_count = 0;
 	expandable = 0;
 	start_pos = i;
-	params.word_parts = word_parts;
-	params.part_count = &part_count;
-	params.expandable = &expandable;
-	if (process_word_parts_loop(input, &i, &params) != 0)
+	if (process_word_parts_loop(input, &i, &(t_word_parts_params){
+			word_parts, &part_count, &expandable}) != 0)
 		return (i);
 	return (finalize_concatenated_word(word_parts, part_count,
 			init_finalize_params(input, start_pos, i, expandable), head));
