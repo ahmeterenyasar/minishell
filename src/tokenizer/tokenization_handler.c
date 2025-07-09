@@ -77,7 +77,6 @@ int	handle_quotes(const char *input, int i, t_token **head)
 	end = find_closing_quote(input, i - 1, quote_char);
 	if (end == -1)
 	{
-		printf("Error: Unclosed quotes\n");
 		return (-1);
 	}
 	quoted_text = malloc(end - start + 1);

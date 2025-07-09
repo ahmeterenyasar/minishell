@@ -29,9 +29,9 @@ void	free_tokens(t_token *tokens);
 t_token	*create_token(t_token_type type, char *value, int expandable);
 t_token	*create_quoted_token_with_flag(t_token_type type, char *value,
 			int expandable, int quoted);
-char	*handle_newlines(const char *input);
+int		has_unclosed_quotes(const char *input);
 int		process_token(const char *input, int i, t_token **head);
-int		process_single_token(char *processed_input, int i, t_token **head);
+int		process_single_token(const char *processed_input, int i, t_token **head);
 int		process_concatenated_word(const char *input, int i, t_token **head);
 int		should_use_concatenation(const char *input, int i);
 

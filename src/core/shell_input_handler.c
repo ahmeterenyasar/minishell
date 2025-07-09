@@ -46,9 +46,48 @@ static int	handle_post_readline_checks(char **input, t_shell_data *shell)
 	return (0);
 }
 
+static char	*read_multiline_input(char *initial_input, t_shell_data *shell)
+{
+	char	*line;
+	char	*temp;
+	char	*result;
+
+	(void)shell;
+	result = ft_strdup(initial_input);
+	if (!result)
+		return (NULL);
+	while (has_unclosed_quotes(result))
+	{
+		line = readline("> ");
+		if (!line || g_signal == SIGINT)
+		{
+			free(result);
+			if (line)
+				free(line);
+			return (NULL);
+		}
+		temp = result;
+		result = ft_strjoin(result, "\n");
+		free(temp);
+		if (!result)
+		{
+			free(line);
+			return (NULL);
+		}
+		temp = result;
+		result = ft_strjoin(result, line);
+		free(temp);
+		free(line);
+		if (!result)
+			return (NULL);
+	}
+	return (result);
+}
+
 int	get_user_input(char **input, t_shell_data *shell)
 {
-	int	result;
+	int		result;
+	char	*multiline_input;
 
 	g_signal = 0;
 	*input = readline("minishell$ ");
@@ -56,5 +95,20 @@ int	get_user_input(char **input, t_shell_data *shell)
 	if (result != 0)
 		return (result);
 	result = handle_post_readline_checks(input, shell);
-	return (result);
+	if (result != 0)
+		return (result);
+	multiline_input = read_multiline_input(*input, shell);
+	if (!multiline_input)
+	{
+		free(*input);
+		if (g_signal == SIGINT)
+		{
+			g_signal = 0;
+			return (1);
+		}
+		return (-1);
+	}
+	free(*input);
+	*input = multiline_input;
+	return (0);
 }

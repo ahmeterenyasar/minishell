@@ -73,7 +73,7 @@ int	find_closing_quote(const char *input, int i, char quote_char)
 	i++;
 	while (input[i])
 	{
-		if (quote_char == '"' && input[i] == '\\' && input[i + 1] == '"')
+		if (quote_char == '"' && input[i] == '\\' && input[i + 1])
 		{
 			i += 2;
 			continue ;

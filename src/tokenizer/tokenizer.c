@@ -59,36 +59,28 @@ int	process_concatenated_word(const char *input, int i, t_token **head)
 			init_finalize_params(input, start_pos, i, expandable), head));
 }
 
-static t_token	*process_input_tokens(char *processed_input)
+t_token	*tokenize(const char *input)
 {
 	t_token	*head;
 	int		i;
 	int		result;
 
+	if (!input)
+		return (NULL);
 	head = NULL;
 	i = 0;
-	while (processed_input[i])
+	while (input[i])
 	{
-		i = skip_white_space(processed_input, i);
-		if (!processed_input[i])
+		i = skip_white_space(input, i);
+		if (!input[i])
 			break ;
-		result = process_single_token(processed_input, i, &head);
+		result = process_single_token(input, i, &head);
 		if (result == -1)
+		{
+			free_tokens(head);
 			return (NULL);
+		}
 		i = result;
 	}
-	return (head);
-}
-
-t_token	*tokenize(const char *input)
-{
-	t_token	*head;
-	char	*processed_input;
-
-	processed_input = handle_newlines(input);
-	if (!processed_input)
-		return (NULL);
-	head = process_input_tokens(processed_input);
-	free(processed_input);
 	return (head);
 }

@@ -82,7 +82,7 @@ int	process_token(const char *input, int i, t_token **head)
 	return (add_word_token(input, i, head));
 }
 
-int	process_single_token(char *processed_input, int i, t_token **head)
+int	process_single_token(const char *processed_input, int i, t_token **head)
 {
 	int	result;
 

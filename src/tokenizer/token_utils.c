@@ -12,27 +12,35 @@
 
 #include "minishell.h"
 
-char	*handle_newlines(const char *input)
+int	has_unclosed_quotes(const char *input)
 {
-	char	*result;
-	int		len;
 	int		i;
-	int		j;
+	char	quote_char;
 
 	if (!input)
-		return (NULL);
-	len = ft_strlen(input);
-	result = malloc(len + 1);
-	if (!result)
-		return (NULL);
+		return (0);
 	i = 0;
-	j = 0;
 	while (input[i])
 	{
-		result[j++] = input[i++];
+		if (is_quote_char(input[i]))
+		{
+			quote_char = input[i];
+			i++;
+			while (input[i] && input[i] != quote_char)
+			{
+				if (quote_char == '"' && input[i] == '\\' && input[i + 1])
+					i += 2;
+				else
+					i++;
+			}
+			if (!input[i])
+				return (1);
+			i++;
+		}
+		else
+			i++;
 	}
-	result[j] = '\0';
-	return (result);
+	return (0);
 }
 
 int	skip_unquoted_text(const char *input, int pos)
