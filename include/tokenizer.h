@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:19 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 14:17:03 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/10 16:14:36 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ int		should_use_concatenation(const char *input, int i);
 /* Input processing functions */
 char	*convert_newlines(const char *input);
 char	**split_commands_by_newlines(const char *input);
+
+/* Input processing utility functions */
+int		is_inside_quotes(const char *input, int pos);
+int		count_newlines(const char *converted);
+char	*create_command_segment(const char *converted, int start, int end);
+void	free_result_array(char **result, int count);
+char	**handle_empty_input(void);
 
 /* Word token utility functions */
 int		extract_word_len(const char *input, int i);

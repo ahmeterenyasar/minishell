@@ -18,6 +18,7 @@ SRCS = main.c \
         src/tokenizer/token_quote_utils.c \
         src/tokenizer/token_word_utils.c \
         src/tokenizer/input_processor.c \
+        src/tokenizer/input_processor_utils.c \
         src/tokenizer/white_space.c \
         src/parser/parser_interface.c \
         src/parser/syntax_validator.c \
