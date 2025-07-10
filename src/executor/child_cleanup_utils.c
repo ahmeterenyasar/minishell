@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:51:50 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 14:52:53 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/10 15:58:33 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	cleanup_child_readline(void)
 {
 	clear_history();
 	rl_clear_history();
-	rl_cleanup_after_signal();
 }
 
 static void	cleanup_child_shell_data(t_shell_data *shell)

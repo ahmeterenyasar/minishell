@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:14 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 18:48:21 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/10 15:57:17 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,12 @@ static int	handle_standalone_redirections(t_command *cmd, t_shell_data *shell)
 	if (pid == 0)
 	{
 		if (setup_redirections(cmd->redirects) == -1)
+		{
+			cleanup_child_inherited_memory(shell);
 			exit(1);
+		}
+		cleanup_child_inherited_memory(shell);
+		free_command(cmd);
 		exit(0);
 	}
 	waitpid(pid, &status, 0);

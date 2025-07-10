@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:17 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:08:08 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/10 15:58:33 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,20 @@ void	handle_sigint_in_readline(t_shell_data *shell, char **input)
 		free(*input);
 		*input = NULL;
 	}
+	clear_current_lines(shell);
 }
 
 void	handle_sigint_after_readline(t_shell_data *shell, char *input)
 {
 	set_exit_status(shell, 130);
 	free(input);
+	clear_current_lines(shell);
 }
 
 void	handle_sigint_in_parsing(t_shell_data *shell)
 {
 	set_exit_status(shell, 130);
 	g_signal = 0;
+	clear_current_lines(shell);
 	setup_signals(INTERACTIVE_MODE);
 }

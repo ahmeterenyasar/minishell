@@ -40,3 +40,32 @@
    fun:add_history
    ...
 }
+{
+   <ReadlineHistory>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   ...
+   fun:add_history
+   ...
+}
+{
+   <ReadlineLibrary>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   ...
+   fun:readline
+   ...
+}
+{
+   <ReadlineInternal>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   ...
+}
