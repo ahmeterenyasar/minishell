@@ -20,6 +20,8 @@ void				run_shell_main_loop(t_shell_data *shell);
 
 /* Input handling functions */
 int					get_user_input(char **input, t_shell_data *shell);
+char				*read_multiline_input(char *initial_input,
+						t_shell_data *shell);
 
 /* Command processing functions */
 int					process_single_command(char *line, t_shell_data *shell);

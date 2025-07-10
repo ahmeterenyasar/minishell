@@ -107,6 +107,7 @@ SRCS = main.c \
         src/core/shell_cleanup.c \
         src/core/shell_main_loop.c \
         src/core/shell_input_handler.c \
+        src/core/multiline_input_utils.c \
         src/core/exit_status_manager.c \
         src/core/current_lines_manager.c \
         src/core/printf_utils.c

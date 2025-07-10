@@ -46,44 +46,6 @@ static int	handle_post_readline_checks(char **input, t_shell_data *shell)
 	return (0);
 }
 
-static char	*read_multiline_input(char *initial_input, t_shell_data *shell)
-{
-	char	*line;
-	char	*temp;
-	char	*result;
-
-	(void)shell;
-	result = ft_strdup(initial_input);
-	if (!result)
-		return (NULL);
-	while (has_unclosed_quotes(result))
-	{
-		line = readline("> ");
-		if (!line || g_signal == SIGINT)
-		{
-			free(result);
-			if (line)
-				free(line);
-			return (NULL);
-		}
-		temp = result;
-		result = ft_strjoin(result, "\n");
-		free(temp);
-		if (!result)
-		{
-			free(line);
-			return (NULL);
-		}
-		temp = result;
-		result = ft_strjoin(result, line);
-		free(temp);
-		free(line);
-		if (!result)
-			return (NULL);
-	}
-	return (result);
-}
-
 int	get_user_input(char **input, t_shell_data *shell)
 {
 	int		result;
