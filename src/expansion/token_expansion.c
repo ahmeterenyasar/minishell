@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:53:13 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:53:14 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/10 16:16:41 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ static int	is_heredoc_delimiter(t_token *current, t_token *prev)
 	return (0);
 }
 
-static void	expand_single_token(t_token *token, t_token *prev, t_shell_data *shell)
+static void	expand_single_token(t_token *token, t_token *prev,
+		t_shell_data *shell)
 {
 	char	*expanded;
 
-	if (token->type == TOKEN_WORD && token->expandable 
+	if (token->type == TOKEN_WORD && token->expandable
 		&& !is_heredoc_delimiter(token, prev))
 	{
 		expanded = expand_concatenated_vars(token->value, shell);
