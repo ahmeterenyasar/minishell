@@ -6,7 +6,7 @@
 /*   By: raktas <raktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:19 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/08 16:07:11 by raktas           ###   ########.fr       */
+/*   Updated: 2025/07/10 20:32:39 by raktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	handle_sigint_interactive(int signo)
 {
 	(void)signo;
 	g_signal = SIGINT;
-	rl_done = 1;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -43,6 +42,6 @@ void	handle_sigint_heredoc(int signo)
 {
 	(void)signo;
 	g_signal = SIGINT;
+	close(STDIN_FILENO);
 	write(STDOUT_FILENO, "\n", 1);
-	rl_done = 1;
 }
