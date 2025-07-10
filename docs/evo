@@ -1,0 +1,266 @@
+
+Sorular
+======================================================================
+Soru:
+pipeline ve normal builtin export arasındaki farkı anlat ve göster.
+
+Cevap:
+pipeline export child processte normal export ana processte çalışır.
+
+örneğin;
+export hello="hello"
+echo $hello -> hello
+env | grep hello -> hello
+
+LAKİN:
+echo "test" | export world="world"
+echo $world -> "empty new line"
+
+======================================================================
+Soru:
+Komutlar tam olarak nerede executor'a gönderilmek üzere bir linked list yapısında tutuluyor. Bu komutları listeye atama işlemi nerede oluyor. Yani executor'a gelen listeli struct yapısının tam olarak hazır olduğu executor'a geçmeden önceki adımımızı soruyorum.
+
+Cevap:
+command_process.c içindeki process_single_command fonksyionu aşamasında parse_input komutları t_command *cmd yapısına verir.
+parse_input önce tokenize eder sonra parse eder ve komut listesine atar. ardından expansion varsa gerçekleştirir.
+
+======================================================================
+Soru:
+Child Process ne demek projenizde nerelerde kullanıldı?
+
+Cevap:
+Child Process, bir parent processin fork() sistem çağrısı ile oluşturduğu yeni bir süreçtir. Unix/Linux sistemlerinde yeni programlar çalıştırmanın temel yoludur.
+Projede:
+1. Tek Komut Çalıştırma (executor_main.c)
+2. Pipeline Çalıştırma (pipeline_coordinator.c)
+3. Redirection Handling (executor_main.c)
+şeklinde kullanıldı.
+
+Neden Child Process Kullanılıyor?
+İzolasyon: External komutlar ana shell sürecini etkilemeden çalışır.
+Güvenlik: Hatalı komutlar shell'i çökertmez.
+Signal Handling: Child'larda farklı signal davranışları ayarlanabilir.
+Redirection: File descriptor değişiklikleri sadece child'ı etkiler.
+Exit Codes: Her komutun exit kodu ayrı ayrı yakalanabilir.
+
+
+======================================================================
+Soru:
+Expand işlemi nasıl yapılıyor? Expand nasıl segmentationa yol açmıyor length kısmını nasıl handle ediyorsunuz?
+
+Cevap:
+İşlem token_expansion.c'den başlayarak concat_expansion.c ve env_expansion.c dosyalarında gerçekleştirilir.
+Segmentation fault'ları engellemek için sabit 4096 byte'lık buffer kullanım.
+Her yazma işleminde "j < 4095" kontrolü yapılarak buffer overflow'u önlenir ve son byte null termination için rezerve edilir.
+Variable name'ler maksimum 255 karakter ile sınırlandırılırken, her pointer erişiminde triple NULL check (name, shell, envp kontrolü) yapılarak güvenlik sağlanır.
+Allocation failure durumlarında ft_strdup("") ile safe fallback mekanizması devreye girer.
+======================================================================
+Soru:
+Heredoc içinde expand işlemini nasıl yapıyosunuz?
+
+Cevap:
+Delimiter Quote Kontrolü ile Expansion Kararı redirection_utils.c
+Heredoc İçeriği Yazma Sırasında Expansion -> write_heredoc_line -> heredoc_core_utils.c
+Environment Variable Expansion İşlemi env_expansion.c
+Expansion Loop ile Variable Processing env_expansion.c
+Dollar Sign Processing env_expansion.c
+======================================================================
+Soru:
+Heredoc delimiter expandable bişeyse nasıl kontrol ettiniz bunu, örneğin $USER delimiter olarak verdiyse expandable olarak değilde direkt "$USER" girildiğinde çıkış yapabiliyor bunu nasıl işledinşiz?
+
+Cevap:
+Tokenization: $USER becomes a TOKEN_WORD following a TOKEN_HEREDOC
+Expansion Prevention: is_heredoc_delimiter() returns 1, so $USER is not expanded
+Delimiter Storage: The literal string $USER is stored as the delimiter
+Line Matching: During heredoc reading, each line is compared against the literal $USER
+Exit Condition: When user types $USER, it matches the stored delimiter exactly
+
+cat << $USER example:
+Step 1: Token Sequence
+After tokenization, you have:
+token_1: "cat" (TOKEN_WORD)
+token_2: "<<" (TOKEN_HEREDOC)
+token_3: "$USER" (TOKEN_WORD, expandable=true)
+
+Step 2: Expansion Loop
+When expand_single_token is called for the $USER token:
+token->type == TOKEN_WORD ✅ (true - it's a word)
+token->expandable ✅ (true - contains $)
+!is_heredoc_delimiter(token, prev) ❌ (false - because is_heredoc_delimiter returns true)
+
+Step 3: The Critical Check
+static int	is_heredoc_delimiter(t_token *current, t_token *prev)
+{
+    if (!current || !prev)
+        return (0);
+    if (current->type == TOKEN_WORD && prev->type == TOKEN_HEREDOC)
+        return (1);  // <-- Returns 1 for $USER token
+    return (0);
+}
+
+For the $USER token:
+current->type == TOKEN_WORD ✅ (true)
+prev->type == TOKEN_HEREDOC ✅ (true - previous token is <<)
+Result: is_heredoc_delimiter returns 1
+
+Step 4: Short-Circuit Logic
+Since is_heredoc_delimiter(token, prev) returns 1:
+!is_heredoc_delimiter(token, prev) becomes !1 = 0 (false)
+The entire condition becomes: true && true && false = false
+The expansion code inside the if block is never executed
+
+======================================================================
+Soru:
+INTERACTIVE_MODE, EXECUTING_MODE, HEREDOC_MODE anlamları neler farkları neler, nasıl işleniyor?
+
+Cevap:
+INTERACTIVE_MODE (Etkileşimli Mod)
+Ne zaman: Kullanıcı komut girmesini beklerken
+Sinyal davranışı:
+SIGINT (Ctrl+C): Yeni satıra geç, prompt'u yeniden göster
+SIGQUIT (Ctrl+): Yok say (SIG_IGN)
+
+EXECUTING_MODE (Komut Çalıştırma Modu)
+Ne zaman: Komut çalıştırırken (fork/exec sırasında)
+Sinyal davranışı:
+SIGINT (Ctrl+C): Çalışan komutu sonlandır
+SIGQUIT (Ctrl+): Çalışan komutu sonlandır ve core dump
+
+HEREDOC_MODE (Heredoc Okuma Modu)
+Ne zaman: Heredoc (<<) içeriği okunurken
+Sinyal davranışı:
+SIGINT (Ctrl+C): Heredoc'u iptal et, temizle
+SIGQUIT (Ctrl+): Yok say
+======================================================================
+Soru:
+execve nedir? nasıl çalışıyor?
+
+Cevap:
+execve bir Unix sistem çağrısıdır
+execve (execute with environment) bir program yürütmek için kullanılan sistem çağrısıdır. Bu çağrı:
+Mevcut sürecin bellek görüntüsünü yeni bir programla değiştirir
+Yeni programı belirtilen argumentlar ve çevre değişkenleri ile çalıştırır
+Başarılı olursa asla geri dönmez (çünkü süreç tamamen değişir)
+Hata durumunda -1 döner
+
+Fork ile Kullanım: execve genellikle fork() sonrası child processte çağrılır
+Geri Dönüş: Başarılı olursa asla geri dönmez
+Hata Kodları:
+126: İzin reddedildi
+127: Komut bulunamadı
+Bellek Yönetimi: execve çağrısından önce gereksiz bellek temizlenir
+
+======================================================================
+Soru:
+envp nedir, main nasıl alıyor ve neden var?
+
+Cevap:
+envp (environment pointer), C programlarında çevre değişkenlerini (environment variables) temsil eden bir parametredir.
+
+1. Shell Fonksiyonalitesi
+Bir shell olarak, minishell'in çevre değişkenlerini:
+Okuyabilmesi (örn: echo $PATH)
+Değiştirebilmesi (örn: export PATH=$PATH:/new/path)
+Alt processlere aktarabilmesi gerekiyor
+
+======================================================================
+Soru:
+exit status 1 ve 2 için örnek input verir misin? modulo için de ver bakiyim.
+
+Cevap:
+
+# Built-in errors
+minishell$ cd /nonexistent/directory
+cd: /nonexistent/directory: No such file or directory
+# Exit status: 1
+
+minishell$ export 123invalid=value
+export: `123invalid=value': not a valid identifier
+# Exit status: 1
+
+minishell$ env extra_argument
+env: too many arguments
+# Exit status: 1
+
+# Redirection errors
+minishell$ echo hello > /root/protected_file
+minishell: /root/protected_file: Permission denied
+# Exit status: 1
+
+# Syntax errors
+minishell$ echo hello |
+syntax error near unexpected token `newline'
+# Exit status: 2
+
+======================================================================
+Soru:
+WIFEXITED, WEXITSTATUS, WIFSIGNALED, WTERMSIG kavramları nedir bunlar nasıl çalışıyor?
+
+Cevap:
+Bu makrolar Unix/Linux sistemlerinde child process'lerin sonlandırma durumlarını analiz etmek için kullanılır. Kodunuzda da birçok yerde kullanıldığını görüyorum. İşte nasıl çalıştıkları:
+
+Process Status Makroları
+WIFEXITED(status)
+Amaç: Child process'in normal şekilde sonlandırıldığını kontrol eder
+Döner: Process exit() veya return ile sonlandıysa true
+Kullanım: Process'in crash olmadığını, düzgün şekilde bittiğini anlamak için
+
+WEXITSTATUS(status)
+Amaç: Normal sonlanan process'in exit code'unu alır
+Döner: exit(code) veya return code ile verilen değer (0-255 arası)
+Kullanım: Sadece WIFEXITED(status) true ise kullanılmalı
+
+WIFSIGNALED(status)
+Amaç: Process'in bir signal ile sonlandırıldığını kontrol eder
+Döner: Process SIGKILL, SIGTERM, SIGINT gibi signallerle öldürüldüyse true
+Kullanım: Process'in crash olduğunu veya zorla sonlandırıldığını anlamak için
+
+WTERMSIG(status)
+Amaç: Process'i sonlandıran signal'ın numarasını alır
+Döner: Signal numarası (SIGINT=2, SIGTERM=15, SIGKILL=9, vb.)
+Kullanım: Sadece WIFSIGNALED(status) true ise kullanılmalı
+
+======================================================================
+**********************************************************************
+INFORMATION
+Multiple copy functions in tokenization, what is the purpose?
+Purpose: Processes escape sequences inside quotes according to shell rules:
+In double quotes: \" becomes ", \\ becomes \, \$ becomes $
+In single quotes: No escape processing (copies literally)
+
+fork() ile child process'ler yarat
+pipe() ile veri kanalları oluştur
+
+dup Fonksiyonu
+Mevcut bir file descriptor'ın kopyasını oluşturur
+Sistem otomatik olarak en küçük boş fd numarasını atar
+Aynı dosyayı işaret eden yeni bir fd döner
+
+dup2 Fonksiyonu
+Mevcut fd'yi belirtilen fd numarasına kopyalar
+Eğer newfd zaten açıksa, önce onu kapatır
+Daha kontrollü redirection sağlar
+dup2() ile stdin/stdout'u pipe'lara yönlendir
+
+close() ile gereksiz pipe uçlarını kapat
+execve() ile asıl komutu çalıştır
+waitpid() ile child'ları bekle
+
+**********************************************************************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ERRORS:
+./minishell
+minishell$ ^C
+minishell$ ^C
+minishell$ 
+minishell$ ^C
+
+minishell$ ^C
+
+minishell$ 
+minishell$ 
+
+CTRL+C -> CTRL+D -> CTR+C = new linelı ctrl+c
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
