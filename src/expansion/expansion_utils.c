@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:53:03 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/10 15:58:22 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 20:59:06 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	is_valid_var_char(char c)
 		return (1);
 	if (c == '_')
 		return (1);
-	if (c == '?' || c == '$')
+	if (c == '?')
 		return (1);
 	return (0);
 }

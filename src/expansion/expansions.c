@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:53:05 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:53:11 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 20:59:06 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ char	*get_exit_status_str(t_shell_data *shell)
 	return (result);
 }
 
-char	*get_shell_pid(void)
-{
-	return (int_to_string(getpid()));
-}
+
 
 char	*get_env_value(const char *name, t_shell_data *shell)
 {
@@ -39,8 +36,6 @@ char	*get_env_value(const char *name, t_shell_data *shell)
 		return (ft_strdup(""));
 	if (ft_strcmp(name, "?") == 0)
 		return (get_exit_status_str(shell));
-	if (ft_strcmp(name, "$") == 0)
-		return (get_shell_pid());
 	len = ft_strlen(name);
 	envp = shell->envp;
 	i = 0;
@@ -58,7 +53,7 @@ int	extract_env_name(const char *str, int i, char *name, int max_len)
 	int	j;
 
 	j = 0;
-	if (str[i] == '?' || str[i] == '$')
+	if (str[i] == '?')
 	{
 		name[j++] = str[i++];
 		name[j] = '\0';

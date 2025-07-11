@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:52:58 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 17:30:00 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 20:59:06 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	process_variable_expansion(t_var_expand_params *params)
 {
 	(*(params->i))++;
-	if (params->str[*(params->i)] == '?' || params->str[*(params->i)] == '$')
+	if (params->str[*(params->i)] == '?')
 	{
 		handle_special_vars(params);
 	}
