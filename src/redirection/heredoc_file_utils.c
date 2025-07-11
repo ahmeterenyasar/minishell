@@ -6,37 +6,38 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:54:33 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:54:34 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:07:25 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*create_pid_counter_strings(char **pid_str, char **counter_str)
+static char	*create_counter_strings(char **counter_str, char **session_str)
 {
 	static int	counter = 0;
-	int			pid;
+	static int	session_id = 0;
 
-	pid = getpid();
-	*pid_str = int_to_string(pid);
-	if (!*pid_str)
+	if (session_id == 0)
+		session_id = (int)((unsigned long)&counter % 99999) + 1;
+	*session_str = int_to_string(session_id);
+	if (!*session_str)
 		return (NULL);
 	*counter_str = int_to_string(counter++);
 	if (!*counter_str)
 	{
-		free(*pid_str);
+		free(*session_str);
 		return (NULL);
 	}
-	return (*pid_str);
+	return (*session_str);
 }
 
-static char	*build_filename_path(char *pid_str, char *counter_str)
+static char	*build_filename_path(char *session_str, char *counter_str)
 {
 	char	*temp;
 	char	*filename;
 	char	*result;
 
-	temp = ft_strjoin("/tmp/heredoc_", pid_str);
+	temp = ft_strjoin("/tmp/heredoc_", session_str);
 	if (!temp)
 		return (NULL);
 	filename = ft_strjoin(temp, "_");
@@ -50,14 +51,14 @@ static char	*build_filename_path(char *pid_str, char *counter_str)
 
 static char	*generate_heredoc_filename(void)
 {
-	char	*pid_str;
+	char	*session_str;
 	char	*counter_str;
 	char	*filename;
 
-	if (!create_pid_counter_strings(&pid_str, &counter_str))
+	if (!create_counter_strings(&counter_str, &session_str))
 		return (NULL);
-	filename = build_filename_path(pid_str, counter_str);
-	free(pid_str);
+	filename = build_filename_path(session_str, counter_str);
+	free(session_str);
 	free(counter_str);
 	return (filename);
 }
