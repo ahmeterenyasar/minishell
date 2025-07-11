@@ -120,25 +120,8 @@ readline.supp     → valgrind suppression file for readline
 ### Known Issues 🔴
 
 ### In Progress 🟡
-- Complex valgrind tests are required.
-- Comprehensive pipe testing
 
 ### Completed 🟢
-- `^C echo $?` sometimes not working - signal handling needs fixing
-- Empty string commands (`"  "`) should give "command not found"
-- Exit code handling in pipelines (refactored from special return codes to flag-based approach)
-  - `minishell$ ls | exit 100` → `$? = 100`
-  - `minishell$ ls | exit` → `$? = 0`
-  - `minishell$ invalid_cmd | exit 50` → `$? = 50`
-  - `minishell$ exit 42 | ls` → `$? = 0`
-  - Normal exit behavior preserved
-  - Exit with too many arguments handled correctly
-- Signal handling for `^C` returns exit code 130
-- Heredoc expansion with quotes fixed
-- Memory management improvements
-- Complex pipe handling: `cat << eof | cat << asd | cat << qwe`
-- Sleep with pipes functionality
-- Debugger cleanup 
 
 ---
 

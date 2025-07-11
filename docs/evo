@@ -221,6 +221,84 @@ Döner: Signal numarası (SIGINT=2, SIGTERM=15, SIGKILL=9, vb.)
 Kullanım: Sadece WIFSIGNALED(status) true ise kullanılmalı
 
 ======================================================================
+Soru:
+void	set_exit_status(t_shell_data *shell, int status)
+{
+	if (!shell)
+		return ;
+	shell->last_exit_status = status & 0xFF;
+}
+Buradaki & 0xFF ne yapıyor ne anlama geliyor.
+
+Cevap:
+status & 0xFF ifadesi:
+& operatörü, bit düzeyinde VE (AND) işlemi yapar.
+0xFF ise hexadecimal (onaltılık) gösterimde 255 sayısıdır ve ikili (binary) olarak 11111111 şeklindedir.
+Yani, status değişkeninin sadece en düşük 8 bitini alır, geri kalan tüm bitleri sıfırlar.
+
+Neden 8 bit?
+Unix/Linux sistemlerinde bir programın çıkış (exit) kodu genellikle 8 bitlik bir değerdir (0-255 arası).
+Bir programdan dönen exit kodu, sistem çağrılarıyla veya shell ile çalışırken sadece 8 bitlik kısmı kullanılır.
+Eğer status değişkeni daha büyük bir değerse, üstteki bitler gereksizdir ve atılır.
+Örnek:
+
+Diyelim ki status = 0x123 (yani 291).
+0x123 = 0001 0010 0011 (binary).
+0xFF = 0000 1111 1111 (binary).
+Bitwise AND işlemi:
+Sonuç olarak, sadece en düşük 8 bit (0x23) alınır.
+=======================================================================
+Soru:
+concat_expansion_utils.c
+concat_expansion.c
+tokenizer_concatenate.c
+dosyalarında bulunan "\x01" nedir? neden kullandınız?
+
+Cevap:
+Kullanılan "\x01" karakteri, ASCII tablosunda "Start of Heading" (SOH) olarak bilinen, genellikle metinlerde görünmeyen özel bir kontrol karakteridir. Kodda bu karakter, kelime parçalarını birleştirirken veya değişken genişletme (expansion) işlemlerinde sınır/boundary (ayraç) olarak kullanılıyor.
+Kısacası, "\x01" burada kelime veya değişken birleşimlerinde özel bir ayraç (boundary marker) olarak görev yapıyor. Normalde kullanıcıya gösterilmez, sadece programın iç işleyişinde ayrım yapmak için kullanılır.
+=======================================================================
+Soru:
+dosya okuma flaglerini ve numaraları açıkla?
+readirection_output.c
+heredoc_file_utils.c
+
+Cevap:
+readirection_output.c
+open(file, flags, 0644) fonksiyonu bir dosya açar veya oluşturur.
+file: Açılacak veya oluşturulacak dosyanın adıdır (ör. "output.txt").
+flags: Dosyanın nasıl açılacağını belirler. Örneğin:
+O_WRONLY: Sadece yazmak için aç.
+O_CREAT: Dosya yoksa oluştur.
+O_TRUNC: Dosya varsa içeriğini sil (truncate).
+O_APPEND: Dosyanın sonuna ekle.
+0644: Dosya oluşturulursa, dosyanın erişim izinlerini belirtir. 0644 şu anlama gelir:
+Sahibi (user) için okuma ve yazma (rw-)
+Grup ve diğerleri için sadece okuma (r-- r--)
+
+heredoc_file_utils.c
+O_CREAT: Dosya yoksa oluştur.
+O_EXCL: O_CREAT ile birlikte kullanılırsa, dosya zaten varsa open başarısız olur (aynı isimde dosya oluşturulmasını engeller).
+O_RDWR: Dosyayı hem okumak hem yazmak için aç.
+0600: Dosya oluşturulursa, sadece sahibi için okuma ve yazma izni verir (rw-------).
+
+=======================================================================
+Soru:
+readline.supp dosyası nedir açıkla?
+
+Cevap:
+Valgrind adlı hata ayıklama ve bellek denetleme aracı için özel bir "suppression" (bastırma/görmezden gelme) dosyasıdır. Bu dosya, Valgrind ile programınızı çalıştırırken ortaya çıkan ve genellikle readline kütüphanesinden (veya add_history gibi fonksiyonlardan) kaynaklanan bellek sızıntısı (memory leak) uyarılarını filtrelemek için kullanılır.
+
+Detaylı açıklama:
+
+Valgrind, C/C++ programlarında bellek sızıntılarını ve hatalarını tespit etmek için kullanılır. Ancak bazı kütüphaneler (örneğin GNU Readline) çalışma sonunda bazı bellekleri serbest bırakmaz veya kendi içinde yönetir. Bu durum, programınızda gerçek bir hata olmasa bile Valgrind’in "leak" raporlamasına neden olur.
+readline.supp dosyası, bu tür kütüphane kaynaklı ve sizin kontrolünüzde olmayan sızıntıların Valgrind raporlarında görünmemesini sağlar.
+Dosyada her suppression bloğu { ... } ile başlar ve biter. Her blok, belirli bir fonksiyon zincirinde (örneğin fun:readline, fun:add_history) oluşan sızıntıların bastırılmasını tanımlar.
+Memcheck:Leak satırı, bu suppression’ın bellek sızıntısı için geçerli olduğunu belirtir.
+match-leak-kinds: reachable veya definite gibi ifadeler, hangi tür sızıntıların bastırılacağını belirtir.
+fun:readline, fun:add_history gibi satırlar, suppression’ın hangi fonksiyon zincirinde geçerli olacağını belirtir.
+
+
 **********************************************************************
 INFORMATION
 Multiple copy functions in tokenization, what is the purpose?
@@ -247,20 +325,4 @@ execve() ile asıl komutu çalıştır
 waitpid() ile child'ları bekle
 
 **********************************************************************
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ERRORS:
-./minishell
-minishell$ ^C
-minishell$ ^C
-minishell$ 
-minishell$ ^C
-
-minishell$ ^C
-
-minishell$ 
-minishell$ 
-
-CTRL+C -> CTRL+D -> CTR+C = new linelı ctrl+c
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
