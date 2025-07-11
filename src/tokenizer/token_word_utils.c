@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:45 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:55:46 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:25:03 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	add_word_token(const char *input, int i, t_token **head)
 	if (!word)
 		return (i + len);
 	copy_word_chars(input, i, word, len);
-	new_token = create_token(TOKEN_WORD, word, 1);
+	new_token = create_token(TOKEN_WORD, word, 1, 0);
 	if (new_token)
 		add_token(head, new_token);
 	else

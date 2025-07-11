@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 12:00:19 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/10 16:16:55 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:25:03 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ int		handle_quotes(const char *input, int i, t_token **head);
 void	free_tokens(t_token *tokens);
 
 /* Token utility functions */
-t_token	*create_token(t_token_type type, char *value, int expandable);
-t_token	*create_quoted_token_with_flag(t_token_type type, char *value,
-			int expandable, int quoted);
+t_token	*create_token(t_token_type type, char *value, int expandable, int quoted);
 int		has_unclosed_quotes(const char *input);
 int		process_token(const char *input, int i, t_token **head);
 int		process_single_token(const char *processed_input, int i,

@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:41 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:19:34 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:25:03 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	create_quoted_token(char quote_char, char *quoted_text, t_token **head,
 		expandable = 1;
 	else
 		expandable = 0;
-	new_token = create_quoted_token_with_flag(TOKEN_WORD, quoted_text,
+	new_token = create_token(TOKEN_WORD, quoted_text,
 			expandable, 1);
 	if (new_token)
 		add_token(head, new_token);

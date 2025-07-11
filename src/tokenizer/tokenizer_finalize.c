@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:55 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 13:22:43 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:25:03 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	finalize_concatenated_word(char **word_parts, int part_count,
 			need_boundary_markers);
 	if (!concatenated)
 		return (params.current_pos);
-	new_token = create_token(TOKEN_WORD, concatenated, params.expandable);
+	new_token = create_token(TOKEN_WORD, concatenated, params.expandable, 0);
 	if (new_token)
 		add_token(head, new_token);
 	else

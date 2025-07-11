@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:48 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 12:32:06 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:25:03 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	handle_pipe(const char *input, int i, t_token **head)
 
 	if (!input)
 		return (i + 1);
-	new_token = create_token(TOKEN_PIPE, ft_strdup("|"), 0);
+	new_token = create_token(TOKEN_PIPE, ft_strdup("|"), 0, 0);
 	if (new_token)
 		add_token(head, new_token);
 	return (i + 1);
@@ -30,14 +30,14 @@ int	handle_redir_in(const char *input, int i, t_token **head)
 
 	if (input[i + 1] == '<')
 	{
-		new_token = create_token(TOKEN_HEREDOC, ft_strdup("<<"), 0);
+		new_token = create_token(TOKEN_HEREDOC, ft_strdup("<<"), 0, 0);
 		if (new_token)
 			add_token(head, new_token);
 		return (i + 2);
 	}
 	else
 	{
-		new_token = create_token(TOKEN_REDIR_IN, ft_strdup("<"), 0);
+		new_token = create_token(TOKEN_REDIR_IN, ft_strdup("<"), 0, 0);
 		if (new_token)
 			add_token(head, new_token);
 		return (i + 1);
@@ -50,14 +50,14 @@ int	handle_redir_out(const char *input, int i, t_token **head)
 
 	if (input[i + 1] == '>')
 	{
-		new_token = create_token(TOKEN_APPEND, ft_strdup(">>"), 0);
+		new_token = create_token(TOKEN_APPEND, ft_strdup(">>"), 0, 0);
 		if (new_token)
 			add_token(head, new_token);
 		return (i + 2);
 	}
 	else
 	{
-		new_token = create_token(TOKEN_REDIR_OUT, ft_strdup(">"), 0);
+		new_token = create_token(TOKEN_REDIR_OUT, ft_strdup(">"), 0, 0);
 		if (new_token)
 			add_token(head, new_token);
 		return (i + 1);
