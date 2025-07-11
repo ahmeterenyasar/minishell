@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:54:04 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:54:05 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:12:33 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	is_quote_char(char c)
 
 int	is_token_delimiter(char c)
 {
-	return (isspace(c) || is_operator_char(c) || c == '\0');
+	return (is_white_space(c) || is_operator_char(c) || c == '\0');
 }
 
 void	free_str_array(char **arr)
