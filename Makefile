@@ -63,6 +63,7 @@ SRCS = main.c \
         src/builtins/builtin_exit.c \
         src/builtins/builtin_exit_utils.c \
         src/builtins/builtin_expr.c \
+        src/builtins/builtin_expr_validation.c \
         src/builtins/builtin_export.c \
         src/builtins/builtin_export_validation.c \
         src/builtins/builtin_export_error_handling.c \
@@ -110,7 +111,7 @@ SRCS = main.c \
         src/core/multiline_input_utils.c \
         src/core/exit_status_manager.c \
         src/core/current_lines_manager.c \
-        src/core/printf_utils.c
+        src/core/print_utils.c
 
 OBJS = $(SRCS:.c=.o)
 LIBFT_DIR = libft

@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:53:05 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/11 20:59:06 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/12 02:39:25 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ char	*get_exit_status_str(t_shell_data *shell)
 	result = int_to_string(status);
 	return (result);
 }
-
-
 
 char	*get_env_value(const char *name, t_shell_data *shell)
 {

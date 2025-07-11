@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_creation.c                                   :+:      :+:    :+:   */
+/*   builtin_expr_validation.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/07 11:55:32 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/12 02:39:14 by ayasar           ###   ########.fr       */
+/*   Created: 2025/07/12 02:28:14 by ayasar            #+#    #+#             */
+/*   Updated: 2025/07/12 02:28:17 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*create_token(t_token_type type, char *value, int expandable,
-		int quoted)
+int	validate_expr_operands(char **args, t_shell_data *shell)
 {
-	t_token	*token;
-
-	token = malloc(sizeof(t_token));
-	if (!token)
-	{
-		if (value)
-			free(value);
-		return (NULL);
-	}
-	token->type = type;
-	token->value = value;
-	token->expandable = expandable;
-	token->quoted = quoted;
-	token->next = NULL;
-	return (token);
+	if (validate_integer_operand(args[1], shell))
+		return (1);
+	if (validate_integer_operand(args[3], shell))
+		return (1);
+	return (0);
 }

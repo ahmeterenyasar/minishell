@@ -6,13 +6,13 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:50:50 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:50:51 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/12 02:40:10 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	validate_expr_arguments(char **args, t_shell_data *shell)
+static int	validate_expr_args_and_operator(char **args, t_shell_data *shell)
 {
 	if (!args[1] || !args[2] || !args[3] || args[4])
 	{
@@ -20,14 +20,22 @@ static int	validate_expr_arguments(char **args, t_shell_data *shell)
 		set_exit_status(shell, 1);
 		return (1);
 	}
-	return (0);
-}
-
-static int	validate_expr_operator(char **args, t_shell_data *shell)
-{
 	if (ft_strcmp(args[2], "+") != 0)
 	{
 		write(STDERR_FILENO, "expr: only + operator supported\n", 32);
+		set_exit_status(shell, 1);
+		return (1);
+	}
+	return (0);
+}
+
+int	validate_integer_operand(char *operand, t_shell_data *shell)
+{
+	if (!is_numeric_string(operand))
+	{
+		write(STDERR_FILENO, "expr: ", 6);
+		write(STDERR_FILENO, operand, ft_strlen(operand));
+		write(STDERR_FILENO, ": not a valid integer\n", 22);
 		set_exit_status(shell, 1);
 		return (1);
 	}
@@ -61,9 +69,9 @@ int	execute_expr(char **args, t_shell_data *shell)
 {
 	int	result;
 
-	if (validate_expr_arguments(args, shell))
+	if (validate_expr_args_and_operator(args, shell))
 		return (1);
-	if (validate_expr_operator(args, shell))
+	if (validate_expr_operands(args, shell))
 		return (1);
 	result = calculate_addition(args);
 	output_expr_result(result);
