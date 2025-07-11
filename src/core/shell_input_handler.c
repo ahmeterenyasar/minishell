@@ -6,13 +6,11 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:51:24 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/10 16:44:26 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:50:02 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern sig_atomic_t	g_signal;
 
 static int	handle_readline_result(char **input, t_shell_data *shell)
 {

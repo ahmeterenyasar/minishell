@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   shell_main_loop.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: raktas <raktas@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:51:26 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/08 16:10:11 by raktas           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:50:06 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern sig_atomic_t	g_signal;
 
 static int	process_input_line(char *input, t_shell_data *shell)
 {

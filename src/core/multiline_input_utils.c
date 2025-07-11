@@ -6,13 +6,11 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 18:00:00 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/10 16:44:26 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/11 21:49:56 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern sig_atomic_t	g_signal;
 
 static char	*append_line_to_result(char *result, char *line)
 {
