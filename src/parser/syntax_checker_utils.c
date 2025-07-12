@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checker_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: raktas <raktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:53:57 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:53:58 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/12 10:02:51 by raktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "syntax_checker.h"
 
 int	is_redirection(t_token_type type)
 {

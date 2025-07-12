@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signal_management.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: raktas <raktas@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:55:21 by ayasar            #+#    #+#             */
-/*   Updated: 2025/07/07 11:55:22 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/07/12 10:00:02 by raktas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <signal.h>
 
 static void	set_signal(int sig, void (*handler)(int))
 {
