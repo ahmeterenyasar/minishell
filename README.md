@@ -138,12 +138,6 @@ readline.supp     → valgrind suppression file for readline
 
 ---
 
-## Flow Diagram
-
-[Chart will be uploaded here]
-
----
-
 ## Status
 
 ### Known Issues 🔴
