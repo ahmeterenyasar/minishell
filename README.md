@@ -17,6 +17,8 @@ Key capabilities include:
 
 ## How It Works
 
+![Loop Diagram](docs/loop.png)
+
 Internally **minishell** keeps to a clear four‑stage processing pipeline, but instead of an Abstract Syntax Tree our implementation relies on a *linked list* of `t_command` nodes:
 
 1. **Tokenizer** – breaks the input line into lexical tokens (words, operators, quotes) while honouring escapes and contextual rules.
@@ -31,9 +33,36 @@ Internally **minishell** keeps to a clear four‑stage processing pipeline, but 
    * built‑ins run directly in the parent when side effects are required (e.g. `cd`, `export`)
    * external commands fork/exec; pipes are assembled by following `next` pointers; per‑command redirections are applied just before `execve()`
 
-[Chart will be uploaded here]
+![Project Diagram](docs/diagram.png)
 
-[Test scenarios will be uploaded here]
+## 🧪 Test Scenarios
+
+### Quoting & Variable Expansion
+```bash
+echo "'$US'ER'"                       # Expect: '$US'ER'
+echo "$HOME"/'file with spaces'.txt  # Expect: expanded $HOME with literal string
+echo "$NOTSET"abc                    # Expect: abc (empty var)
+```
+
+### Heredocs
+```bash
+cat << end << actual_end << final << seriously_enough_is_enough
+```
+
+### Quotes with Escapes
+```bash
+echo "A quote inside \"double quotes\"" 'and '\''single quotes'\'''
+```
+
+```bash
+cat <<EOF
+This is \$HOME and "$USER"
+EOF
+
+cat << "EOF"
+This is \$HOME and "$USER"
+EOF
+```
 
 ---
 
